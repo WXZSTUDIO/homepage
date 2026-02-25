@@ -1,19 +1,22 @@
 /**
- * PAGE_X MVP SHOWDOWN - H5 INTERACTIVE ENGINE v4.0
- * 包含：动态秒级倒计时、高级画廊控制、社交模拟系统、状态维持
+ * PAGE_X MVP SHOWDOWN - INTERACTIVE ENGINE v5.0 (GLOBAL EDITION)
+ * FEATURES: Countdown, Immersive Gallery, Social Simulation
  */
 
 "use strict";
 
 const H5Control = (function() {
 
-    // 状态配置
     const DATA = {
-        targetTime: new Date("2026-03-01T08:30:00+09:00").getTime(), // KST 时间
+        // Target: March 1st, 08:30 AM KST
+        targetTime: new Date("2026-03-01T08:30:00+09:00").getTime(),
         images: ['images/card-2.jpg', 'images/card-3.jpg'],
-        titles: ['STAGE 1-4: BATTLE PROCESS', 'RULES: SCORE & MVP SYSTEM'],
-        descs: ['详细了解从 Tap Tap Dance 到 Singing Round 的晋级规则', '积分累计制与最终胜负判定标准的官方说明'],
-        duration: 6000 // 6秒
+        titles: ['STAGE 1-4: BATTLE PROCESS', 'OFFICIAL SCORING & MVP RULES'],
+        descs: [
+            'Experience the intensity from Opening Tap Dance to the final Solo Song Performance.',
+            'Detailed breakdown of point accumulation and the Grand Final Best-of-3 system.'
+        ],
+        duration: 5500 // 5.5 seconds per slide
     };
 
     let state = {
@@ -25,7 +28,6 @@ const H5Control = (function() {
         collected: false
     };
 
-    // 缓存元素
     const el = {
         overlay: document.getElementById('gallery-ui'),
         vImg: document.getElementById('viewImg'),
@@ -40,16 +42,14 @@ const H5Control = (function() {
         }
     };
 
-    /**
-     * 核心功能：动态倒计时
-     */
+    /** Countdown Logic */
     const startCountdown = () => {
         const updateTimer = () => {
             const now = new Date().getTime();
             const diff = DATA.targetTime - now;
 
             if (diff <= 0) {
-                document.getElementById('timerMain').innerHTML = "SHOWCASE LIVE NOW";
+                document.getElementById('timerMain').innerHTML = "<div style='color:#FE2C55; font-weight:900; letter-spacing:2px;'>SHOWCASE LIVE NOW</div>";
                 return;
             }
 
@@ -68,9 +68,7 @@ const H5Control = (function() {
         updateTimer();
     };
 
-    /**
-     * 画廊引擎
-     */
+    /** Gallery Control System */
     const openGallery = (i) => {
         state.idx = 0;
         state.active = true;
@@ -83,7 +81,7 @@ const H5Control = (function() {
     const closeGallery = () => {
         state.active = false;
         el.overlay.classList.remove('active');
-        setTimeout(() => el.overlay.style.display = 'none', 450);
+        setTimeout(() => el.overlay.style.display = 'none', 500);
         document.body.style.overflow = 'auto';
         stopAll();
     };
@@ -96,7 +94,7 @@ const H5Control = (function() {
             el.vDesc.innerText = DATA.descs[state.idx];
             el.vImg.style.opacity = '1';
             syncProgress();
-        }, 200);
+        }, 250);
     };
 
     const syncProgress = () => {
@@ -129,9 +127,7 @@ const H5Control = (function() {
         render();
     };
 
-    /**
-     * 社交逻辑模拟
-     */
+    /** Engagement Actions */
     const like = () => {
         state.liked = !state.liked;
         const btn = document.getElementById('likeAction');
@@ -145,14 +141,14 @@ const H5Control = (function() {
         const btn = document.getElementById('collectAction');
         const label = document.getElementById('collectLabel');
         btn.classList.toggle('collected');
-        label.innerText = state.collected ? '已保存' : '收藏';
+        label.innerText = state.collected ? 'Saved' : 'Save';
     };
 
     const share = () => {
-        alert("✨ 链接已复制！快去为你的王（KING）招募支持者吧！");
+        alert("Link copied! Go share it with other fans and support your KING!");
     };
 
-    // 键盘监听
+    // Global Key Listeners
     document.addEventListener('keydown', (e) => {
         if (!state.active) return;
         if (e.key === 'ArrowRight') next();
@@ -160,14 +156,14 @@ const H5Control = (function() {
         if (e.key === 'Escape') closeGallery();
     });
 
-    // 初始化
+    // Initializer
     const init = () => {
         startCountdown();
         document.getElementById('mainFollowBtn').onclick = function() {
-            this.innerText = this.innerText.includes('关注') ? '✓ 已关注' : '关注 (Follow)';
-            this.style.background = this.innerText.includes('已关注') ? '#2C2C2E' : '#FE2C55';
+            this.innerText = this.innerText.includes('Follow') ? '✓ Following' : 'Follow';
+            this.style.background = this.innerText.includes('Following') ? '#2C2C2E' : '#FE2C55';
         };
-        console.log("PAGE_X H5 Professional Engine v4.0 Online.");
+        console.log("PAGE_X Global Interactive Engine Initialized.");
     };
 
     return { openGallery, closeGallery, next, prev, like, collect, share, init };
