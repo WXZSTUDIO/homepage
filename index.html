@@ -2,11 +2,13 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>PAGE_X Official Profile</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="dark-mode">
+
+    <div class="status-bar-spacer"></div>
 
     <header class="profile-header">
         <div class="profile-top">
@@ -22,14 +24,16 @@
                 </div>
             </div>
         </div>
+        
         <div class="profile-bio">
-            <p>📍 🇰🇷</p>
+            <p>📍 🇰🇷 South Korea</p>
             <p>@Eunwo🐹 @LEO🐺 @Nick🧛 @SUHO🐶</p>
-            <p class="live-time">LIVE Time | 09:00am(KST)</p>
+            <p class="live-time">Next LIVE | <span id="countdown">Calculating...</span></p>
         </div>
+
         <div class="action-buttons">
             <button class="btn-follow" id="followBtn">关注 (Follow)</button>
-            <button class="btn-msg">消息 (Message)</button>
+            <button class="btn-msg" onclick="alert('Message feature coming soon!')">消息 (Message)</button>
         </div>
     </header>
 
@@ -38,27 +42,24 @@
     <main class="content-area">
         <div class="card-wrapper">
             <div class="card-meta">
-                <h3>PAGE_X MVP SHOWDOWN [cite: 11]</h3>
-                <p>Make Your Bias the King | 1.MAR 08:30 (KST) [cite: 12, 13]</p>
+                <h3>PAGE_X MVP SHOWDOWN</h3>
+                <p>Make Your Bias the King | 1.MAR 08:30 (KST)</p>
             </div>
             <div class="main-stage" onclick="openLightbox()">
-                <img src="images/card-1.jpg" alt="MVP SHOWDOWN [cite: 11]">
-                <div class="hover-overlay">Click to view Stories</div>
+                <img src="images/card-1.jpg" alt="MVP SHOWDOWN Cover">
+                <div class="hover-overlay">VIEW EVENT DETAILS</div>
             </div>
         </div>
     </main>
 
     <div class="lightbox" id="lightbox">
-        <div class="lightbox-header">
-            <div class="progress-container">
-                <div class="progress-bar"><div class="progress-fill" id="fill0"></div></div>
-                <div class="progress-bar"><div class="progress-fill" id="fill1"></div></div>
-            </div>
+        <div class="lightbox-controls">
+            <span class="img-counter" id="imgCounter">1 / 2</span>
             <span class="close-btn" onclick="closeLightbox()">✕ Close</span>
         </div>
         
         <div class="lightbox-container">
-            <button class="nav-btn prev" onclick="manualChange(-1)">
+            <button class="nav-btn prev" id="prevBtn" onclick="changeImage(-1)">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
             </button>
 
@@ -66,104 +67,90 @@
                 <img id="lightbox-img" src="" alt="Detail View">
             </div>
 
-            <button class="nav-btn next" onclick="manualChange(1)">
+            <button class="nav-btn next" id="nextBtn" onclick="changeImage(1)">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
             </button>
         </div>
     </div>
 
     <script>
+        // 1. 倒计时功能
+        function updateCountdown() {
+            const targetDate = new Date('2026-03-01T08:30:00+09:00'); // KST
+            const now = new Date();
+            const diff = targetDate - now;
+
+            if (diff <= 0) {
+                document.getElementById('countdown').innerText = "LIVE NOW!";
+                return;
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const mins = Math.floor((diff / (1000 * 60)) % 60);
+            document.getElementById('countdown').innerText = `${days}d ${hours}h ${mins}m left`;
+        }
+        setInterval(updateCountdown, 60000);
+        updateCountdown();
+
+        // 2. 弹窗控制逻辑
         const subImages = ['images/card-2.jpg', 'images/card-3.jpg'];
         let currentIndex = 0;
-        let storyTimer;
-        const duration = 5000; // 5秒自动切换
 
-        // --- 功能 4: 自动播放与进度条逻辑 ---
-        function startStory() {
-            resetProgress();
-            updateLightbox();
-            animateProgress();
-            storyTimer = setInterval(() => {
-                if (currentIndex < subImages.length - 1) {
-                    currentIndex++;
-                    updateLightbox();
-                    animateProgress();
-                } else {
-                    closeLightbox();
-                }
-            }, duration);
-        }
-
-        function animateProgress() {
-            resetProgress();
-            const activeFill = document.getElementById(`fill${currentIndex}`);
-            // 先完成之前的进度
-            for(let i=0; i<currentIndex; i++) document.getElementById(`fill${i}`).style.width = '100%';
-            // 当前进度条动画
-            setTimeout(() => activeFill.style.width = '100%', 50);
-        }
-
-        function resetProgress() {
-            document.querySelectorAll('.progress-fill').forEach(el => {
-                el.style.transition = 'none';
-                el.style.width = '0';
-                setTimeout(() => el.style.transition = `width ${duration}ms linear`, 10);
-            });
-        }
-
-        // --- 功能 2: 键盘交互逻辑 ---
-        document.addEventListener('keydown', (e) => {
-            const lb = document.getElementById('lightbox');
-            if (!lb.classList.contains('active')) return;
-            if (e.key === "ArrowLeft") manualChange(-1);
-            if (e.key === "ArrowRight") manualChange(1);
-            if (e.key === "Escape") closeLightbox();
-        });
-
-        // --- 功能 3: 社交互动模拟 ---
-        const followBtn = document.getElementById('followBtn');
-        followBtn.onclick = function() {
-            const isFollowing = this.innerText.includes('已关注');
-            this.innerText = isFollowing ? '关注 (Follow)' : '✓ 已关注';
-            this.style.background = isFollowing ? '#FE2C55' : '#2C2C2E';
-            this.style.color = 'white';
-        };
-
-        // --- 基础弹窗控制 ---
         function openLightbox() {
             currentIndex = 0;
+            updateLightbox();
             const lb = document.getElementById('lightbox');
             lb.style.display = 'flex';
             setTimeout(() => lb.classList.add('active'), 10);
             document.body.style.overflow = 'hidden';
-            startStory();
         }
 
         function closeLightbox() {
-            clearInterval(storyTimer);
             const lb = document.getElementById('lightbox');
             lb.classList.remove('active');
             setTimeout(() => lb.style.display = 'none', 400);
             document.body.style.overflow = 'auto';
         }
 
-        function manualChange(step) {
-            clearInterval(storyTimer);
+        function changeImage(step) {
             currentIndex = (currentIndex + step + subImages.length) % subImages.length;
-            updateLightbox();
-            // 手动切换后停止自动播放，或者重新开始（此处选择重新开始当前图片的动画）
-            resetProgress();
-            for(let i=0; i<currentIndex; i++) document.getElementById(`fill${i}`).style.width = '100%';
+            const img = document.getElementById('lightbox-img');
+            img.style.opacity = '0';
+            img.style.transform = 'scale(0.98)';
+            setTimeout(() => {
+                updateLightbox();
+                img.style.opacity = '1';
+                img.style.transform = 'scale(1)';
+            }, 150);
         }
 
         function updateLightbox() {
-            const img = document.getElementById('lightbox-img');
-            img.style.opacity = '0';
-            setTimeout(() => {
-                img.src = subImages[currentIndex];
-                img.style.opacity = '1';
-            }, 150);
+            document.getElementById('lightbox-img').src = subImages[currentIndex];
+            document.getElementById('imgCounter').innerText = `${currentIndex + 1} / ${subImages.length}`;
         }
+
+        // 3. 键盘控制交互
+        document.addEventListener('keydown', (e) => {
+            if (!document.getElementById('lightbox').classList.contains('active')) return;
+            if (e.key === "ArrowLeft") changeImage(-1);
+            if (e.key === "ArrowRight") changeImage(1);
+            if (e.key === "Escape") closeLightbox();
+        });
+
+        // 4. 社交互动模拟
+        const followBtn = document.getElementById('followBtn');
+        followBtn.onclick = function() {
+            const isFollowing = this.innerText.includes('已关注');
+            this.innerText = isFollowing ? '关注 (Follow)' : '✓ 已关注 (Following)';
+            this.style.background = isFollowing ? '#FE2C55' : '#2C2C2E';
+            this.style.color = isFollowing ? 'white' : '#8E8E93';
+        };
+
+        // 点击背景关闭弹窗
+        document.getElementById('lightbox').onclick = function(e) {
+            if (e.target.id === 'lightbox' || e.target.className === 'lightbox-container') closeLightbox();
+        };
     </script>
 </body>
 </html>
