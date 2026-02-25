@@ -1,205 +1,87 @@
 :root {
     --apple-blue: #0A84FF;
     --tiktok-red: #FE2C55;
-    --bg-dark: #121212;
+    --bg-dark: #000000;
     --card-dark: #1C1C1E;
-    --text-white: #FFFFFF;
-    --text-gray: #8E8E93;
     --apple-easing: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 body.dark-mode {
     margin: 0;
-    padding-bottom: 50px;
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
     background-color: var(--bg-dark);
-    color: var(--text-white);
+    color: white;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    -webkit-font-smoothing: antialiased;
 }
 
 /* 个人资料区 */
-.profile-header {
-    padding: 30px 16px 20px;
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-.profile-top {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    margin-bottom: 20px;
-}
-
+.profile-header { padding: 40px 20px 20px; max-width: 600px; margin: 0 auto; }
+.profile-top { display: flex; align-items: center; gap: 24px; margin-bottom: 20px; }
 .avatar-wrapper {
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
-    padding: 2.5px;
-    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    width: 88px; height: 88px; border-radius: 50%; padding: 3px;
+    background: linear-gradient(45deg, #f09433, #dc2743, #bc1888);
 }
-
-.avatar {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    border: 2px solid var(--bg-dark);
-    object-fit: cover;
-}
-
-.username { font-size: 1.3rem; margin: 0; }
-.group-name { font-size: 0.95rem; color: var(--text-gray); font-weight: normal; margin-left: 5px; }
-
-.stats {
-    display: flex;
-    gap: 20px;
-    margin-top: 10px;
-    font-size: 0.9rem;
-}
-
-.profile-bio { font-size: 0.95rem; line-height: 1.6; margin-bottom: 20px; }
-.live-time { font-weight: 600; color: var(--apple-blue); }
+.avatar { width: 100%; height: 100%; border-radius: 50%; border: 2px solid black; object-fit: cover; }
+.username { font-size: 1.4rem; margin: 0; font-weight: 700; }
+.group-name { color: #8E8E93; font-weight: 400; font-size: 0.9rem; margin-top: 4px; }
+.stats { display: flex; gap: 20px; margin-top: 12px; font-size: 0.9rem; color: #EBEBF5; }
+.profile-bio { font-size: 0.95rem; line-height: 1.5; color: #F5F5F7; margin-bottom: 20px; }
+.live-time { color: var(--apple-blue); font-weight: 500; }
 
 .action-buttons { display: flex; gap: 10px; }
-.btn-follow {
-    flex: 1;
-    background: var(--tiktok-red);
-    color: white;
-    border: none;
-    padding: 12px;
-    border-radius: 10px;
-    font-weight: 600;
-    cursor: pointer;
+.btn-follow, .btn-msg {
+    flex: 1; border: none; padding: 12px; border-radius: 10px; font-weight: 600; cursor: pointer; transition: 0.2s;
 }
+.btn-follow { background: var(--tiktok-red); color: white; }
+.btn-msg { background: #2C2C2E; color: white; }
 
-.btn-msg {
-    flex: 1;
-    background: #2C2C2E;
-    color: white;
-    border: none;
-    padding: 12px;
-    border-radius: 10px;
-    font-weight: 600;
-    cursor: pointer;
-}
+.divider { border: 0; border-top: 1px solid #2C2C2E; margin: 20px 0; }
 
-.divider { border: 0; border-top: 1px solid #2C2C2E; margin: 15px 0; }
+/* 卡片 */
+.content-area { padding: 0 16px; max-width: 600px; margin: 0 auto; }
+.card-wrapper { background: var(--card-dark); border-radius: 20px; overflow: hidden; }
+.card-meta { padding: 20px; }
+.card-meta h3 { margin: 0; font-size: 1.1rem; }
+.card-meta p { color: #8E8E93; font-size: 0.85rem; margin-top: 6px; }
+.main-stage { width: 100%; aspect-ratio: 3/2; background: #111; cursor: pointer; position: relative; overflow: hidden; }
+.main-stage img { width: 100%; height: 100%; object-fit: cover; transition: 0.8s var(--apple-easing); }
+.main-stage:hover img { transform: scale(1.05); }
 
-/* 内容区域 */
-.content-area { padding: 16px; max-width: 600px; margin: 0 auto; }
-.card-wrapper {
-    border-radius: 20px;
-    background: var(--card-dark);
-    overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-}
-
-.card-meta { padding: 18px; }
-.card-meta h3 { margin: 0; font-size: 1.15rem; }
-.card-meta p { color: var(--text-gray); font-size: 0.85rem; margin-top: 6px; }
-
-.main-stage {
-    width: 100%;
-    aspect-ratio: 3/2;
-    background: #000;
-    cursor: pointer;
-    overflow: hidden;
-}
-
-.main-stage img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.8s var(--apple-easing);
-}
-
-.main-stage:hover img { transform: scale(1.06); }
-
-/* 全新弹窗层设计 */
+/* 弹窗及进度条 */
 .lightbox {
-    display: none;
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0,0,0,0.95);
-    backdrop-filter: blur(20px);
-    z-index: 3000;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    transition: opacity 0.4s var(--apple-easing);
+    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.98); backdrop-filter: blur(25px); z-index: 3000;
+    flex-direction: column; opacity: 0; transition: opacity 0.4s var(--apple-easing);
 }
-
 .lightbox.active { opacity: 1; display: flex; }
 
+.lightbox-header {
+    width: 100%; padding: 20px 0; display: flex; flex-direction: column; align-items: center; gap: 15px;
+}
+.progress-container {
+    display: flex; gap: 6px; width: 80%; max-width: 600px;
+}
+.progress-bar {
+    height: 3px; background: rgba(255,255,255,0.2); flex: 1; border-radius: 2px; overflow: hidden;
+}
+.progress-fill {
+    height: 100%; background: white; width: 0;
+}
+
 .lightbox-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    position: relative;
+    flex: 1; display: flex; align-items: center; justify-content: center; width: 100%; position: relative;
 }
+.img-viewport { width: 80%; height: 80%; display: flex; justify-content: center; align-items: center; }
+.img-viewport img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 12px; transition: opacity 0.3s; }
 
-/* 图片比例控制：不裁剪，占屏幕80%左右 */
-.img-viewport {
-    width: 80%;
-    height: 80%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.img-viewport img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain; /* 保证不被裁切 */
-    border-radius: 8px;
-    box-shadow: 0 0 40px rgba(0,0,0,0.5);
-    transition: opacity 0.2s ease;
-}
-
-/* 正圆导航按钮 */
 .nav-btn {
-    width: 56px;
-    height: 56px;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 50%;
-    color: white;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: 0.3s;
-    margin: 0 20px;
-    z-index: 3100;
+    width: 50px; height: 50px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.1); color: white; cursor: pointer; z-index: 3100;
 }
+.close-btn { color: white; cursor: pointer; font-size: 0.9rem; background: rgba(255,255,255,0.1); padding: 8px 16px; border-radius: 20px; }
 
-.nav-btn:hover { background: rgba(255, 255, 255, 0.25); transform: scale(1.1); }
-
-.close-btn {
-    position: absolute;
-    top: 40px;
-    right: 40px;
-    color: white;
-    background: rgba(255,255,255,0.1);
-    padding: 10px 20px;
-    border-radius: 30px;
-    cursor: pointer;
-    z-index: 3200;
-    font-size: 0.9rem;
-    font-weight: 500;
-}
-
-/* 响应式适配 */
 @media (max-width: 768px) {
-    .nav-btn {
-        position: absolute;
-        bottom: 40px;
-        margin: 0;
-    }
-    .prev { left: calc(50% - 60px); }
-    .next { right: calc(50% - 60px); }
+    .nav-btn { position: absolute; bottom: 40px; }
+    .prev { left: 20%; } .next { right: 20%; }
     .img-viewport { width: 95%; height: 70%; }
-    .close-btn { top: 20px; right: 20px; }
 }
