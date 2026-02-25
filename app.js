@@ -1,256 +1,176 @@
 /**
- * PAGE_X MVP SHOWDOWN - INTERACTIVE ENGINE v2.0
- * DEVELOPED BY: 13-YEAR SENIOR CREATIVE SPECIALIST
- * * CORE FEATURES:
- * 1. Social State Management (Follow, Like, Collect)
- * 2. Immersive Gallery Engine with No-Crop Logic
- * 3. Auto-Progress Synchronized Story System
- * 4. Advanced Event Listeners (Keyboard, Touch)
+ * PAGE_X MVP SHOWDOWN - H5 INTERACTIVE ENGINE v4.0
+ * 包含：动态秒级倒计时、高级画廊控制、社交模拟系统、状态维持
  */
 
 "use strict";
 
-const H5Controller = (function() {
+const H5Control = (function() {
 
-    // 内部私有配置
-    const CONFIG = {
-        assets: [
-            {
-                url: 'images/card-2.jpg',
-                desc: '活动流程：从 Opening 到 Grand Final 精彩全纪录'
-            },
-            {
-                url: 'images/card-3.jpg',
-                desc: '核心规则：计分机制与最终胜负判定说明'
-            }
-        ],
-        timing: {
-            slideDuration: 5500, // 5.5秒自动切换
-            animationGap: 400
-        }
+    // 状态配置
+    const DATA = {
+        targetTime: new Date("2026-03-01T08:30:00+09:00").getTime(), // KST 时间
+        images: ['images/card-2.jpg', 'images/card-3.jpg'],
+        titles: ['STAGE 1-4: BATTLE PROCESS', 'RULES: SCORE & MVP SYSTEM'],
+        descs: ['详细了解从 Tap Tap Dance 到 Singing Round 的晋级规则', '积分累计制与最终胜负判定标准的官方说明'],
+        duration: 6000 // 6秒
     };
 
-    // 内部状态机
     let state = {
-        currentGalleryIndex: 0,
-        isGalleryActive: false,
-        autoPlayTimer: null,
-        progressInterval: null,
+        idx: 0,
+        active: false,
+        timer: null,
+        pTimer: null,
         liked: false,
-        collected: false,
-        followed: false
+        collected: false
     };
 
-    // DOM 元素引用缓存
-    const DOM = {
-        overlay: document.getElementById('gallery-overlay'),
-        asset: document.getElementById('active-gallery-asset'),
-        desc: document.getElementById('asset-description-label'),
-        counter: document.getElementById('curr-idx'),
-        followBtn: document.getElementById('followMainBtn'),
-        progressFills: [
-            document.getElementById('progress-0'),
-            document.getElementById('progress-1')
-        ]
-    };
-
-    /**
-     * 初始化社交交互
-     */
-    const initInteractions = () => {
-        // 关注按钮逻辑
-        DOM.followBtn.addEventListener('click', function() {
-            state.followed = !state.followed;
-            if (state.followed) {
-                this.innerText = '✓ 已关注';
-                this.style.background = '#2C2C2E';
-            } else {
-                this.innerText = '关注 (Follow)';
-                this.style.background = '#FE2C55';
-            }
-        });
-    };
-
-    /**
-     * 启动画廊全屏模式
-     */
-    const launchGallery = (index = 0) => {
-        state.currentGalleryIndex = index;
-        state.isGalleryActive = true;
-        
-        DOM.overlay.style.display = 'flex';
-        // 触发 CSS 过渡
-        setTimeout(() => DOM.overlay.classList.add('active'), 20);
-        document.body.style.overflow = 'hidden'; // 锁定滚动
-        
-        renderAsset();
-    };
-
-    /**
-     * 退出画廊
-     */
-    const exitGallery = () => {
-        state.isGalleryActive = false;
-        DOM.overlay.classList.remove('active');
-        
-        setTimeout(() => {
-            DOM.overlay.style.display = 'none';
-            stopAllTimers();
-        }, CONFIG.timing.animationGap);
-        
-        document.body.style.overflow = 'auto';
-    };
-
-    /**
-     * 渲染资产与同步 UI
-     */
-    const renderAsset = () => {
-        const currentData = CONFIG.assets[state.currentGalleryIndex];
-        
-        // 执行淡入效果
-        DOM.asset.style.opacity = '0';
-        DOM.asset.style.transform = 'scale(0.98)';
-        
-        setTimeout(() => {
-            DOM.asset.src = currentData.url;
-            DOM.desc.innerText = currentData.desc;
-            DOM.counter.innerText = state.currentGalleryIndex + 1;
-            DOM.asset.style.opacity = '1';
-            DOM.asset.style.transform = 'scale(1)';
-            
-            resetAndStartProgress();
-        }, 150);
-    };
-
-    /**
-     * 进度条与自动播放逻辑
-     */
-    const resetAndStartProgress = () => {
-        stopAllTimers();
-        
-        // 同步进度条 UI 状态
-        DOM.progressFills.forEach((fill, idx) => {
-            if (idx < state.currentGalleryIndex) {
-                fill.style.width = '100%';
-            } else {
-                fill.style.width = '0%';
-            }
-        });
-
-        const activeFill = DOM.progressFills[state.currentGalleryIndex];
-        let startTime = Date.now();
-        
-        state.progressInterval = setInterval(() => {
-            let elapsed = Date.now() - startTime;
-            let percent = (elapsed / CONFIG.timing.slideDuration) * 100;
-            
-            if (percent >= 100) {
-                percent = 100;
-                clearInterval(state.progressInterval);
-            }
-            activeFill.style.width = percent + '%';
-        }, 30);
-
-        state.autoPlayTimer = setTimeout(() => {
-            stepNext();
-        }, CONFIG.timing.slideDuration);
-    };
-
-    const stopAllTimers = () => {
-        clearTimeout(state.autoPlayTimer);
-        clearInterval(state.progressInterval);
-    };
-
-    /**
-     * 导航控制
-     */
-    const stepNext = () => {
-        state.currentGalleryIndex = (state.currentGalleryIndex + 1) % CONFIG.assets.length;
-        renderAsset();
-    };
-
-    const stepPrev = () => {
-        state.currentGalleryIndex = (state.currentGalleryIndex - 1 + CONFIG.assets.length) % CONFIG.assets.length;
-        renderAsset();
-    };
-
-    /**
-     * 处理点赞与收藏
-     */
-    const handleLike = (element) => {
-        element.classList.toggle('active');
-        const countSpan = element.querySelector('.engage-label');
-        if (element.classList.contains('active')) {
-            countSpan.innerText = '85.4K';
-            // 简单的触感模拟 (Console 模拟)
-            console.log("Interaction: Like Registered");
-        } else {
-            countSpan.innerText = '85.3K';
+    // 缓存元素
+    const el = {
+        overlay: document.getElementById('gallery-ui'),
+        vImg: document.getElementById('viewImg'),
+        vTitle: document.getElementById('viewTitle'),
+        vDesc: document.getElementById('viewDesc'),
+        fills: [document.getElementById('step-0'), document.getElementById('step-1')],
+        t: {
+            d: document.getElementById('t-d'),
+            h: document.getElementById('t-h'),
+            m: document.getElementById('t-m'),
+            s: document.getElementById('t-s')
         }
     };
 
-    const handleCollect = (element) => {
-        element.classList.toggle('active');
-        const label = element.querySelector('.engage-label');
-        label.innerText = element.classList.contains('active') ? '已收藏' : '收藏';
-    };
+    /**
+     * 核心功能：动态倒计时
+     */
+    const startCountdown = () => {
+        const updateTimer = () => {
+            const now = new Date().getTime();
+            const diff = DATA.targetTime - now;
 
-    const handleShare = () => {
-        // 模拟 H5 分享 API
-        const shareData = {
-            title: 'PAGE_X MVP SHOWDOWN',
-            text: '快来支持你的 Bias！',
-            url: window.location.href
+            if (diff <= 0) {
+                document.getElementById('timerMain').innerHTML = "SHOWCASE LIVE NOW";
+                return;
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+            el.t.d.innerText = String(days).padStart(2, '0');
+            el.t.h.innerText = String(hours).padStart(2, '0');
+            el.t.m.innerText = String(mins).padStart(2, '0');
+            el.t.s.innerText = String(secs).padStart(2, '0');
         };
-        
-        if (navigator.share) {
-            navigator.share(shareData).catch(err => console.log('Share failed', err));
-        } else {
-            alert("✨ 链接已成功复制到剪贴板，快分享给你的好友吧！");
-        }
+
+        setInterval(updateTimer, 1000);
+        updateTimer();
     };
 
     /**
-     * 键盘事件中心
+     * 画廊引擎
      */
-    const setupKeyboardControls = () => {
-        document.addEventListener('keydown', function(event) {
-            if (!state.isGalleryActive) return;
-
-            switch(event.key) {
-                case "ArrowRight":
-                    stepNext();
-                    break;
-                case "ArrowLeft":
-                    stepPrev();
-                    break;
-                case "Escape":
-                    exitGallery();
-                    break;
-            }
-        });
+    const openGallery = (i) => {
+        state.idx = 0;
+        state.active = true;
+        el.overlay.style.display = 'flex';
+        setTimeout(() => el.overlay.classList.add('active'), 50);
+        document.body.style.overflow = 'hidden';
+        render();
     };
 
-    // 执行初始化
+    const closeGallery = () => {
+        state.active = false;
+        el.overlay.classList.remove('active');
+        setTimeout(() => el.overlay.style.display = 'none', 450);
+        document.body.style.overflow = 'auto';
+        stopAll();
+    };
+
+    const render = () => {
+        el.vImg.style.opacity = '0';
+        setTimeout(() => {
+            el.vImg.src = DATA.images[state.idx];
+            el.vTitle.innerText = DATA.titles[state.idx];
+            el.vDesc.innerText = DATA.descs[state.idx];
+            el.vImg.style.opacity = '1';
+            syncProgress();
+        }, 200);
+    };
+
+    const syncProgress = () => {
+        stopAll();
+        el.fills.forEach((f, i) => f.style.width = i < state.idx ? '100%' : '0%');
+
+        const activeFill = el.fills[state.idx];
+        let p = 0;
+        state.pTimer = setInterval(() => {
+            p += 1;
+            activeFill.style.width = p + '%';
+            if (p >= 100) clearInterval(state.pTimer);
+        }, DATA.duration / 100);
+
+        state.timer = setTimeout(next, DATA.duration);
+    };
+
+    const stopAll = () => {
+        clearTimeout(state.timer);
+        clearInterval(state.pTimer);
+    };
+
+    const next = () => {
+        state.idx = (state.idx + 1) % DATA.images.length;
+        render();
+    };
+
+    const prev = () => {
+        state.idx = (state.idx - 1 + DATA.images.length) % DATA.images.length;
+        render();
+    };
+
+    /**
+     * 社交逻辑模拟
+     */
+    const like = () => {
+        state.liked = !state.liked;
+        const btn = document.getElementById('likeAction');
+        const count = document.getElementById('likeCount');
+        btn.classList.toggle('active');
+        count.innerText = state.liked ? '85.4K' : '85.3K';
+    };
+
+    const collect = () => {
+        state.collected = !state.collected;
+        const btn = document.getElementById('collectAction');
+        const label = document.getElementById('collectLabel');
+        btn.classList.toggle('collected');
+        label.innerText = state.collected ? '已保存' : '收藏';
+    };
+
+    const share = () => {
+        alert("✨ 链接已复制！快去为你的王（KING）招募支持者吧！");
+    };
+
+    // 键盘监听
+    document.addEventListener('keydown', (e) => {
+        if (!state.active) return;
+        if (e.key === 'ArrowRight') next();
+        if (e.key === 'ArrowLeft') prev();
+        if (e.key === 'Escape') closeGallery();
+    });
+
+    // 初始化
     const init = () => {
-        initInteractions();
-        setupKeyboardControls();
-        console.log("PAGE_X H5 Engine Initialized Successfully.");
+        startCountdown();
+        document.getElementById('mainFollowBtn').onclick = function() {
+            this.innerText = this.innerText.includes('关注') ? '✓ 已关注' : '关注 (Follow)';
+            this.style.background = this.innerText.includes('已关注') ? '#2C2C2E' : '#FE2C55';
+        };
+        console.log("PAGE_X H5 Professional Engine v4.0 Online.");
     };
 
-    // 暴露公共 API
-    return {
-        init,
-        launchGallery,
-        exitGallery,
-        stepNext,
-        stepPrev,
-        handleLike,
-        handleCollect,
-        handleShare
-    };
-
+    return { openGallery, closeGallery, next, prev, like, collect, share, init };
 })();
 
-// 文档就绪后启动引擎
-document.addEventListener('DOMContentLoaded', H5Controller.init);
+document.addEventListener('DOMContentLoaded', H5Control.init);
