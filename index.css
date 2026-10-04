@@ -1,0 +1,107 @@
+@layer base {
+  :root {
+    --cream: #efeee9;
+  }
+  
+  html, body {
+    margin: 0;
+    padding: 0;
+    background-color: #000000;
+    color: #efeee9;
+    font-family: "Helvetica Neue ME", Helvetica, Arial, sans-serif;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Keyframes */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes riseIn {
+  from {
+    opacity: 0;
+    transform: translateY(4vh) scale(1.03);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes lineGrow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes marqueeScroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Animation Classes with exact timing & easing */
+.anim-fade-in {
+  animation: fadeIn 1.2s ease-out both;
+}
+
+.anim-rise-in {
+  animation: riseIn 1.4s cubic-bezier(0.22, 1, 0.36, 1) 300ms both;
+}
+
+.anim-fade-up {
+  animation: fadeUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.anim-line {
+  transform-origin: left;
+  animation: lineGrow 1.1s cubic-bezier(0.76, 0, 0.24, 1) 1200ms both;
+}
+
+.marquee {
+  animation: marqueeScroll 30s linear infinite;
+}
+
+/* Accessibility: Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .anim-fade-in,
+  .anim-rise-in,
+  .anim-fade-up,
+  .anim-line {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .marquee {
+    animation: none !important;
+    transform: translateX(0) !important;
+  }
+}

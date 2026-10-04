@@ -1,129 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PAGE_X MVP SHOWDOWN | Official Interactive</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body class="pro-h5-dark">
-
-    <div id="h5-root">
-        <nav class="pro-nav">
-            <div class="nav-content">
-                <div class="nav-icon-box">〈</div>
-                <div class="nav-brand">PAGE_X OFFICIAL</div>
-                <div class="nav-icon-box">⋯</div>
-            </div>
-        </nav>
-
-        <section class="pro-profile">
-            <div class="profile-top-deck">
-                <div class="px-avatar-node">
-                    <span class="px-txt">PX</span>
-                    <div class="px-ring"></div>
-                </div>
-                <div class="px-info-node">
-                    <div class="px-name-row">
-                        <h1>podo.page_x</h1>
-                        <span class="v-mark">✓</span>
-                    </div>
-                    <p class="px-tag">@page_x_official</p>
-                    <div class="px-stats">
-                        <div class="s-cell"><strong>24.7K</strong> Followers</div>
-                        <div class="s-cell"><strong>85.3K</strong> Likes</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="px-bio-node">
-                <div class="px-tags"><span>#KPOP</span> <span>#MVP</span> <span>#VOTE</span></div>
-                <p>📍 Seoul, Korea | Global Showcase Interface<br>
-                Support your bias: @Eunwo🐹 @LEO🐺 @Nick🧛 @SUHO🐶</p>
-            </div>
-
-            <div class="px-actions">
-                <button id="mainFollowBtn" class="px-btn-red">Follow</button>
-                <button class="px-btn-gray">Message</button>
-            </div>
-        </section>
-
-        <div class="ui-standard-container">
-            <section class="countdown-hero">
-                <div class="timer-title">LIVE SHOWCASE COUNTDOWN</div>
-                <div class="timer-main" id="timerMain">
-                    <div class="t-block"><span id="t-d">00</span><label>DAYS</label></div>
-                    <div class="t-sep">:</div>
-                    <div class="t-block"><span id="t-h">00</span><label>HOURS</label></div>
-                    <div class="t-sep">:</div>
-                    <div class="t-block"><span id="t-m">00</span><label>MINS</label></div>
-                    <div class="t-sep">:</div>
-                    <div class="t-block"><span id="t-s">00</span><label>SECS</label></div>
-                </div>
-                <div class="timer-footer">1.MAR 08:30 (KST)</div>
-            </section>
-
-            <main class="content-feed">
-                <article class="feed-node">
-                    <div class="node-meta">
-                        <span class="node-badge">MVP SHOWDOWN</span>
-                        <span class="node-time">Latest Update</span>
-                    </div>
-                    
-                    <div class="media-stage" onclick="H5Control.openGallery(0)">
-                        <div class="media-inner">
-                            <img src="images/card-1.jpg" alt="Cover" class="img-fluid">
-                            <div class="media-label">Tap to View Rules</div>
-                        </div>
-                    </div>
-
-                    <div class="toolbar">
-                        <div class="tool-left">
-                            <div class="tool-btn" id="likeAction" onclick="H5Control.like()">
-                                <span class="icon-h">❤</span> <span id="likeCount">85.3K</span>
-                            </div>
-                            <div class="tool-btn">
-                                <span class="icon-h">💬</span> 1,240
-                            </div>
-                            <div class="tool-btn" id="collectAction" onclick="H5Control.collect()">
-                                <span class="icon-h">★</span> <span id="collectLabel">Save</span>
-                            </div>
-                        </div>
-                        <div class="tool-right" onclick="H5Control.share()">
-                            <span class="icon-h">➹</span>
-                        </div>
-                    </div>
-
-                    <div class="caption-node">
-                        <p><strong>podo.page_x</strong> Who will be the MVP KING? Check the details on the next slides! #PAGE_X #KPOP #MVP</p>
-                    </div>
-                </article>
-            </main>
-        </div>
-    </div>
-
-    <div id="gallery-ui" class="gallery-mask">
-        <div class="gallery-steps">
-            <div class="step-track"><div id="step-0" class="step-fill"></div></div>
-            <div class="step-track"><div id="step-1" class="step-fill"></div></div>
-        </div>
-
-        <button class="gallery-exit" onclick="H5Control.closeGallery()">✕ CLOSE</button>
-
-        <div class="gallery-view">
-            <div class="nav-trigger prev" onclick="H5Control.prev()">‹</div>
-            <div class="img-container">
-                <img id="viewImg" src="" alt="Rules Detail">
-            </div>
-            <div class="nav-trigger next" onclick="H5Control.next()">›</div>
-        </div>
-
-        <div class="gallery-caption">
-            <h4 id="viewTitle">PAGE_X MVP RULEBOOK</h4>
-            <p id="viewDesc">Syncing latest event data...</p>
-        </div>
-    </div>
-
-    <script src="app.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Marcus — Bennet</title>
+    <!-- Exact WebFont: Helvetica Neue ME -->
+    <link rel="stylesheet" href="https://db.onlinewebfonts.com/c/95cecf452d3208890088a5b4c19c7ecf?family=Helvetica+Neue+ME" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              cream: '#efeee9',
+            },
+            fontFamily: {
+              hn: ['"Helvetica Neue ME"', 'Helvetica', 'Arial', 'sans-serif'],
+              sans: ['"Helvetica Neue ME"', 'Helvetica', 'Arial', 'sans-serif'],
+              serif: ['"Helvetica Neue ME"', 'Helvetica', 'Arial', 'sans-serif'],
+            }
+          }
+        }
+      }
+    </script>
+    <link rel="stylesheet" href="/index.css" />
+  </head>
+  <body class="bg-black text-cream antialiased selection:bg-cream selection:text-black">
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
 </html>
