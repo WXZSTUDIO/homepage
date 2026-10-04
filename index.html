@@ -1,23 +1,66 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>Marcus — Bennet</title>
-    <!-- Exact WebFont: Helvetica Neue ME -->
-    <link rel="stylesheet" href="https://db.onlinewebfonts.com/c/95cecf452d3208890088a5b4c19c7ecf?family=Helvetica+Neue+ME" type="text/css" />
+    <title>CHANBONG JUNG | 정찬봉 · Visual & AI Design Director</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b0b0d'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' fill='%23f5f5f7' font-family='-apple-system, BlinkMacSystemFont, sans-serif' font-weight='600' font-size='32'%3EC%3C/text%3E%3C/svg%3E" />
+    
+    <!-- Apple Web Typography Equivalent (Inter + JetBrains Mono) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
         theme: {
           extend: {
             colors: {
-              cream: '#efeee9',
+              background: '#000000',
+              surface: '#0d0d0f',
+              'surface-card': '#121214',
+              'surface-elevated': '#18181b',
+              accent: '#FFC900',
+              border: 'rgba(255, 255, 255, 0.08)',
+              'border-subtle': 'rgba(255, 255, 255, 0.04)',
+              'border-strong': 'rgba(255, 255, 255, 0.16)',
+              secondary: '#86868b',
+              muted: '#6e6e73',
             },
             fontFamily: {
-              hn: ['"Helvetica Neue ME"', 'Helvetica', 'Arial', 'sans-serif'],
-              sans: ['"Helvetica Neue ME"', 'Helvetica', 'Arial', 'sans-serif'],
-              serif: ['"Helvetica Neue ME"', 'Helvetica', 'Arial', 'sans-serif'],
+              display: [
+                '-apple-system',
+                'BlinkMacSystemFont',
+                '"SF Pro Display"',
+                '"SF Pro"',
+                '"Inter"',
+                '"PingFang SC"',
+                '"Hiragino Sans GB"',
+                '"Apple SD Gothic Neo"',
+                '"Helvetica Neue"',
+                'Helvetica',
+                'Arial',
+                'sans-serif'
+              ],
+              sans: [
+                '-apple-system',
+                'BlinkMacSystemFont',
+                '"SF Pro Text"',
+                '"SF Pro"',
+                '"Inter"',
+                '"PingFang SC"',
+                '"Hiragino Sans GB"',
+                '"Apple SD Gothic Neo"',
+                '"Helvetica Neue"',
+                'Helvetica',
+                'Arial',
+                'sans-serif'
+              ],
+              mono: ['"SF Mono"', '"JetBrains Mono"', 'Menlo', 'Monaco', 'monospace'],
+            },
+            maxWidth: {
+              '1700': '1700px',
             }
           }
         }
@@ -25,7 +68,7 @@
     </script>
     <link rel="stylesheet" href="/index.css" />
   </head>
-  <body class="bg-black text-cream antialiased selection:bg-cream selection:text-black">
+  <body class="bg-black text-[#f5f5f7] antialiased selection:bg-accent selection:text-black min-h-screen">
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
   </body>
