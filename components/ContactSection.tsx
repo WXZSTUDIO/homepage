@@ -1,11 +1,17 @@
-import React, { useState } from 'react';
-import { PERSONAL_INFO } from '../data';
+import React, { useState, useEffect, useRef } from 'react';
+import { useLanguage } from '../LanguageContext';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { 
   Mail, Copy, Check, ArrowUpRight, Send, 
-  MessageSquare, Sparkles 
+  MessageSquare
 } from 'lucide-react';
 
+gsap.registerPlugin(ScrollTrigger);
+
 const ContactSection: React.FC = () => {
+  const { ui, language } = useLanguage();
+  const sectionRef = useRef<HTMLElement>(null);
   const [copiedEmail, setCopiedEmail] = useState(false);
   const [copiedWeChat, setCopiedWeChat] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
@@ -17,14 +23,55 @@ const ContactSection: React.FC = () => {
     message: ''
   });
 
+  // GSAP ScrollTrigger Sequence
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // 1. Mask Headline Reveal
+      gsap.fromTo(
+        '.contact-title-line',
+        { yPercent: 115, skewY: 3, opacity: 0 },
+        {
+          yPercent: 0,
+          skewY: 0,
+          opacity: 1,
+          duration: 1.25,
+          ease: 'expo.out',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 75%',
+          }
+        }
+      );
+
+      // 2. Cards Stagger Entry
+      gsap.fromTo(
+        '.contact-stagger-card',
+        { y: 55, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1.0,
+          ease: 'power3.out',
+          stagger: 0.12,
+          scrollTrigger: {
+            trigger: '.contact-cards-trigger',
+            start: 'top 80%',
+          }
+        }
+      );
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, [language]);
+
   const handleCopyEmail = () => {
-    navigator.clipboard.writeText(PERSONAL_INFO.email);
+    navigator.clipboard.writeText('ro3eandcat@gmail.com');
     setCopiedEmail(true);
     setTimeout(() => setCopiedEmail(false), 2000);
   };
 
   const handleCopyWeChat = () => {
-    navigator.clipboard.writeText(PERSONAL_INFO.wechat);
+    navigator.clipboard.writeText('icf304');
     setCopiedWeChat(true);
     setTimeout(() => setCopiedWeChat(false), 2000);
   };
@@ -40,54 +87,63 @@ const ContactSection: React.FC = () => {
   };
 
   return (
-    <footer id="contact" className="relative min-h-screen flex flex-col justify-between bg-black border-t border-white/[0.08] pt-28 pb-12 overflow-hidden">
+    <footer 
+      ref={sectionRef}
+      id="contact" 
+      className="relative min-h-screen flex flex-col justify-between bg-black border-t border-white/[0.08] pt-28 pb-12 overflow-hidden"
+    >
       {/* Background Subtle Radial Glow */}
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[350px] bg-white/[0.02] rounded-full blur-[140px] pointer-events-none" />
 
       {/* Main Content Area */}
       <div className="max-w-1700 mx-auto w-full px-6 md:px-12 relative z-10 my-auto">
-        {/* Apple-style Headline */}
+        {/* Apple-style Headline with Mask Reveal */}
         <div className="mb-14 md:mb-16">
           <div className="text-xs uppercase tracking-wider text-[#86868b] mb-3 font-normal">
-            Start a Conversation
+            {ui.contact.tag}
           </div>
           <h2 className="text-4xl sm:text-6xl md:text-7xl font-semibold text-[#f5f5f7] tracking-[-0.035em] leading-[1.06] max-w-5xl">
-            Let's shape the next <br />
-            <span className="bg-gradient-to-r from-[#f5f5f7] via-[#e5e5ea] to-[#86868b] bg-clip-text text-transparent">
-              iconic moment.
-            </span>
+            <div className="overflow-hidden py-1">
+              <span className="contact-title-line block will-change-transform">
+                {ui.contact.headline1}
+              </span>
+            </div>
+            <div className="overflow-hidden py-1">
+              <span className="contact-title-line block will-change-transform bg-gradient-to-r from-[#f5f5f7] via-[#e5e5ea] to-[#86868b] bg-clip-text text-transparent">
+                {ui.contact.headline2}
+              </span>
+            </div>
           </h2>
           <p className="text-[#86868b] text-base md:text-lg font-normal max-w-2xl mt-4 leading-relaxed tracking-[-0.01em]">
-            신규 브랜드 아이덴티티, 중화권 타깃 커머스 숏폼, 뷰티 캠페인 비주얼, AI 워크플로우 도입 등
-            모든 크리에이티브 파트너십에 열려 있습니다.
+            {ui.contact.subtitle}
           </p>
         </div>
 
         {/* Two-Column Touchpoint & Inquiry Form */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 items-start pb-12">
+        <div className="contact-cards-trigger grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 items-start pb-12">
           {/* Left Column: Direct Fast Channels (5 cols) */}
-          <div className="lg:col-span-5 space-y-4">
+          <div className="lg:col-span-5 space-y-4 contact-stagger-card">
             <div className="text-xs uppercase tracking-wider text-[#86868b] font-normal">
-              Direct Channels
+              {ui.contact.directChannels}
             </div>
 
             {/* Email Box */}
             <div className="p-6 rounded-2xl bg-[#121214] border border-white/[0.08] space-y-2 group hover:border-white/[0.2] transition-colors">
               <div className="flex items-center justify-between">
-                <span className="text-xs text-[#86868b] uppercase">Official Email</span>
+                <span className="text-xs text-[#86868b] uppercase">{ui.contact.officialEmail}</span>
                 <button
                   onClick={handleCopyEmail}
-                  className="text-xs text-[#86868b] hover:text-[#f5f5f7] flex items-center space-x-1 px-2.5 py-1 rounded bg-white/[0.05] hover:bg-white/[0.1] transition-colors"
+                  className="text-xs text-[#86868b] hover:text-[#f5f5f7] flex items-center space-x-1 px-2.5 py-1 rounded bg-white/[0.05] hover:bg-white/[0.1] transition-colors cursor-pointer"
                 >
                   {copiedEmail ? <Check size={11} className="text-emerald-400" /> : <Copy size={11} />}
-                  <span>{copiedEmail ? 'Copied' : 'Copy Email'}</span>
+                  <span>{copiedEmail ? ui.experience.copied : ui.contact.copyEmail}</span>
                 </button>
               </div>
               <a
-                href={`mailto:${PERSONAL_INFO.email}`}
+                href="mailto:ro3eandcat@gmail.com"
                 className="text-xl sm:text-2xl font-semibold text-[#f5f5f7] hover:text-accent transition-colors block truncate tracking-[-0.01em]"
               >
-                {PERSONAL_INFO.email}
+                ro3eandcat@gmail.com
               </a>
             </div>
 
@@ -96,91 +152,95 @@ const ContactSection: React.FC = () => {
               {/* WeChat */}
               <div className="p-4 rounded-2xl bg-[#121214] border border-white/[0.08] space-y-1.5">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs text-[#86868b]">WeChat (微信)</span>
+                  <span className="text-xs text-[#86868b]">{ui.contact.wechat}</span>
                   <button
                     onClick={handleCopyWeChat}
-                    className="text-xs text-[#86868b] hover:text-[#f5f5f7]"
+                    className="text-[11px] text-[#86868b] hover:text-[#f5f5f7] flex items-center space-x-1 px-2 py-0.5 rounded bg-white/[0.05] hover:bg-white/[0.1] transition-colors cursor-pointer"
                   >
-                    {copiedWeChat ? <Check size={11} className="text-emerald-400" /> : <Copy size={11} />}
+                    {copiedWeChat ? <Check size={10} className="text-emerald-400" /> : <Copy size={10} />}
+                    <span>{copiedWeChat ? ui.experience.copied : 'Copy'}</span>
                   </button>
                 </div>
-                <div className="text-base font-medium text-[#f5f5f7]">
-                  {PERSONAL_INFO.wechat}
+                <div className="text-sm font-semibold text-[#f5f5f7] tracking-wider font-mono">
+                  icf304
                 </div>
               </div>
 
-              {/* Phone / Location */}
+              {/* Direct Call / Cell */}
               <div className="p-4 rounded-2xl bg-[#121214] border border-white/[0.08] space-y-1.5">
-                <span className="text-xs text-[#86868b] block">Location</span>
-                <div className="text-sm font-normal text-[#f5f5f7] truncate">
-                  서울 광진구 자양동
-                </div>
+                <div className="text-xs text-[#86868b]">{ui.contact.phone}</div>
+                <a
+                  href="tel:010-8388"
+                  className="text-sm font-semibold text-[#f5f5f7] hover:text-accent transition-colors block font-mono"
+                >
+                  +82 010-****-8388
+                </a>
               </div>
             </div>
 
-            {/* External Links */}
-            <div className="space-y-2.5 pt-2">
-              <a
-                href={PERSONAL_INFO.portfolioUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-between p-3.5 rounded-xl bg-white/[0.03] hover:bg-white/[0.07] border border-white/[0.08] text-xs text-[#f5f5f7] transition-all group"
-              >
-                <div className="flex items-center space-x-2.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-accent" />
-                  <span>Naver Portfolio & Verified Documents</span>
+            {/* Naver Portfolio Link */}
+            <a
+              href="https://naver.me/5fdFDeXr"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-4 rounded-2xl bg-[#121214] border border-white/[0.08] flex items-center justify-between group hover:border-white/[0.2] transition-colors"
+            >
+              <div className="flex items-center space-x-3">
+                <div className="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold text-xs">
+                  N
                 </div>
-                <ArrowUpRight size={13} className="text-[#86868b] group-hover:text-white transition-colors" />
-              </a>
+                <div>
+                  <div className="text-xs font-medium text-[#f5f5f7]">
+                    {ui.experience.naverPortfolio}
+                  </div>
+                  <div className="text-[11px] text-[#86868b]">
+                    naver.me/5fdFDeXr
+                  </div>
+                </div>
+              </div>
+              <ArrowUpRight size={14} className="text-[#86868b] group-hover:text-[#f5f5f7] transition-colors" />
+            </a>
 
-              <a
-                href={PERSONAL_INFO.xiaohongshuUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-between p-3.5 rounded-xl bg-white/[0.03] hover:bg-white/[0.07] border border-white/[0.08] text-xs text-[#f5f5f7] transition-all group"
-              >
-                <div className="flex items-center space-x-2.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-red-400" />
-                  <span>Xiaohongshu (小红书) Official Creator Feed</span>
-                </div>
-                <ArrowUpRight size={13} className="text-[#86868b] group-hover:text-white transition-colors" />
-              </a>
+            {/* Note / Advisory */}
+            <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.05] text-[11px] text-[#6e6e73] leading-relaxed">
+              {ui.contact.confidentialityNote}
             </div>
           </div>
 
-          {/* Right Column: Direct Project Inquiry Form (7 cols) */}
-          <div className="lg:col-span-7 p-7 md:p-8 rounded-2xl bg-[#121214] border border-white/[0.08]">
-            <div className="flex items-center justify-between mb-5">
-              <div className="text-xs uppercase tracking-wider text-[#86868b] flex items-center space-x-1.5 font-normal">
-                <MessageSquare size={13} />
-                <span>Project Brief</span>
-              </div>
-              <span className="text-xs text-[#6e6e73]">Response within 24h</span>
+          {/* Right Column: Direct Message Form (7 cols) */}
+          <div className="lg:col-span-7 p-6 sm:p-8 rounded-2xl bg-[#121214] border border-white/[0.08] contact-stagger-card">
+            <div className="flex items-center space-x-2 text-xs uppercase tracking-wider text-accent mb-2">
+              <MessageSquare size={13} />
+              <span>{ui.contact.messageTag}</span>
             </div>
+            <h3 className="text-xl sm:text-2xl font-semibold text-[#f5f5f7] tracking-[-0.02em] mb-1">
+              {ui.contact.messageTitle}
+            </h3>
+            <p className="text-xs text-[#86868b] mb-6">
+              {ui.contact.messageSubtitle}
+            </p>
 
             {formSubmitted ? (
-              <div className="py-12 text-center space-y-3 animate-fade-in">
-                <div className="w-12 h-12 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto">
-                  <Check size={24} />
+              <div className="p-8 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-center space-y-2">
+                <Check size={28} className="text-emerald-400 mx-auto" />
+                <div className="text-sm font-semibold text-[#f5f5f7]">
+                  {ui.contact.submittedTitle}
                 </div>
-                <h4 className="text-xl font-semibold text-[#f5f5f7]">
-                  Message Sent Successfully
-                </h4>
-                <p className="text-[#86868b] text-xs max-w-xs mx-auto leading-relaxed">
-                  보내주신 내용이 정상 전달되었습니다. 검토 후 24시간 이내에 기재해주신 연락처로 회신드리겠습니다.
-                </p>
+                <div className="text-xs text-[#86868b]">
+                  {ui.contact.submittedDesc}
+                </div>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-3.5">
+              <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                   <div>
                     <label className="block text-xs text-[#86868b] mb-1">
-                      Your Name / 담당자 성함 *
+                      {ui.contact.nameLabel} *
                     </label>
                     <input
                       type="text"
                       required
-                      placeholder="홍길동 / Director Wang"
+                      placeholder={ui.contact.namePlaceholder}
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       className="w-full px-3.5 py-2.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-[#f5f5f7] placeholder-white/20 text-xs focus:outline-none focus:border-white/30 transition-colors"
@@ -189,12 +249,12 @@ const ContactSection: React.FC = () => {
 
                   <div>
                     <label className="block text-xs text-[#86868b] mb-1">
-                      Email or Phone / 연락처 *
+                      {ui.contact.emailLabel} *
                     </label>
                     <input
-                      type="text"
+                      type="email"
                       required
-                      placeholder="contact@brand.com"
+                      placeholder={ui.contact.emailPlaceholder}
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       className="w-full px-3.5 py-2.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-[#f5f5f7] placeholder-white/20 text-xs focus:outline-none focus:border-white/30 transition-colors"
@@ -205,11 +265,11 @@ const ContactSection: React.FC = () => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                   <div>
                     <label className="block text-xs text-[#86868b] mb-1">
-                      Brand / Company / 브랜드명
+                      {ui.contact.brandLabel}
                     </label>
                     <input
                       type="text"
-                      placeholder="K-Beauty Brand / Studio"
+                      placeholder={ui.contact.brandPlaceholder}
                       value={formData.brand}
                       onChange={(e) => setFormData({ ...formData, brand: e.target.value })}
                       className="w-full px-3.5 py-2.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-[#f5f5f7] placeholder-white/20 text-xs focus:outline-none focus:border-white/30 transition-colors"
@@ -218,30 +278,30 @@ const ContactSection: React.FC = () => {
 
                   <div>
                     <label className="block text-xs text-[#86868b] mb-1">
-                      Project Type / 프로젝트 유형
+                      {ui.contact.typeLabel}
                     </label>
                     <select
                       value={formData.budget}
                       onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
                       className="w-full px-3.5 py-2.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-[#f5f5f7] text-xs focus:outline-none focus:border-white/30 transition-colors"
                     >
-                      <option value="" className="bg-[#121214] text-[#f5f5f7]">선택해주세요 (Select)</option>
-                      <option value="video" className="bg-[#121214] text-[#f5f5f7]">상업 영상 / 숏폼 프로덕션</option>
-                      <option value="brand" className="bg-[#121214] text-[#f5f5f7]">브랜드 BI/VI 및 패키지 디자인</option>
-                      <option value="china" className="bg-[#121214] text-[#f5f5f7]">샤오홍슈/도우인 중화권 비주얼</option>
-                      <option value="ai" className="bg-[#121214] text-[#f5f5f7]">AI 생성 비주얼 워크플로우</option>
+                      <option value="" className="bg-[#121214] text-[#f5f5f7]">{ui.contact.typeDefault}</option>
+                      <option value="video" className="bg-[#121214] text-[#f5f5f7]">{ui.contact.typeVideo}</option>
+                      <option value="brand" className="bg-[#121214] text-[#f5f5f7]">{ui.contact.typeBrand}</option>
+                      <option value="china" className="bg-[#121214] text-[#f5f5f7]">{ui.contact.typeChina}</option>
+                      <option value="ai" className="bg-[#121214] text-[#f5f5f7]">{ui.contact.typeAi}</option>
                     </select>
                   </div>
                 </div>
 
                 <div>
                   <label className="block text-xs text-[#86868b] mb-1">
-                    Project Details / 세부 문의 내용 *
+                    {ui.contact.detailsLabel}
                   </label>
                   <textarea
                     rows={3}
                     required
-                    placeholder="프로젝트 일정, 제작 범위, 희망 콘셉트 등을 간략히 적어주세요."
+                    placeholder={ui.contact.detailsPlaceholder}
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                     className="w-full px-3.5 py-2.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-[#f5f5f7] placeholder-white/20 text-xs focus:outline-none focus:border-white/30 transition-colors resize-none"
@@ -250,10 +310,10 @@ const ContactSection: React.FC = () => {
 
                 <button
                   type="submit"
-                  className="w-full py-3 rounded-full bg-[#f5f5f7] text-black font-medium text-xs tracking-[-0.01em] hover:bg-white transition-all duration-200 flex items-center justify-center space-x-1.5 active:scale-95"
+                  className="w-full py-3 rounded-full bg-[#f5f5f7] text-black font-medium text-xs tracking-[-0.01em] hover:bg-white transition-all duration-200 flex items-center justify-center space-x-1.5 active:scale-95 cursor-pointer"
                 >
                   <Send size={13} />
-                  <span>Send inquiry / 문의 전송</span>
+                  <span>{ui.contact.submitBtn}</span>
                 </button>
               </form>
             )}
@@ -265,13 +325,11 @@ const ContactSection: React.FC = () => {
       <div className="border-t border-white/[0.08] pt-6 mt-8">
         <div className="max-w-1700 mx-auto px-6 md:px-12 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[#6e6e73]">
           <div>
-            &copy; 2026 CHANBONG JUNG (정찬봉). All rights reserved.
+            {ui.contact.copyright}
           </div>
 
           <div className="flex items-center space-x-4">
-            <span>Seoul, South Korea</span>
-            <span>·</span>
-            <span>Visual Design · AI Synthesis · Brand Architecture</span>
+            <span>{ui.contact.locationFooter}</span>
           </div>
         </div>
       </div>

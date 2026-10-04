@@ -1,13 +1,17 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { PERSONAL_INFO } from '../data';
-import { ArrowDown, Volume2, VolumeX, Sparkles, ArrowUpRight } from 'lucide-react';
+import { useLanguage } from '../LanguageContext';
+import gsap from 'gsap';
+import { ArrowDown, Volume2, VolumeX, ArrowUpRight } from 'lucide-react';
 
 interface HeroSectionProps {
   onExplore: () => void;
   onContact: () => void;
+  isIntroDone: boolean;
 }
 
-const HeroSection: React.FC<HeroSectionProps> = ({ onExplore, onContact }) => {
+const HeroSection: React.FC<HeroSectionProps> = ({ onExplore, onContact, isIntroDone }) => {
+  const { ui, language } = useLanguage();
+  const heroRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isMuted, setIsMuted] = useState(true);
   const [currentTime, setCurrentTime] = useState('');
@@ -30,6 +34,69 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onExplore, onContact }) => {
     return () => clearInterval(interval);
   }, []);
 
+  // GSAP Kinetic Entrance Timeline for Hero Section
+  useEffect(() => {
+    if (!isIntroDone) return;
+
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({ delay: 0.15 });
+
+      // 1. Top status row
+      tl.fromTo(
+        '.hero-meta-row',
+        { y: -20, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.9, ease: 'power3.out' }
+      );
+
+      // 2. Eyebrow badge
+      tl.fromTo(
+        '.hero-eyebrow',
+        { y: 25, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' },
+        '-=0.5'
+      );
+
+      // 3. Masked Headline: Extreme displacement, skew, and scale compression returning to position
+      tl.fromTo(
+        '.hero-line-inner',
+        {
+          yPercent: 120,
+          skewY: 4,
+          scaleY: 1.12,
+          opacity: 0
+        },
+        {
+          yPercent: 0,
+          skewY: 0,
+          scaleY: 1,
+          opacity: 1,
+          duration: 1.35,
+          ease: 'expo.out',
+          stagger: 0.15
+        },
+        '-=0.6'
+      );
+
+      // 4. Narrative and Buttons
+      tl.fromTo(
+        '.hero-content-fade',
+        { y: 35, opacity: 0 },
+        { y: 0, opacity: 1, duration: 1.0, ease: 'power3.out', stagger: 0.1 },
+        '-=0.8'
+      );
+
+      // 5. Bottom bar
+      tl.fromTo(
+        '.hero-bottom-bar',
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' },
+        '-=0.6'
+      );
+    }, heroRef);
+
+    return () => ctx.revert();
+  }, [isIntroDone, language]);
+
   const toggleSound = () => {
     if (videoRef.current) {
       videoRef.current.muted = !videoRef.current.muted;
@@ -39,6 +106,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onExplore, onContact }) => {
 
   return (
     <section
+      ref={heroRef}
       id="hero"
       className="relative min-h-screen w-full flex flex-col justify-between overflow-hidden bg-black pt-32 pb-12"
     >
@@ -65,80 +133,84 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onExplore, onContact }) => {
       </div>
 
       {/* Top Tagline Row */}
-      <div className="relative z-10 max-w-1700 mx-auto w-full px-6 md:px-12 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        {/* Apple-style Status Pill */}
+      <div className="hero-meta-row relative z-10 max-w-1700 mx-auto w-full px-6 md:px-12 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        {/* Status Pill */}
         <div className="flex items-center space-x-3 text-[13px] text-[#86868b]">
           <span className="flex items-center space-x-2 px-3 py-1 rounded-full bg-white/[0.06] border border-white/[0.08] backdrop-blur-md">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-            <span className="text-[#f5f5f7] font-normal">Available for Q2/Q3 Projects</span>
+            <span className="text-[#f5f5f7] font-normal">{ui.hero.status}</span>
           </span>
           <span className="hidden sm:inline text-white/20">|</span>
           <span className="hidden sm:inline text-[#86868b]">
-            Seoul: <span className="text-[#f5f5f7] font-medium">{currentTime || '12:00:00'}</span>
+            {ui.hero.seoulTime}: <span className="text-[#f5f5f7] font-medium">{currentTime || '12:00:00'}</span>
           </span>
         </div>
 
         {/* Discipline Breadcrumb */}
-        <div className="text-[13px] text-[#86868b] flex items-center space-x-2">
-          <span>Visual Direction</span>
-          <span className="text-white/20">/</span>
-          <span>AI Generative</span>
-          <span className="text-white/20">/</span>
-          <span>Brand Architecture</span>
+        <div className="text-[13px] text-[#86868b]">
+          {ui.hero.disciplines}
         </div>
       </div>
 
-      {/* Center Apple-style Headline & Narrative */}
+      {/* Center Apple-style Headline & Narrative with Kinetic Mask Reveal */}
       <div className="relative z-10 max-w-1700 mx-auto w-full px-6 md:px-12 my-auto py-12 md:py-16">
         <div className="max-w-4xl">
           {/* Eyebrow / Kicker */}
-          <div className="inline-flex items-center space-x-2 mb-4 text-[#f5f5f7] text-sm md:text-base font-normal tracking-[-0.01em]">
-            <span className="text-accent font-medium">13-Year Senior Designer & Director</span>
+          <div className="hero-eyebrow inline-flex items-center space-x-2 mb-4 text-[#f5f5f7] text-sm md:text-base font-normal tracking-[-0.01em]">
+            <span className="text-accent font-medium">{ui.hero.roleBadge}</span>
             <span className="text-white/20">·</span>
-            <span className="text-[#86868b]">{PERSONAL_INFO.nameZh} ({PERSONAL_INFO.nameKr})</span>
+            <span className="text-[#86868b]">{ui.nav.brand}</span>
           </div>
 
-          {/* Master Headline - Apple typography */}
+          {/* Master Headline with Mask & Compression Reset */}
           <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-[5.25rem] font-semibold tracking-[-0.035em] text-[#f5f5f7] leading-[1.05] mb-6">
-            Bridging vision <br />
-            <span className="bg-gradient-to-r from-[#f5f5f7] via-[#e5e5ea] to-[#86868b] bg-clip-text text-transparent">
-              and hyper-craft.
-            </span>
+            <div className="overflow-hidden block py-1">
+              <span className="hero-line-inner block will-change-transform">
+                {ui.hero.headline1}
+              </span>
+            </div>
+            <div className="overflow-hidden block py-1">
+              <span className="hero-line-inner block will-change-transform bg-gradient-to-r from-[#f5f5f7] via-[#e5e5ea] to-[#86868b] bg-clip-text text-transparent">
+                {ui.hero.headline2}
+              </span>
+            </div>
           </h1>
 
           {/* Subheading Narrative */}
-          <p className="text-lg sm:text-xl md:text-2xl text-[#86868b] font-normal max-w-2xl leading-relaxed mb-4 tracking-[-0.015em]">
-            以视觉设计为基底，贯通商业摄影摄像、后期调色至{' '}
-            <span className="text-[#f5f5f7]">AI 生产力工作流</span> 的全流程闭环。
-          </p>
+          <div className="hero-content-fade">
+            <p className="text-lg sm:text-xl md:text-2xl text-[#86868b] font-normal max-w-3xl leading-relaxed mb-4 tracking-[-0.015em]">
+              {ui.hero.narrative1}
+            </p>
+          </div>
 
-          <p className="text-sm sm:text-base text-[#6e6e73] font-normal max-w-xl leading-relaxed mb-8">
-            기획부터 촬영, 편집, 그래픽, 오프라인 출력까지 자체 보유 장비 기반의 내재화된 프로세스.
-            신세계면세점, 아모레퍼시픽 등 글로벌 시장을 위한 실무형 비주얼 크리에이티브.
-          </p>
+          <div className="hero-content-fade">
+            <p className="text-sm sm:text-base text-[#6e6e73] font-normal max-w-2xl leading-relaxed mb-8">
+              {ui.hero.narrative2}
+            </p>
+          </div>
 
-          {/* Apple-style Buttons */}
-          <div className="flex flex-wrap items-center gap-3 sm:gap-4">
+          {/* Action Buttons */}
+          <div className="hero-content-fade flex flex-wrap items-center gap-3 sm:gap-4">
             <button
               onClick={onExplore}
-              className="px-6 py-3 rounded-full bg-[#f5f5f7] text-black font-medium text-sm tracking-[-0.01em] hover:bg-white hover:shadow-[0_4px_20px_rgba(255,255,255,0.25)] transition-all duration-300 flex items-center space-x-2 active:scale-95"
+              className="px-6 py-3 rounded-full bg-[#f5f5f7] text-black font-medium text-sm tracking-[-0.01em] hover:bg-white hover:shadow-[0_4px_20px_rgba(255,255,255,0.25)] transition-all duration-300 flex items-center space-x-2 active:scale-95 cursor-pointer"
             >
-              <span>浏览精选作品</span>
+              <span>{ui.hero.btnExplore}</span>
               <ArrowDown size={15} />
             </button>
 
             <button
               onClick={onContact}
-              className="px-6 py-3 rounded-full bg-white/[0.08] hover:bg-white/[0.14] border border-white/[0.12] text-[#f5f5f7] font-medium text-sm tracking-[-0.01em] transition-all duration-300 flex items-center space-x-1.5 active:scale-95"
+              className="px-6 py-3 rounded-full bg-white/[0.08] hover:bg-white/[0.14] border border-white/[0.12] text-[#f5f5f7] font-medium text-sm tracking-[-0.01em] transition-all duration-300 flex items-center space-x-1.5 active:scale-95 cursor-pointer"
             >
-              <span>预约合作</span>
+              <span>{ui.hero.btnContact}</span>
               <ArrowUpRight size={15} className="text-accent" />
             </button>
 
             {/* Video Sound Toggle */}
             <button
               onClick={toggleSound}
-              className="p-3 rounded-full bg-white/[0.06] hover:bg-white/[0.12] border border-white/[0.08] text-[#86868b] hover:text-[#f5f5f7] transition-colors"
+              className="p-3 rounded-full bg-white/[0.06] hover:bg-white/[0.12] border border-white/[0.08] text-[#86868b] hover:text-[#f5f5f7] transition-colors cursor-pointer"
               title={isMuted ? 'Unmute Showreel' : 'Mute Showreel'}
               aria-label="Toggle Showreel Audio"
             >
@@ -149,26 +221,26 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onExplore, onContact }) => {
       </div>
 
       {/* Bottom Bar: Quick Metrics & Credentials */}
-      <div className="relative z-10 max-w-1700 mx-auto w-full px-6 md:px-12 border-t border-white/[0.08] pt-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs text-[#86868b]">
+      <div className="hero-bottom-bar relative z-10 max-w-1700 mx-auto w-full px-6 md:px-12 border-t border-white/[0.08] pt-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs text-[#86868b]">
         <div className="flex flex-wrap items-center gap-5 sm:gap-6">
           <div>
-            <span className="text-[#f5f5f7] font-medium">13+ Years</span> Experience
+            <span className="text-[#f5f5f7] font-medium">{ui.hero.statExp}</span>
           </div>
           <span className="text-white/10">·</span>
           <div>
-            <span className="text-[#f5f5f7] font-medium">100+</span> Commercial Projects
+            <span className="text-[#f5f5f7] font-medium">{ui.hero.statProjects}</span>
           </div>
           <span className="text-white/10">·</span>
           <div>
-            <span className="text-accent font-medium">Shinsegae · Amorepacific</span>
+            <span className="text-accent font-medium">{ui.hero.statBrands}</span>
           </div>
         </div>
 
         <button
           onClick={onExplore}
-          className="flex items-center space-x-1.5 text-[#86868b] hover:text-[#f5f5f7] transition-colors self-start sm:self-auto"
+          className="flex items-center space-x-1.5 text-[#86868b] hover:text-[#f5f5f7] transition-colors self-start sm:self-auto cursor-pointer"
         >
-          <span>Scroll to explore</span>
+          <span>{ui.hero.scroll}</span>
           <ArrowDown size={13} className="animate-bounce" />
         </button>
       </div>

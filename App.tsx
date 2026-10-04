@@ -1,13 +1,31 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { LanguageProvider } from './LanguageContext';
 import Navbar from './components/Navbar';
+import OpeningAnimation from './components/OpeningAnimation';
 import HeroSection from './components/HeroSection';
 import ExperienceSection from './components/ExperienceSection';
 import ProjectsSection from './components/ProjectsSection';
 import StrengthsSection from './components/StrengthsSection';
 import ContactSection from './components/ContactSection';
 
-const App: React.FC = () => {
+const MainApp: React.FC = () => {
   const [activeSection, setActiveSection] = useState('hero');
+  
+  // Track whether opening intro animation has completed
+  const [isIntroDone, setIsIntroDone] = useState<boolean>(() => {
+    try {
+      return sessionStorage.getItem('seen_opening_intro') === 'true';
+    } catch {
+      return false;
+    }
+  });
+
+  const handleIntroComplete = useCallback(() => {
+    try {
+      sessionStorage.setItem('seen_opening_intro', 'true');
+    } catch {}
+    setIsIntroDone(true);
+  }, []);
 
   // Track active section for navbar highlighting
   useEffect(() => {
@@ -49,16 +67,23 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background text-white selection:bg-accent selection:text-black">
-      {/* Top Floating Glassmorphism Navbar */}
+    <div className="min-h-screen bg-black text-[#f5f5f7] selection:bg-accent selection:text-black">
+      {/* High-Impact Opening Shutter Wipe & Numerical Preloader */}
+      {/* Mounted ONLY until completed, so scroll state updates NEVER re-trigger it */}
+      {!isIntroDone && (
+        <OpeningAnimation onComplete={handleIntroComplete} />
+      )}
+
+      {/* Top Floating Glassmorphism Navbar with Language Switcher */}
       <Navbar activeSection={activeSection} />
 
       {/* Main Content Area */}
       <main>
-        {/* 1. Full-screen Hero Section with Video Background */}
+        {/* 1. Full-screen Hero Section with Video Background & Kinetic Title Reveal */}
         <HeroSection
           onExplore={() => scrollToSection('projects')}
           onContact={() => scrollToSection('contact')}
+          isIntroDone={isIntroDone}
         />
 
         {/* 2. Personal Profile & Experience (Portrait, Bio, Contacts, Metrics, Career Timeline) */}
@@ -74,6 +99,14 @@ const App: React.FC = () => {
         <ContactSection />
       </main>
     </div>
+  );
+};
+
+const App: React.FC = () => {
+  return (
+    <LanguageProvider>
+      <MainApp />
+    </LanguageProvider>
   );
 };
 

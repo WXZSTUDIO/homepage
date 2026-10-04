@@ -1,11 +1,76 @@
-import React from 'react';
-import { STRENGTHS, SKILL_STACK } from '../data';
+import React, { useEffect, useRef } from 'react';
+import { useLanguage } from '../LanguageContext';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { 
   Camera, Cpu, Globe2, Layers, CheckCircle2, 
   Sparkles, Wrench, ShieldCheck 
 } from 'lucide-react';
 
+gsap.registerPlugin(ScrollTrigger);
+
 const StrengthsSection: React.FC = () => {
+  const { ui, strengths, language } = useLanguage();
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // GSAP ScrollTrigger Animation Sequence
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // 1. Headline Mask Reveal
+      gsap.fromTo(
+        '.strengths-title-line',
+        { yPercent: 115, skewY: 3, opacity: 0 },
+        {
+          yPercent: 0,
+          skewY: 0,
+          opacity: 1,
+          duration: 1.25,
+          ease: 'expo.out',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'top 75%',
+          }
+        }
+      );
+
+      // 2. 4 Pillars Stagger
+      gsap.fromTo(
+        '.strengths-stagger-card',
+        { y: 60, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1.0,
+          ease: 'power3.out',
+          stagger: 0.12,
+          scrollTrigger: {
+            trigger: '.strengths-pillars-trigger',
+            start: 'top 80%',
+          }
+        }
+      );
+
+      // 3. Arsenal & Skills Grid Stagger
+      gsap.fromTo(
+        '.strengths-arsenal-card',
+        { y: 50, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1.0,
+          ease: 'power3.out',
+          stagger: 0.15,
+          scrollTrigger: {
+            trigger: '.strengths-arsenal-trigger',
+            start: 'top 85%',
+          }
+        }
+      );
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, [language]);
+
   const getIcon = (id: string) => {
     switch (id) {
       case 'end-to-end':
@@ -30,30 +95,43 @@ const StrengthsSection: React.FC = () => {
     { name: 'Color-Calibrated ProArt 4K HDR Monitor', category: 'Post-Grading' },
   ];
 
+  const skillGroups = [
+    { category: ui.strengths.categories.design, items: ui.strengths.skills.design },
+    { category: ui.strengths.categories.video, items: ui.strengths.skills.video },
+    { category: ui.strengths.categories.ai, items: ui.strengths.skills.ai },
+    { category: ui.strengths.categories.platforms, items: ui.strengths.skills.platforms },
+  ];
+
   return (
-    <section id="strengths" className="relative py-28 md:py-36 bg-[#0a0a0c] border-t border-white/[0.08]">
+    <section 
+      ref={sectionRef}
+      id="strengths" 
+      className="relative py-28 md:py-36 bg-[#0a0a0c] border-t border-white/[0.08]"
+    >
       <div className="max-w-1700 mx-auto px-6 md:px-12 relative z-10">
-        {/* Section Header */}
+        {/* Section Header with Mask Reveal */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 pb-6 border-b border-white/[0.08]">
           <div>
             <div className="text-xs uppercase tracking-wider text-[#86868b] mb-2 font-normal">
-              Core Capabilities
+              {ui.strengths.tag}
             </div>
-            <h2 className="text-3xl sm:text-5xl font-semibold text-[#f5f5f7] tracking-[-0.03em]">
-              Why collaborate.
-            </h2>
+            <div className="overflow-hidden py-1">
+              <h2 className="strengths-title-line text-3xl sm:text-5xl font-semibold text-[#f5f5f7] tracking-[-0.03em] block will-change-transform">
+                {ui.strengths.title}
+              </h2>
+            </div>
           </div>
           <p className="text-[#86868b] text-sm md:text-base font-normal max-w-md mt-3 md:mt-0 leading-relaxed tracking-[-0.01em]">
-            디자이너의 조형 감각과 영상 감독의 연출력, 여기에 AI 기술의 속도를 더해 브랜드의 실질적인 문제를 해결합니다.
+            {ui.strengths.subtitle}
           </p>
         </div>
 
-        {/* 4 Pillars Card Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-7 mb-16">
-          {STRENGTHS.map((item) => (
+        {/* 4 Pillars Card Grid with Stagger Entrance */}
+        <div className="strengths-pillars-trigger grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-7 mb-16">
+          {strengths.map((item: any) => (
             <div
               key={item.id}
-              className="group p-7 md:p-9 rounded-2xl bg-[#121214] border border-white/[0.08] hover:border-white/[0.2] transition-all duration-300 flex flex-col justify-between"
+              className="strengths-stagger-card group p-7 md:p-9 rounded-2xl bg-[#121214] border border-white/[0.08] hover:border-white/[0.2] transition-all duration-300 flex flex-col justify-between"
             >
               <div>
                 {/* Card Top: Number + Icon */}
@@ -71,9 +149,6 @@ const StrengthsSection: React.FC = () => {
                   <h3 className="text-xl sm:text-2xl font-semibold text-[#f5f5f7] tracking-[-0.02em] mb-1">
                     {item.title}
                   </h3>
-                  <div className="text-sm font-medium text-[#f5f5f7]/90">
-                    {item.titleKr}
-                  </div>
                   <div className="text-xs text-[#86868b] mt-0.5 font-normal">
                     {item.subtitle}
                   </div>
@@ -86,7 +161,7 @@ const StrengthsSection: React.FC = () => {
 
                 {/* Key Points */}
                 <div className="space-y-2 mb-5 border-t border-white/[0.06] pt-4">
-                  {item.keyPoints.map((point, pIdx) => (
+                  {item.keyPoints.map((point: string, pIdx: number) => (
                     <div key={pIdx} className="flex items-center space-x-2 text-xs text-[#f5f5f7]/90 font-normal">
                       <CheckCircle2 size={13} className="text-accent shrink-0" />
                       <span>{point}</span>
@@ -97,7 +172,7 @@ const StrengthsSection: React.FC = () => {
 
               {/* Bottom Tags */}
               <div className="flex flex-wrap gap-1.5 pt-4 border-t border-white/[0.06]">
-                {item.tags.map((tag, tIdx) => (
+                {item.tags.map((tag: string, tIdx: number) => (
                   <span
                     key={tIdx}
                     className="text-[11px] text-[#86868b] bg-white/[0.04] px-2.5 py-0.5 rounded border border-white/[0.06]"
@@ -110,21 +185,20 @@ const StrengthsSection: React.FC = () => {
           ))}
         </div>
 
-        {/* Extended Section: Specialized Gear & Comprehensive Skill Stack */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-7 pt-10 border-t border-white/[0.08]">
+        {/* Extended Section: Specialized Gear & Comprehensive Skill Stack with Stagger */}
+        <div className="strengths-arsenal-trigger grid grid-cols-1 lg:grid-cols-12 gap-7 pt-10 border-t border-white/[0.08]">
           {/* Left: In-House Production Gear Arsenal (5 cols) */}
-          <div className="lg:col-span-5 p-7 rounded-2xl bg-[#121214] border border-white/[0.08] flex flex-col justify-between">
+          <div className="strengths-arsenal-card lg:col-span-5 p-7 rounded-2xl bg-[#121214] border border-white/[0.08] flex flex-col justify-between">
             <div>
               <div className="flex items-center space-x-2 text-xs uppercase tracking-wider text-accent mb-2">
                 <Wrench size={13} />
                 <span>Production Gear</span>
               </div>
               <h3 className="text-xl sm:text-2xl font-semibold text-[#f5f5f7] tracking-[-0.02em] mb-2">
-                자체 보유 장비 (Owned Gear)
+                {ui.strengths.gearTitle}
               </h3>
               <p className="text-[#86868b] text-xs sm:text-sm font-normal leading-relaxed mb-5">
-                외부 장비 렌탈 없이 상시 출동 가능한 단독 프로덕션 키트.
-                상업 광고, 뷰티 제품 촬영, 현장 숏폼을 즉각적인 스케줄로 소화합니다.
+                {ui.strengths.gearSubtitle}
               </p>
 
               <div className="space-y-2.5">
@@ -146,31 +220,31 @@ const StrengthsSection: React.FC = () => {
 
             <div className="mt-5 pt-3.5 border-t border-white/[0.08] flex items-center justify-between text-xs text-[#86868b]">
               <span>Zero lead time deployment</span>
-              <span className="text-accent font-medium">Ready</span>
+              <span className="text-accent font-medium">{ui.strengths.gearReady}</span>
             </div>
           </div>
 
           {/* Right: Technical Skill Stack Matrix (7 cols) */}
-          <div className="lg:col-span-7 p-7 rounded-2xl bg-[#121214] border border-white/[0.08]">
+          <div className="strengths-arsenal-card lg:col-span-7 p-7 rounded-2xl bg-[#121214] border border-white/[0.08]">
             <div className="flex items-center space-x-2 text-xs uppercase tracking-wider text-accent mb-2">
               <ShieldCheck size={13} />
               <span>Skill Matrix</span>
             </div>
             <h3 className="text-xl sm:text-2xl font-semibold text-[#f5f5f7] tracking-[-0.02em] mb-2">
-              전문 스킬 셋 (Skill Stack)
+              {ui.strengths.skillTitle}
             </h3>
             <p className="text-[#86868b] text-xs sm:text-sm font-normal leading-relaxed mb-6">
-              2D 그래픽 디자인부터 영화급 영상 후반 편집, 그리고 최신 생성형 AI 모델링까지 아우릅니다.
+              {ui.strengths.skillSubtitle}
             </p>
 
             <div className="space-y-4">
-              {SKILL_STACK.map((group, idx) => (
+              {skillGroups.map((group, idx) => (
                 <div key={idx} className="border-b border-white/[0.06] pb-3.5 last:border-b-0">
                   <div className="text-xs uppercase tracking-wider text-[#6e6e73] mb-2">
                     {group.category}
                   </div>
                   <div className="flex flex-wrap gap-1.5">
-                    {group.items.map((skill, sIdx) => (
+                    {group.items.map((skill: string, sIdx: number) => (
                       <span
                         key={sIdx}
                         className="px-2.5 py-1 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] text-[#f5f5f7] text-xs border border-white/[0.06] transition-colors"

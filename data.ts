@@ -1,4 +1,4 @@
-// Complete Portfolio & Resume Data for 정찬봉 (CHANBONG JUNG)
+// Complete Portfolio & Resume Data for 정찬봉 (ZHENG CANFENG)
 
 export interface ProjectItem {
   id: string;
@@ -46,7 +46,7 @@ export interface StrengthItem {
 export const PERSONAL_INFO = {
   nameZh: '郑灿峰',
   nameKr: '정찬봉',
-  nameEn: 'CHANBONG JUNG',
+  nameEn: 'ZHENG CANFENG',
   title: '视觉设计师 · AI设计师 · 品牌设计师',
   titleEn: 'Senior Visual Designer & AI Creative Director',
   birth: '1994 (32세)',
