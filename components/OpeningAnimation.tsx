@@ -87,7 +87,7 @@ const OpeningAnimation: React.FC<OpeningAnimationProps> = ({ onComplete }) => {
       {/* Top Shutter Curtain */}
       <div
         ref={topCurtainRef}
-        className="absolute top-0 left-0 w-full h-1/2 bg-[#050507] border-b border-accent/20 flex items-end justify-between px-8 sm:px-14 pb-8 will-change-transform shadow-[0_10px_30px_rgba(0,0,0,0.8)]"
+        className="absolute top-0 left-0 w-full h-1/2 bg-[#050507] border-b border-white/10 flex items-end justify-between px-8 sm:px-14 pb-8 will-change-transform shadow-[0_10px_30px_rgba(0,0,0,0.8)]"
       >
         <div className="text-[11px] text-[#86868b] font-mono tracking-widest uppercase">
           ZHENG CANFENG · PORTFOLIO ARCHIVE
@@ -100,14 +100,14 @@ const OpeningAnimation: React.FC<OpeningAnimationProps> = ({ onComplete }) => {
       {/* Bottom Shutter Curtain */}
       <div
         ref={bottomCurtainRef}
-        className="absolute bottom-0 left-0 w-full h-1/2 bg-[#050507] border-t border-accent/20 flex items-start justify-between px-8 sm:px-14 pt-8 will-change-transform shadow-[0_-10px_30px_rgba(0,0,0,0.8)]"
+        className="absolute bottom-0 left-0 w-full h-1/2 bg-[#050507] border-t border-white/10 flex items-start justify-between px-8 sm:px-14 pt-8 will-change-transform shadow-[0_-10px_30px_rgba(0,0,0,0.8)]"
       >
         <div className="text-[11px] text-[#6e6e73] font-mono tracking-widest uppercase">
           VISUAL DIRECTION · AI WORKFLOW · BRAND VI
         </div>
         <button
           onClick={handleSkip}
-          className="text-[11px] text-[#86868b] hover:text-accent font-mono tracking-widest uppercase transition-colors cursor-pointer"
+          className="text-[11px] text-[#86868b] hover:text-white font-mono tracking-widest uppercase transition-colors cursor-pointer"
         >
           [SKIP INTRO]
         </button>
@@ -120,7 +120,7 @@ const OpeningAnimation: React.FC<OpeningAnimationProps> = ({ onComplete }) => {
       >
         {/* Designer Monogram / Title */}
         <div className="overflow-hidden mb-4">
-          <div className="text-xs uppercase tracking-[0.3em] text-accent font-mono text-center">
+          <div className="text-xs uppercase tracking-[0.3em] text-[#86868b] font-mono text-center">
             CREATIVE DIRECTOR & VISUAL ARCHITECT
           </div>
         </div>
@@ -137,7 +137,7 @@ const OpeningAnimation: React.FC<OpeningAnimationProps> = ({ onComplete }) => {
         {/* Minimal Loading Bar */}
         <div className="w-48 sm:w-64 h-[1.5px] bg-white/[0.1] rounded-full mt-8 overflow-hidden">
           <div
-            className="h-full bg-accent transition-all duration-75 ease-out"
+            className="h-full bg-white transition-all duration-75 ease-out"
             style={{ width: `${progress}%` }}
           />
         </div>

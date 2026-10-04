@@ -1,4 +1,4 @@
-/* Apple-style Global Typography & Architecture */
+/* Apple-style Pure Minimalist Typography & Global Architecture */
 html {
   scroll-behavior: smooth;
   color-scheme: dark;
@@ -16,38 +16,33 @@ body {
   letter-spacing: -0.011em;
 }
 
-/* Custom Selection */
+/* Subtle Minimal Selection */
 ::selection {
-  background-color: #FFC900;
+  background-color: #ffffff;
   color: #000000;
 }
 
-/* Custom Scrollbar */
+/* Minimal Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 4px;
+  height: 4px;
 }
 ::-webkit-scrollbar-track {
   background: #000000;
 }
 ::-webkit-scrollbar-thumb {
   background: #242426;
-  border-radius: 3px;
+  border-radius: 2px;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #38383a;
 }
 
-/* Hide scrollbar */
+/* Hide scrollbar utility */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
-}
-
-/* Subtle Vignette & Scrim */
-.vignette-radial {
-  background: radial-gradient(circle at center, rgba(0, 0, 0, 0) 45%, rgba(0, 0, 0, 0.8) 100%);
 }

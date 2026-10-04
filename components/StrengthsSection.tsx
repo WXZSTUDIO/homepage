@@ -2,29 +2,23 @@ import React, { useEffect, useRef } from 'react';
 import { useLanguage } from '../LanguageContext';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { 
-  Camera, Cpu, Globe2, Layers, CheckCircle2, 
-  Sparkles, Wrench, ShieldCheck 
-} from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const StrengthsSection: React.FC = () => {
-  const { ui, strengths, language } = useLanguage();
+  const { ui, language } = useLanguage();
   const sectionRef = useRef<HTMLElement>(null);
 
-  // GSAP ScrollTrigger Animation Sequence
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // 1. Headline Mask Reveal
       gsap.fromTo(
         '.strengths-title-line',
-        { yPercent: 115, skewY: 3, opacity: 0 },
+        { yPercent: 110, skewY: 2, opacity: 0 },
         {
           yPercent: 0,
           skewY: 0,
           opacity: 1,
-          duration: 1.25,
+          duration: 1.2,
           ease: 'expo.out',
           scrollTrigger: {
             trigger: sectionRef.current,
@@ -33,36 +27,18 @@ const StrengthsSection: React.FC = () => {
         }
       );
 
-      // 2. 4 Pillars Stagger
       gsap.fromTo(
-        '.strengths-stagger-card',
-        { y: 60, opacity: 0 },
+        '.strengths-card',
+        { y: 30, opacity: 0 },
         {
           y: 0,
           opacity: 1,
-          duration: 1.0,
-          ease: 'power3.out',
-          stagger: 0.12,
-          scrollTrigger: {
-            trigger: '.strengths-pillars-trigger',
-            start: 'top 80%',
-          }
-        }
-      );
-
-      // 3. Arsenal & Skills Grid Stagger
-      gsap.fromTo(
-        '.strengths-arsenal-card',
-        { y: 50, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 1.0,
+          duration: 0.9,
           ease: 'power3.out',
           stagger: 0.15,
           scrollTrigger: {
-            trigger: '.strengths-arsenal-trigger',
-            start: 'top 85%',
+            trigger: '.strengths-grid-trigger',
+            start: 'top 80%',
           }
         }
       );
@@ -71,190 +47,127 @@ const StrengthsSection: React.FC = () => {
     return () => ctx.revert();
   }, [language]);
 
-  const getIcon = (id: string) => {
-    switch (id) {
-      case 'end-to-end':
-        return <Layers className="text-accent" size={22} />;
-      case 'gear-autonomous':
-        return <Camera className="text-accent" size={22} />;
-      case 'global-localization':
-        return <Globe2 className="text-accent" size={22} />;
-      case 'ai-creative-engine':
-        return <Cpu className="text-accent" size={22} />;
-      default:
-        return <Sparkles className="text-accent" size={22} />;
-    }
-  };
-
   const gearItems = [
-    { name: 'Sony Full-Frame Cinema / Alpha System', category: 'Camera Bodies' },
-    { name: 'G Master & High-Resolution Prime Lens Set', category: 'Optics' },
-    { name: 'COB Tungsten & Full-Color RGB Studio Lighting', category: 'Lighting' },
-    { name: 'Wireless Lavalier & Shotgun Field Audio Mic', category: 'Audio' },
-    { name: '3-Axis Motorized Gimbal & Sliders', category: 'Stabilization' },
-    { name: 'Color-Calibrated ProArt 4K HDR Monitor', category: 'Post-Grading' },
+    { name: 'Sony FX3 / A7S III', role: 'Full-Frame 4K 120p Cinema Line' },
+    { name: 'DaVinci Resolve Studio', role: 'HDR Color Science & Grading Deck' },
+    { name: 'Aputure & Nanlite Rig', role: 'Studio High-Output Lighting Array' },
+    { name: 'DJI Ronin RS3 Pro', role: 'Cinema 3-Axis Stabilization' },
+    { name: 'Atomos Ninja V+', role: 'ProRes RAW 10-Bit External Recording' },
+    { name: 'Sennheiser & Rode', role: 'Professional Wireless Audio Suite' },
   ];
 
-  const skillGroups = [
-    { category: ui.strengths.categories.design, items: ui.strengths.skills.design },
-    { category: ui.strengths.categories.video, items: ui.strengths.skills.video },
-    { category: ui.strengths.categories.ai, items: ui.strengths.skills.ai },
-    { category: ui.strengths.categories.platforms, items: ui.strengths.skills.platforms },
+  const tools = [
+    'ComfyUI', 'Midjourney v6', 'Runway Gen-3', 'DaVinci Resolve',
+    'Premiere Pro', 'After Effects', 'Photoshop', 'Illustrator',
+    'Figma', 'Blender 3D', 'Stable Diffusion', 'Lightroom Classic'
   ];
 
   return (
     <section 
-      ref={sectionRef}
+      ref={sectionRef} 
       id="strengths" 
-      className="relative py-28 md:py-36 bg-[#0a0a0c] border-t border-white/[0.08]"
+      className="relative py-28 md:py-36 bg-black border-t border-white/[0.08]"
     >
-      <div className="max-w-1700 mx-auto px-6 md:px-12 relative z-10">
-        {/* Section Header with Mask Reveal */}
+      <div className="relative z-10 max-w-1700 mx-auto px-6 md:px-12">
+        {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 pb-6 border-b border-white/[0.08]">
           <div>
-            <div className="text-xs uppercase tracking-wider text-[#86868b] mb-2 font-normal">
+            <div className="text-xs uppercase tracking-[0.2em] text-[#86868b] font-mono mb-3">
               {ui.strengths.tag}
             </div>
             <div className="overflow-hidden py-1">
-              <h2 className="strengths-title-line text-3xl sm:text-5xl font-semibold text-[#f5f5f7] tracking-[-0.03em] block will-change-transform">
+              <h2 className="strengths-title-line text-3xl sm:text-5xl md:text-6xl font-semibold text-white tracking-[-0.03em] block will-change-transform">
                 {ui.strengths.title}
               </h2>
             </div>
           </div>
-          <p className="text-[#86868b] text-sm md:text-base font-normal max-w-md mt-3 md:mt-0 leading-relaxed tracking-[-0.01em]">
+          <p className="text-[#86868b] text-sm md:text-base font-normal max-w-md mt-3 md:mt-0 leading-relaxed">
             {ui.strengths.subtitle}
           </p>
         </div>
 
-        {/* 4 Pillars Card Grid with Stagger Entrance */}
-        <div className="strengths-pillars-trigger grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-7 mb-16">
-          {strengths.map((item: any) => (
-            <div
-              key={item.id}
-              className="strengths-stagger-card group p-7 md:p-9 rounded-2xl bg-[#121214] border border-white/[0.08] hover:border-white/[0.2] transition-all duration-300 flex flex-col justify-between"
-            >
-              <div>
-                {/* Card Top: Number + Icon */}
-                <div className="flex items-center justify-between pb-5 mb-5 border-b border-white/[0.06]">
-                  <div className="w-10 h-10 rounded-xl bg-white/[0.05] border border-white/[0.08] flex items-center justify-center">
-                    {getIcon(item.id)}
-                  </div>
-                  <span className="text-2xl font-semibold text-[#86868b]">
-                    {item.number}
-                  </span>
-                </div>
-
-                {/* Card Titles */}
-                <div className="mb-3.5">
-                  <h3 className="text-xl sm:text-2xl font-semibold text-[#f5f5f7] tracking-[-0.02em] mb-1">
-                    {item.title}
-                  </h3>
-                  <div className="text-xs text-[#86868b] mt-0.5 font-normal">
-                    {item.subtitle}
-                  </div>
-                </div>
-
-                {/* Narrative */}
-                <p className="text-[#86868b] text-sm font-normal leading-relaxed mb-5">
-                  {item.desc}
-                </p>
-
-                {/* Key Points */}
-                <div className="space-y-2 mb-5 border-t border-white/[0.06] pt-4">
-                  {item.keyPoints.map((point: string, pIdx: number) => (
-                    <div key={pIdx} className="flex items-center space-x-2 text-xs text-[#f5f5f7]/90 font-normal">
-                      <CheckCircle2 size={13} className="text-accent shrink-0" />
-                      <span>{point}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Bottom Tags */}
-              <div className="flex flex-wrap gap-1.5 pt-4 border-t border-white/[0.06]">
-                {item.tags.map((tag: string, tIdx: number) => (
-                  <span
-                    key={tIdx}
-                    className="text-[11px] text-[#86868b] bg-white/[0.04] px-2.5 py-0.5 rounded border border-white/[0.06]"
-                  >
-                    #{tag}
-                  </span>
-                ))}
-              </div>
+        {/* Image-First Visual Pillars (2 Wide Editorial Media Cards) */}
+        <div className="strengths-grid-trigger grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 mb-20">
+          {/* Card 1: Commercial Cinema & Color Science */}
+          <div className="strengths-card flex flex-col group">
+            <div className="aspect-[16/10] w-full overflow-hidden rounded-xl border border-white/[0.08] bg-[#111111] group-hover:border-white/20 transition-colors duration-300">
+              <img
+                src="/src/assets/images/shinsegae_luxury_visual_1791140086284.jpg"
+                alt="Commercial Cinema Direction"
+                loading="lazy"
+                className="w-full h-full object-cover transition-transform duration-700 ease-[0.16,1,0.3,1] group-hover:scale-[1.02]"
+              />
             </div>
-          ))}
-        </div>
-
-        {/* Extended Section: Specialized Gear & Comprehensive Skill Stack with Stagger */}
-        <div className="strengths-arsenal-trigger grid grid-cols-1 lg:grid-cols-12 gap-7 pt-10 border-t border-white/[0.08]">
-          {/* Left: In-House Production Gear Arsenal (5 cols) */}
-          <div className="strengths-arsenal-card lg:col-span-5 p-7 rounded-2xl bg-[#121214] border border-white/[0.08] flex flex-col justify-between">
-            <div>
-              <div className="flex items-center space-x-2 text-xs uppercase tracking-wider text-accent mb-2">
-                <Wrench size={13} />
-                <span>Production Gear</span>
-              </div>
-              <h3 className="text-xl sm:text-2xl font-semibold text-[#f5f5f7] tracking-[-0.02em] mb-2">
-                {ui.strengths.gearTitle}
+            <div className="mt-4 flex items-baseline justify-between">
+              <h3 className="text-lg md:text-xl font-medium text-white tracking-tight">
+                01 · {ui.strengths.gearTitle}
               </h3>
-              <p className="text-[#86868b] text-xs sm:text-sm font-normal leading-relaxed mb-5">
-                {ui.strengths.gearSubtitle}
-              </p>
-
-              <div className="space-y-2.5">
-                {gearItems.map((gear, idx) => (
-                  <div
-                    key={idx}
-                    className="flex items-center justify-between p-3 rounded-xl bg-white/[0.03] border border-white/[0.06] text-xs"
-                  >
-                    <span className="text-[#f5f5f7] font-normal truncate max-w-[70%]">
-                      {gear.name}
-                    </span>
-                    <span className="text-accent text-[11px] shrink-0 font-medium">
-                      {gear.category}
-                    </span>
-                  </div>
-                ))}
-              </div>
+              <span className="text-xs font-mono text-[#86868b] uppercase tracking-wider">
+                IN-HOUSE PRODUCTION
+              </span>
             </div>
-
-            <div className="mt-5 pt-3.5 border-t border-white/[0.08] flex items-center justify-between text-xs text-[#86868b]">
-              <span>Zero lead time deployment</span>
-              <span className="text-accent font-medium">{ui.strengths.gearReady}</span>
+            <div className="text-xs text-[#86868b] mt-1">
+              {ui.strengths.gearSubtitle}
             </div>
           </div>
 
-          {/* Right: Technical Skill Stack Matrix (7 cols) */}
-          <div className="strengths-arsenal-card lg:col-span-7 p-7 rounded-2xl bg-[#121214] border border-white/[0.08]">
-            <div className="flex items-center space-x-2 text-xs uppercase tracking-wider text-accent mb-2">
-              <ShieldCheck size={13} />
-              <span>Skill Matrix</span>
+          {/* Card 2: Generative AI & Next-Gen Synthesis */}
+          <div className="strengths-card flex flex-col group">
+            <div className="aspect-[16/10] w-full overflow-hidden rounded-xl border border-white/[0.08] bg-[#111111] group-hover:border-white/20 transition-colors duration-300">
+              <img
+                src="/src/assets/images/ai_generative_sculpture_1791140097764.jpg"
+                alt="AI Generative Design"
+                loading="lazy"
+                className="w-full h-full object-cover transition-transform duration-700 ease-[0.16,1,0.3,1] group-hover:scale-[1.02]"
+              />
             </div>
-            <h3 className="text-xl sm:text-2xl font-semibold text-[#f5f5f7] tracking-[-0.02em] mb-2">
-              {ui.strengths.skillTitle}
-            </h3>
-            <p className="text-[#86868b] text-xs sm:text-sm font-normal leading-relaxed mb-6">
+            <div className="mt-4 flex items-baseline justify-between">
+              <h3 className="text-lg md:text-xl font-medium text-white tracking-tight">
+                02 · {ui.strengths.skillTitle}
+              </h3>
+              <span className="text-xs font-mono text-[#86868b] uppercase tracking-wider">
+                AI SYNTHESIS & PIPELINE
+              </span>
+            </div>
+            <div className="text-xs text-[#86868b] mt-1">
               {ui.strengths.skillSubtitle}
-            </p>
+            </div>
+          </div>
+        </div>
 
-            <div className="space-y-4">
-              {skillGroups.map((group, idx) => (
-                <div key={idx} className="border-b border-white/[0.06] pb-3.5 last:border-b-0">
-                  <div className="text-xs uppercase tracking-wider text-[#6e6e73] mb-2">
-                    {group.category}
-                  </div>
-                  <div className="flex flex-wrap gap-1.5">
-                    {group.items.map((skill: string, sIdx: number) => (
-                      <span
-                        key={sIdx}
-                        className="px-2.5 py-1 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] text-[#f5f5f7] text-xs border border-white/[0.06] transition-colors"
-                      >
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
+        {/* Minimalist Apple Tech Specs (Hardware & Software) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 pt-12 border-t border-white/[0.08]">
+          {/* Left: Production Gear Arsenal (6 cols) */}
+          <div className="lg:col-span-6 space-y-6">
+            <div className="text-xs font-mono tracking-widest text-[#86868b] uppercase">
+              HARDWARE ARSENAL (OWNED)
+            </div>
+            <div className="divide-y divide-white/[0.06] border-y border-white/[0.06]">
+              {gearItems.map((item, idx) => (
+                <div key={idx} className="py-3 flex items-center justify-between text-xs">
+                  <span className="text-[#f5f5f7] font-medium">{item.name}</span>
+                  <span className="text-[#86868b] font-mono text-[11px] shrink-0 ml-4">{item.role}</span>
                 </div>
               ))}
+            </div>
+          </div>
+
+          {/* Right: Core Discipline Stack (6 cols) */}
+          <div className="lg:col-span-6 space-y-6">
+            <div className="text-xs font-mono tracking-widest text-[#86868b] uppercase">
+              TECHNICAL & CREATIVE STACK
+            </div>
+            <div className="pt-2 border-t border-white/[0.06] grid grid-cols-2 sm:grid-cols-3 gap-y-3.5 gap-x-4">
+              {tools.map((tool, idx) => (
+                <div key={idx} className="text-xs text-[#86868b] hover:text-white transition-colors flex items-center space-x-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-white/20 shrink-0" />
+                  <span className="font-mono text-white/90">{tool}</span>
+                </div>
+              ))}
+            </div>
+            <div className="pt-6 border-t border-white/[0.06] text-xs font-mono text-[#86868b] flex items-center justify-between">
+              <span>STATUS</span>
+              <span className="text-white">{ui.strengths.gearReady}</span>
             </div>
           </div>
         </div>

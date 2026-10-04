@@ -2,10 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useLanguage } from '../LanguageContext';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { 
-  Mail, Copy, Check, ArrowUpRight, Send, 
-  MessageSquare
-} from 'lucide-react';
+import { Copy, Check, ArrowUpRight, Send } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -26,36 +23,18 @@ const ContactSection: React.FC = () => {
   // GSAP ScrollTrigger Sequence
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // 1. Mask Headline Reveal
       gsap.fromTo(
         '.contact-title-line',
-        { yPercent: 115, skewY: 3, opacity: 0 },
+        { yPercent: 110, skewY: 2, opacity: 0 },
         {
           yPercent: 0,
           skewY: 0,
           opacity: 1,
-          duration: 1.25,
+          duration: 1.2,
           ease: 'expo.out',
           scrollTrigger: {
             trigger: sectionRef.current,
             start: 'top 75%',
-          }
-        }
-      );
-
-      // 2. Cards Stagger Entry
-      gsap.fromTo(
-        '.contact-stagger-card',
-        { y: 55, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 1.0,
-          ease: 'power3.out',
-          stagger: 0.12,
-          scrollTrigger: {
-            trigger: '.contact-cards-trigger',
-            start: 'top 80%',
           }
         }
       );
@@ -86,155 +65,145 @@ const ContactSection: React.FC = () => {
     }, 4000);
   };
 
+  const copiedText = ui.experience?.copied || 'Copied';
+  const naverDocText = ui.contact?.naverDocLink || ui.nav?.portfolioDoc || 'Naver Portfolio';
+  const phoneLabel = ui.contact?.phone || 'Phone / Direct';
+  const confText = ui.contact?.confidentialityNote || ui.contact?.response24h || 'All inquiries are strictly confidential.';
+  const messageTitleText = ui.contact?.messageTitle || ui.contact?.formTitle || 'Project Inquiry Brief';
+  const successTitleText = ui.contact?.submittedTitle || ui.contact?.successTitle || 'Message Sent Successfully';
+  const successDescText = ui.contact?.submittedDesc || ui.contact?.successDesc || 'Thank you for reaching out. We will reply within 24 hours.';
+  const emailLabelText = ui.contact?.emailLabel || ui.contact?.contactLabel || 'Email or Phone *';
+  const emailPlaceholderText = ui.contact?.emailPlaceholder || ui.contact?.contactPlaceholder || 'contact@brand.com';
+
   return (
     <footer 
       ref={sectionRef}
       id="contact" 
-      className="relative min-h-screen flex flex-col justify-between bg-black border-t border-white/[0.08] pt-28 pb-12 overflow-hidden"
+      className="relative min-h-[90vh] flex flex-col justify-between bg-black border-t border-white/[0.08] pt-28 pb-12"
     >
-      {/* Background Subtle Radial Glow */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[350px] bg-white/[0.02] rounded-full blur-[140px] pointer-events-none" />
-
-      {/* Main Content Area */}
       <div className="max-w-1700 mx-auto w-full px-6 md:px-12 relative z-10 my-auto">
-        {/* Apple-style Headline with Mask Reveal */}
-        <div className="mb-14 md:mb-16">
-          <div className="text-xs uppercase tracking-wider text-[#86868b] mb-3 font-normal">
+        {/* Apple-style Display Headline: Pure white & silver, no gradients */}
+        <div className="mb-20">
+          <div className="text-xs uppercase tracking-[0.2em] text-[#86868b] font-mono mb-4">
             {ui.contact.tag}
           </div>
-          <h2 className="text-4xl sm:text-6xl md:text-7xl font-semibold text-[#f5f5f7] tracking-[-0.035em] leading-[1.06] max-w-5xl">
+          <h2 className="text-4xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-semibold tracking-[-0.035em] leading-[1.05] max-w-5xl">
             <div className="overflow-hidden py-1">
-              <span className="contact-title-line block will-change-transform">
+              <span className="contact-title-line block will-change-transform text-white">
                 {ui.contact.headline1}
               </span>
             </div>
             <div className="overflow-hidden py-1">
-              <span className="contact-title-line block will-change-transform bg-gradient-to-r from-[#f5f5f7] via-[#e5e5ea] to-[#86868b] bg-clip-text text-transparent">
+              <span className="contact-title-line block will-change-transform text-[#a1a1a6]">
                 {ui.contact.headline2}
               </span>
             </div>
           </h2>
-          <p className="text-[#86868b] text-base md:text-lg font-normal max-w-2xl mt-4 leading-relaxed tracking-[-0.01em]">
+          <p className="text-[#86868b] text-base md:text-lg font-normal max-w-2xl mt-4 leading-relaxed">
             {ui.contact.subtitle}
           </p>
         </div>
 
-        {/* Two-Column Touchpoint & Inquiry Form */}
-        <div className="contact-cards-trigger grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 items-start pb-12">
-          {/* Left Column: Direct Fast Channels (5 cols) */}
-          <div className="lg:col-span-5 space-y-4 contact-stagger-card">
-            <div className="text-xs uppercase tracking-wider text-[#86868b] font-normal">
+        {/* Minimalist 2-Column Split: Direct Channels & Clean Form */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start pb-16 border-b border-white/[0.08]">
+          {/* Left Column: Direct Touchpoints (5 cols) */}
+          <div className="lg:col-span-5 space-y-8">
+            <div className="text-xs font-mono tracking-widest text-[#86868b] uppercase">
               {ui.contact.directChannels}
             </div>
 
-            {/* Email Box */}
-            <div className="p-6 rounded-2xl bg-[#121214] border border-white/[0.08] space-y-2 group hover:border-white/[0.2] transition-colors">
-              <div className="flex items-center justify-between">
-                <span className="text-xs text-[#86868b] uppercase">{ui.contact.officialEmail}</span>
-                <button
-                  onClick={handleCopyEmail}
-                  className="text-xs text-[#86868b] hover:text-[#f5f5f7] flex items-center space-x-1 px-2.5 py-1 rounded bg-white/[0.05] hover:bg-white/[0.1] transition-colors cursor-pointer"
-                >
-                  {copiedEmail ? <Check size={11} className="text-emerald-400" /> : <Copy size={11} />}
-                  <span>{copiedEmail ? ui.experience.copied : ui.contact.copyEmail}</span>
-                </button>
-              </div>
-              <a
-                href="mailto:ro3eandcat@gmail.com"
-                className="text-xl sm:text-2xl font-semibold text-[#f5f5f7] hover:text-accent transition-colors block truncate tracking-[-0.01em]"
-              >
-                ro3eandcat@gmail.com
-              </a>
-            </div>
-
-            {/* WeChat & Phone Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {/* WeChat */}
-              <div className="p-4 rounded-2xl bg-[#121214] border border-white/[0.08] space-y-1.5">
+            <div className="space-y-6">
+              {/* Email */}
+              <div className="border-t border-white/[0.08] pt-4">
+                <span className="text-[11px] font-mono text-[#86868b] uppercase block mb-1">
+                  {ui.contact.officialEmail}
+                </span>
                 <div className="flex items-center justify-between">
-                  <span className="text-xs text-[#86868b]">{ui.contact.wechat}</span>
-                  <button
-                    onClick={handleCopyWeChat}
-                    className="text-[11px] text-[#86868b] hover:text-[#f5f5f7] flex items-center space-x-1 px-2 py-0.5 rounded bg-white/[0.05] hover:bg-white/[0.1] transition-colors cursor-pointer"
+                  <a
+                    href="mailto:ro3eandcat@gmail.com"
+                    className="text-xl sm:text-2xl font-medium text-white hover:text-[#a1a1a6] transition-colors"
                   >
-                    {copiedWeChat ? <Check size={10} className="text-emerald-400" /> : <Copy size={10} />}
-                    <span>{copiedWeChat ? ui.experience.copied : 'Copy'}</span>
+                    ro3eandcat@gmail.com
+                  </a>
+                  <button
+                    onClick={handleCopyEmail}
+                    className="text-xs text-[#86868b] hover:text-white flex items-center space-x-1 cursor-pointer font-mono"
+                  >
+                    {copiedEmail ? <Check size={12} className="text-white" /> : <Copy size={12} />}
+                    <span>{copiedEmail ? copiedText : 'Copy'}</span>
                   </button>
                 </div>
-                <div className="text-sm font-semibold text-[#f5f5f7] tracking-wider font-mono">
-                  icf304
+              </div>
+
+              {/* WeChat & Phone */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 border-t border-white/[0.08] pt-4">
+                <div>
+                  <span className="text-[11px] font-mono text-[#86868b] uppercase block mb-1">
+                    {ui.contact.wechat}
+                  </span>
+                  <div className="flex items-center space-x-2">
+                    <span className="text-lg font-mono text-white">icf304</span>
+                    <button
+                      onClick={handleCopyWeChat}
+                      className="text-xs text-[#86868b] hover:text-white cursor-pointer"
+                    >
+                      {copiedWeChat ? <Check size={11} className="text-white" /> : <Copy size={11} />}
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <span className="text-[11px] font-mono text-[#86868b] uppercase block mb-1">
+                    {phoneLabel}
+                  </span>
+                  <a
+                    href="tel:010-8388"
+                    className="text-lg font-mono text-white hover:text-[#a1a1a6] transition-colors"
+                  >
+                    +82 010-****-8388
+                  </a>
                 </div>
               </div>
 
-              {/* Direct Call / Cell */}
-              <div className="p-4 rounded-2xl bg-[#121214] border border-white/[0.08] space-y-1.5">
-                <div className="text-xs text-[#86868b]">{ui.contact.phone}</div>
+              {/* Naver Portfolio Link */}
+              <div className="border-t border-white/[0.08] pt-4">
                 <a
-                  href="tel:010-8388"
-                  className="text-sm font-semibold text-[#f5f5f7] hover:text-accent transition-colors block font-mono"
+                  href="https://naver.me/5fdFDeXr"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-between group py-1 text-white hover:text-[#a1a1a6] transition-colors"
                 >
-                  +82 010-****-8388
+                  <span className="text-base font-medium">{naverDocText}</span>
+                  <ArrowUpRight size={16} className="text-[#86868b] group-hover:text-white transition-colors" />
                 </a>
               </div>
             </div>
 
-            {/* Naver Portfolio Link */}
-            <a
-              href="https://naver.me/5fdFDeXr"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-4 rounded-2xl bg-[#121214] border border-white/[0.08] flex items-center justify-between group hover:border-white/[0.2] transition-colors"
-            >
-              <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 font-bold text-xs">
-                  N
-                </div>
-                <div>
-                  <div className="text-xs font-medium text-[#f5f5f7]">
-                    {ui.experience.naverPortfolio}
-                  </div>
-                  <div className="text-[11px] text-[#86868b]">
-                    naver.me/5fdFDeXr
-                  </div>
-                </div>
-              </div>
-              <ArrowUpRight size={14} className="text-[#86868b] group-hover:text-[#f5f5f7] transition-colors" />
-            </a>
-
-            {/* Note / Advisory */}
-            <div className="p-4 rounded-xl bg-white/[0.02] border border-white/[0.05] text-[11px] text-[#6e6e73] leading-relaxed">
-              {ui.contact.confidentialityNote}
+            <div className="text-xs text-[#6e6e73] leading-relaxed pt-2">
+              {confText}
             </div>
           </div>
 
-          {/* Right Column: Direct Message Form (7 cols) */}
-          <div className="lg:col-span-7 p-6 sm:p-8 rounded-2xl bg-[#121214] border border-white/[0.08] contact-stagger-card">
-            <div className="flex items-center space-x-2 text-xs uppercase tracking-wider text-accent mb-2">
-              <MessageSquare size={13} />
-              <span>{ui.contact.messageTag}</span>
+          {/* Right Column: Clean Minimalist Inquiry Form (7 cols) */}
+          <div className="lg:col-span-7">
+            <div className="text-xs font-mono tracking-widest text-[#86868b] uppercase mb-4">
+              {messageTitleText}
             </div>
-            <h3 className="text-xl sm:text-2xl font-semibold text-[#f5f5f7] tracking-[-0.02em] mb-1">
-              {ui.contact.messageTitle}
-            </h3>
-            <p className="text-xs text-[#86868b] mb-6">
-              {ui.contact.messageSubtitle}
-            </p>
 
             {formSubmitted ? (
-              <div className="p-8 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-center space-y-2">
-                <Check size={28} className="text-emerald-400 mx-auto" />
-                <div className="text-sm font-semibold text-[#f5f5f7]">
-                  {ui.contact.submittedTitle}
+              <div className="py-12 border-t border-white/[0.08] space-y-2">
+                <div className="text-xl font-medium text-white">
+                  {successTitleText}
                 </div>
-                <div className="text-xs text-[#86868b]">
-                  {ui.contact.submittedDesc}
+                <div className="text-sm text-[#86868b]">
+                  {successDescText}
                 </div>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+              <form onSubmit={handleSubmit} className="space-y-6 border-t border-white/[0.08] pt-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-xs text-[#86868b] mb-1">
+                    <label className="block text-xs font-mono text-[#86868b] uppercase mb-2">
                       {ui.contact.nameLabel} *
                     </label>
                     <input
@@ -243,28 +212,28 @@ const ContactSection: React.FC = () => {
                       placeholder={ui.contact.namePlaceholder}
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-[#f5f5f7] placeholder-white/20 text-xs focus:outline-none focus:border-white/30 transition-colors"
+                      className="w-full pb-2 bg-transparent border-b border-white/20 text-white placeholder-white/20 text-sm focus:outline-none focus:border-white transition-colors"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs text-[#86868b] mb-1">
-                      {ui.contact.emailLabel} *
+                    <label className="block text-xs font-mono text-[#86868b] uppercase mb-2">
+                      {emailLabelText}
                     </label>
                     <input
                       type="email"
                       required
-                      placeholder={ui.contact.emailPlaceholder}
+                      placeholder={emailPlaceholderText}
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-[#f5f5f7] placeholder-white/20 text-xs focus:outline-none focus:border-white/30 transition-colors"
+                      className="w-full pb-2 bg-transparent border-b border-white/20 text-white placeholder-white/20 text-sm focus:outline-none focus:border-white transition-colors"
                     />
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-xs text-[#86868b] mb-1">
+                    <label className="block text-xs font-mono text-[#86868b] uppercase mb-2">
                       {ui.contact.brandLabel}
                     </label>
                     <input
@@ -272,30 +241,30 @@ const ContactSection: React.FC = () => {
                       placeholder={ui.contact.brandPlaceholder}
                       value={formData.brand}
                       onChange={(e) => setFormData({ ...formData, brand: e.target.value })}
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-[#f5f5f7] placeholder-white/20 text-xs focus:outline-none focus:border-white/30 transition-colors"
+                      className="w-full pb-2 bg-transparent border-b border-white/20 text-white placeholder-white/20 text-sm focus:outline-none focus:border-white transition-colors"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs text-[#86868b] mb-1">
+                    <label className="block text-xs font-mono text-[#86868b] uppercase mb-2">
                       {ui.contact.typeLabel}
                     </label>
                     <select
                       value={formData.budget}
                       onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
-                      className="w-full px-3.5 py-2.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-[#f5f5f7] text-xs focus:outline-none focus:border-white/30 transition-colors"
+                      className="w-full pb-2 bg-transparent border-b border-white/20 text-white text-sm focus:outline-none focus:border-white transition-colors"
                     >
-                      <option value="" className="bg-[#121214] text-[#f5f5f7]">{ui.contact.typeDefault}</option>
-                      <option value="video" className="bg-[#121214] text-[#f5f5f7]">{ui.contact.typeVideo}</option>
-                      <option value="brand" className="bg-[#121214] text-[#f5f5f7]">{ui.contact.typeBrand}</option>
-                      <option value="china" className="bg-[#121214] text-[#f5f5f7]">{ui.contact.typeChina}</option>
-                      <option value="ai" className="bg-[#121214] text-[#f5f5f7]">{ui.contact.typeAi}</option>
+                      <option value="" className="bg-black text-[#86868b]">{ui.contact.typeDefault}</option>
+                      <option value="video" className="bg-black text-white">{ui.contact.typeVideo}</option>
+                      <option value="brand" className="bg-black text-white">{ui.contact.typeBrand}</option>
+                      <option value="china" className="bg-black text-white">{ui.contact.typeChina}</option>
+                      <option value="ai" className="bg-black text-white">{ui.contact.typeAi}</option>
                     </select>
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs text-[#86868b] mb-1">
+                  <label className="block text-xs font-mono text-[#86868b] uppercase mb-2">
                     {ui.contact.detailsLabel}
                   </label>
                   <textarea
@@ -304,16 +273,16 @@ const ContactSection: React.FC = () => {
                     placeholder={ui.contact.detailsPlaceholder}
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-white/[0.04] border border-white/[0.08] text-[#f5f5f7] placeholder-white/20 text-xs focus:outline-none focus:border-white/30 transition-colors resize-none"
+                    className="w-full pb-2 bg-transparent border-b border-white/20 text-white placeholder-white/20 text-sm focus:outline-none focus:border-white transition-colors resize-none"
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full py-3 rounded-full bg-[#f5f5f7] text-black font-medium text-xs tracking-[-0.01em] hover:bg-white transition-all duration-200 flex items-center justify-center space-x-1.5 active:scale-95 cursor-pointer"
+                  className="px-8 py-3 rounded-full bg-white text-black font-medium text-xs tracking-tight hover:bg-[#e5e5ea] transition-colors flex items-center space-x-2 cursor-pointer active:scale-98"
                 >
-                  <Send size={13} />
                   <span>{ui.contact.submitBtn}</span>
+                  <Send size={12} />
                 </button>
               </form>
             )}
@@ -321,17 +290,10 @@ const ContactSection: React.FC = () => {
         </div>
       </div>
 
-      {/* Bottom Legal & Copyright Bar */}
-      <div className="border-t border-white/[0.08] pt-6 mt-8">
-        <div className="max-w-1700 mx-auto px-6 md:px-12 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[#6e6e73]">
-          <div>
-            {ui.contact.copyright}
-          </div>
-
-          <div className="flex items-center space-x-4">
-            <span>{ui.contact.locationFooter}</span>
-          </div>
-        </div>
+      {/* Pure Apple Bottom Bar */}
+      <div className="max-w-1700 mx-auto w-full px-6 md:px-12 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-[#6e6e73]">
+        <div>{ui.contact.copyright}</div>
+        <div>{ui.contact.locationFooter}</div>
       </div>
     </footer>
   );
