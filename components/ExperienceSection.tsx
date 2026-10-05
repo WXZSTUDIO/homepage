@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useLanguage } from '../LanguageContext';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Mail, ArrowUpRight, Copy, Check } from 'lucide-react';
+import { Mail, Copy, Check } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -11,10 +11,8 @@ const ExperienceSection: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const [copiedEmail, setCopiedEmail] = useState(false);
 
-  // GSAP ScrollTrigger Sequence
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // 1. Headline Mask Reveal
       gsap.fromTo(
         '.exp-title-line',
         { yPercent: 110, skewY: 2, opacity: 0 },
@@ -24,14 +22,10 @@ const ExperienceSection: React.FC = () => {
           opacity: 1,
           duration: 1.2,
           ease: 'expo.out',
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 75%',
-          }
+          scrollTrigger: { trigger: sectionRef.current, start: 'top 75%' }
         }
       );
 
-      // 2. Content Stagger
       gsap.fromTo(
         '.exp-stagger-item',
         { y: 40, opacity: 0 },
@@ -41,10 +35,7 @@ const ExperienceSection: React.FC = () => {
           duration: 0.9,
           ease: 'power3.out',
           stagger: 0.1,
-          scrollTrigger: {
-            trigger: '.exp-content-trigger',
-            start: 'top 80%',
-          }
+          scrollTrigger: { trigger: '.exp-content-trigger', start: 'top 80%' }
         }
       );
     }, sectionRef);
@@ -62,113 +53,112 @@ const ExperienceSection: React.FC = () => {
     { value: '13+', unit: 'Years Active', sub: 'Dedicated to visual design & cinema' },
     { value: '120+', unit: 'Deliveries', sub: 'Commercial brand systems & video' },
     { value: '15M+', unit: 'Impressions', sub: 'Viral reach across platforms' },
-    { value: '100%', unit: 'Autonomous Gear', sub: 'Zero rental delay' },
+    { value: '100%', unit: 'Autonomous Gear', sub: 'Zero rental delay' }
   ];
 
   return (
-    <section 
-      ref={sectionRef} 
-      id="experience" 
-      className="relative py-28 md:py-36 bg-black border-t border-white/[0.08]"
+    <section
+      ref={sectionRef}
+      id="experience"
+      className="relative py-24 md:py-36 bg-ink border-t border-rule"
     >
-      <div className="relative z-10 max-w-1700 mx-auto px-6 md:px-12">
-        {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 pb-6 border-b border-white/[0.08]">
+      <div className="max-w-1700 mx-auto px-6 md:px-12">
+        {/* Section head */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14 pb-6 border-b border-rule">
           <div>
-            <div className="text-xs uppercase tracking-[0.2em] text-[#86868b] font-mono mb-3">
-              {ui.experience.tag}
-            </div>
+            <div className="eyebrow mb-3">{ui.experience.tag}</div>
             <div className="overflow-hidden py-1">
-              <h2 className="exp-title-line text-3xl sm:text-5xl md:text-6xl font-semibold text-white tracking-[-0.03em] block will-change-transform">
+              <h2 className="exp-title-line font-display text-[clamp(2.2rem,5.4vw,4.5rem)] leading-[0.98] text-paper block will-change-transform">
                 {ui.experience.title}
               </h2>
             </div>
           </div>
-          <p className="text-[#86868b] text-sm md:text-base font-normal max-w-md mt-3 md:mt-0 leading-relaxed">
+          <p className="text-sm md:text-base text-muted max-w-md leading-relaxed md:text-right">
             {ui.experience.subtitle}
           </p>
         </div>
 
-        {/* Image-Centric 2-Column Split */}
+        {/* Profile spread */}
         <div className="exp-content-trigger grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-          {/* Left Column: Full Editorial Portrait Image (5 cols) */}
-          <div className="lg:col-span-5 exp-stagger-item flex flex-col">
-            <div className="aspect-[3/4] w-full overflow-hidden rounded-xl border border-white/[0.08] bg-[#111111]">
-              <img
-                src="/src/assets/images/designer_chanbong_portrait_1791140071150.jpg"
-                alt={ui.nav.brand}
-                className="w-full h-full object-cover filter contrast-105"
-                loading="lazy"
-              />
-            </div>
+          {/* Left: portrait plate */}
+          <div className="lg:col-span-5 exp-stagger-item">
+            <figure className="m-0">
+              <div className="frame aspect-[3/4] w-full">
+                <img
+                  src="images/designer-chanbong-portrait.jpg"
+                  alt={ui.nav.brand}
+                  className="w-full h-full object-cover grayscale contrast-105 brightness-95 hover:grayscale-0 transition-[filter] duration-700"
+                  loading="lazy"
+                />
+              </div>
+              <figcaption className="mt-5 border-t border-rule pt-4">
+                <div className="flex items-baseline justify-between gap-4">
+                  <span className="font-display text-2xl text-paper leading-none">
+                    ZHENG CANFENG
+                  </span>
+                  <span className="eyebrow">Seoul, KR</span>
+                </div>
+                <div className="mt-2 text-sm text-muted">{ui.nav.title}</div>
 
-            {/* Clean Typographic Caption Beneath Image */}
-            <div className="mt-5 space-y-1">
-              <div className="text-lg font-semibold text-white tracking-tight flex items-center justify-between">
-                <span>ZHENG CANFENG (정찬봉)</span>
-                <span className="text-xs font-mono text-[#86868b]">SEOUL, KR</span>
-              </div>
-              <p className="text-sm text-[#86868b]">
-                {ui.nav.title}
-              </p>
-              <div className="pt-3 flex items-center space-x-4 text-xs font-mono text-[#86868b]">
-                <button
-                  onClick={handleCopyEmail}
-                  className="hover:text-white transition-colors flex items-center space-x-1 cursor-pointer"
-                >
-                  <Mail size={12} />
-                  <span>ro3eandcat@gmail.com</span>
-                  {copiedEmail && <span className="text-white ml-1">✓</span>}
-                </button>
-                <span>/</span>
-                <span>WeChat: icf304</span>
-              </div>
-            </div>
+                <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 eyebrow">
+                  <button
+                    onClick={handleCopyEmail}
+                    className="inline-flex items-center gap-1.5 text-muted hover:text-paper transition-colors cursor-pointer"
+                  >
+                    <Mail size={11} />
+                    <span className="normal-case tracking-normal">
+                      ro3eandcat@gmail.com
+                    </span>
+                    {copiedEmail && <Check size={11} className="text-accent" />}
+                  </button>
+                  <span className="text-faint/60">/</span>
+                  <span>WeChat: icf304</span>
+                </div>
+              </figcaption>
+            </figure>
           </div>
 
-          {/* Right Column: Bio + Pure Typographic Metrics + Career Timeline (7 cols) */}
+          {/* Right: column text */}
           <div className="lg:col-span-7 space-y-12 exp-stagger-item">
-            {/* Executive Bio - Single punchy statement */}
-            <div>
-              <p className="text-lg sm:text-xl text-[#f5f5f7] font-normal leading-relaxed tracking-[-0.01em]">
-                {ui.experience.bioP1}
-              </p>
-            </div>
+            {/* Lead paragraph with drop cap */}
+            <p className="dropcap text-base sm:text-lg text-paper-70 leading-[1.75] max-w-2xl">
+              {ui.experience.bioP1}
+            </p>
 
-            {/* Pure Typographic Metrics (No Boxes, Pure Apple Numbers) */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-6 border-t border-white/[0.08]">
+            {/* Metrics — set on a hairline grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 border-t border-rule">
               {metrics.map((m: any, idx: number) => (
-                <div key={idx} className="flex flex-col">
-                  <div className="text-4xl sm:text-5xl font-light text-white tracking-tight">
-                    {m.value}
-                  </div>
-                  <div className="text-xs text-[#86868b] mt-1 font-normal">
-                    {m.unit}
-                  </div>
+                <div
+                  key={idx}
+                  className={`pt-5 pb-1 ${idx > 0 ? 'sm:border-l sm:border-rule sm:pl-5' : ''}`}
+                >
+                  <div className="folio text-4xl sm:text-5xl">{m.value}</div>
+                  <div className="eyebrow mt-2">{m.unit}</div>
                 </div>
               ))}
             </div>
 
-            {/* Career Timeline: Clean Minimalist Rows (No Text Clutter) */}
-            <div className="pt-6 border-t border-white/[0.08] space-y-6">
-              <div className="text-xs font-mono tracking-widest text-[#86868b] uppercase">
+            {/* Career — contents table */}
+            <div className="border-t border-rule pt-6">
+              <div className="eyebrow mb-5">
                 {ui.experience.careerHistoryTitle || ui.experience.careerHistoryTag}
               </div>
 
-              <div className="space-y-4">
+              <div className="border-t border-rule-soft">
                 {careers.map((career: any) => (
-                  <div key={career.id} className="border-b border-white/[0.06] pb-4 last:border-b-0 flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 sm:gap-4">
+                  <div
+                    key={career.id}
+                    className="group grid grid-cols-1 sm:grid-cols-[7.5rem_1fr] gap-1 sm:gap-6 py-4 border-b border-rule-soft items-baseline"
+                  >
+                    <span className="eyebrow text-faint">{career.period}</span>
                     <div>
-                      <h3 className="text-base sm:text-lg font-medium text-white tracking-tight">
+                      <h3 className="font-display text-xl sm:text-2xl text-paper leading-tight group-hover:text-accent transition-colors duration-300">
                         {career.company}
                       </h3>
-                      <div className="text-xs text-[#86868b] mt-0.5">
-                        {career.role} · {career.type}
+                      <div className="text-xs text-muted mt-1">
+                        {career.role} · {career.type} · {career.duration}
                       </div>
                     </div>
-                    <span className="text-xs font-mono text-[#86868b] shrink-0">
-                      {career.period}
-                    </span>
                   </div>
                 ))}
               </div>

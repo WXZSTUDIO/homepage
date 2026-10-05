@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useLanguage } from '../LanguageContext';
 import gsap from 'gsap';
-import { ArrowDown, Volume2, VolumeX, ArrowUpRight } from 'lucide-react';
+import { ArrowDown, Volume2, VolumeX } from 'lucide-react';
 
 interface HeroSectionProps {
   onExplore: () => void;
@@ -15,51 +15,42 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onExplore, onContact, isIntro
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isMuted, setIsMuted] = useState(true);
 
-  // GSAP Kinetic Entrance Timeline for Hero Section
   useEffect(() => {
     if (!isIntroDone) return;
 
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ delay: 0.1 });
 
-      // 1. Eyebrow kicker
       tl.fromTo(
         '.hero-eyebrow',
-        { y: 20, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' }
+        { y: 16, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out', stagger: 0.08 }
       );
 
-      // 2. Masked Headline: Displacement and clean settling
       tl.fromTo(
         '.hero-line-inner',
-        {
-          yPercent: 110,
-          skewY: 2,
-          opacity: 0
-        },
+        { yPercent: 110, skewY: 2, opacity: 0 },
         {
           yPercent: 0,
           skewY: 0,
           opacity: 1,
-          duration: 1.2,
+          duration: 1.3,
           ease: 'expo.out',
           stagger: 0.12
         },
-        '-=0.5'
+        '-=0.45'
       );
 
-      // 3. Narrative and Buttons
       tl.fromTo(
         '.hero-content-fade',
-        { y: 25, opacity: 0 },
+        { y: 22, opacity: 0 },
         { y: 0, opacity: 1, duration: 0.9, ease: 'power3.out', stagger: 0.08 },
-        '-=0.7'
+        '-=0.75'
       );
 
-      // 4. Bottom bar
       tl.fromTo(
         '.hero-bottom-bar',
-        { opacity: 0, y: 15 },
+        { opacity: 0, y: 12 },
         { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' },
         '-=0.6'
       );
@@ -79,9 +70,9 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onExplore, onContact, isIntro
     <section
       ref={heroRef}
       id="hero"
-      className="relative min-h-[92vh] w-full flex flex-col justify-between overflow-hidden bg-black pt-36 pb-12"
+      className="relative min-h-[100svh] w-full flex flex-col justify-between overflow-hidden bg-ink pt-32 pb-8 grain"
     >
-      {/* Background Image / Video Asset - Pure, un-obscured with clean dimming */}
+      {/* Showreel as barely-there texture */}
       <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
         <video
           ref={videoRef}
@@ -89,96 +80,107 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onExplore, onContact, isIntro
           loop
           muted
           playsInline
-          poster="/src/assets/images/shinsegae_luxury_visual_1791140086284.jpg"
-          className="w-full h-full object-cover opacity-25 filter grayscale contrast-110 brightness-90"
+          poster="images/shinsegae-luxury-visual.jpg"
+          className="w-full h-full object-cover opacity-[0.14] grayscale contrast-125"
         >
           <source
             src="https://wxzstudio.github.io/videos/portfolio-2024-showreel.mp4"
             type="video/mp4"
           />
         </video>
-        {/* Subtle, flat dark overlay without heavy radial or colorful gradients */}
-        <div className="absolute inset-0 bg-black/60" />
+        <div className="absolute inset-0 bg-ink/70" />
       </div>
 
-      {/* Main Content Container */}
-      <div className="relative z-10 max-w-1700 mx-auto w-full px-6 md:px-12 my-auto py-10 md:py-16">
-        <div className="max-w-4xl">
-          {/* Eyebrow / Kicker */}
-          <div className="hero-eyebrow text-xs uppercase tracking-[0.2em] text-[#86868b] font-mono mb-6">
-            <span>{ui.nav.brand}</span>
-            <span className="mx-2 text-white/30">/</span>
-            <span>{ui.hero.roleBadge}</span>
-          </div>
+      {/* Right-edge spine label */}
+      <div className="hidden xl:flex absolute right-5 top-1/2 -translate-y-1/2 z-10 flex-col items-center gap-4">
+        <span className="w-px h-16 bg-rule" />
+        <span className="spine eyebrow tracking-[0.3em]">SELECTED WORKS · 2013—2026</span>
+        <span className="w-px h-16 bg-rule" />
+      </div>
 
-          {/* Master Headline: Pure white and silver typography, zero colorful gradients */}
-          <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-semibold tracking-[-0.035em] leading-[1.04] mb-8">
-            <div className="overflow-hidden block py-1">
-              <span className="hero-line-inner block will-change-transform text-white">
+      <div className="relative z-10 max-w-1700 mx-auto w-full px-6 md:px-12 flex-1 flex flex-col justify-center py-12">
+        {/* Running head */}
+        <div className="hero-eyebrow flex items-center justify-between border-b border-rule pb-3 mb-10 md:mb-16">
+          <span className="eyebrow text-accent">Vol. 01</span>
+          <span className="eyebrow hidden sm:block">{ui.nav.brand} — Archive</span>
+          <span className="eyebrow">Seoul, KR</span>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-end">
+          {/* Cover headline */}
+          <h1 className="lg:col-span-8 font-display leading-[0.94] tracking-[-0.02em]">
+            <span className="block overflow-hidden py-[0.06em]">
+              <span className="hero-line-inner block will-change-transform text-[clamp(2.6rem,7.6vw,6.6rem)] text-paper">
                 {ui.hero.headline1}
               </span>
-            </div>
-            <div className="overflow-hidden block py-1">
-              <span className="hero-line-inner block will-change-transform text-[#a1a1a6]">
+            </span>
+            <span className="block overflow-hidden py-[0.06em]">
+              <span className="hero-line-inner block will-change-transform italic text-[clamp(2.6rem,7.6vw,6.6rem)] text-paper-45">
                 {ui.hero.headline2}
               </span>
-            </div>
+            </span>
           </h1>
 
-          {/* Subheading Narrative - Concise Apple-style */}
-          <div className="hero-content-fade mb-10 max-w-xl">
-            <p className="text-base sm:text-lg text-[#a1a1a6] font-normal leading-relaxed">
+          {/* Standfirst + actions */}
+          <div className="lg:col-span-4 lg:pb-3">
+            <p className="hero-content-fade text-sm sm:text-base text-paper-70 leading-relaxed max-w-md border-t border-rule pt-5">
               {ui.hero.narrative1}
             </p>
-          </div>
 
-          {/* Action Triggers: Apple-style pure buttons */}
-          <div className="hero-content-fade flex flex-wrap items-center gap-4">
-            <button
-              onClick={onExplore}
-              className="px-7 py-3 rounded-full bg-white text-black font-medium text-xs sm:text-sm tracking-tight hover:bg-[#e5e5ea] transition-colors flex items-center space-x-2 cursor-pointer active:scale-98"
-            >
-              <span>{ui.hero.btnExplore}</span>
-              <ArrowDown size={14} />
-            </button>
+            <div className="hero-content-fade flex flex-wrap items-center gap-3 mt-8">
+              <button
+                onClick={onExplore}
+                className="group inline-flex items-center gap-2 border border-paper bg-paper px-5 py-2.5 font-mono text-[10px] uppercase tracking-[0.2em] text-ink hover:bg-transparent hover:text-paper transition-colors duration-300 cursor-pointer"
+              >
+                {ui.hero.btnExplore}
+                <ArrowDown
+                  size={12}
+                  className="transition-transform duration-300 group-hover:translate-y-0.5"
+                />
+              </button>
 
-            <button
-              onClick={onContact}
-              className="px-7 py-3 rounded-full border border-white/20 hover:border-white text-white font-medium text-xs sm:text-sm tracking-tight transition-colors flex items-center space-x-1.5 cursor-pointer active:scale-98"
-            >
-              <span>{ui.hero.btnContact}</span>
-              <ArrowUpRight size={14} />
-            </button>
+              <button
+                onClick={onContact}
+                className="group inline-flex items-center gap-2 border border-rule px-5 py-2.5 font-mono text-[10px] uppercase tracking-[0.2em] text-paper hover:border-paper transition-colors duration-300 cursor-pointer"
+              >
+                {ui.hero.btnContact}
+                <span className="transition-transform duration-300 group-hover:translate-x-0.5">
+                  →
+                </span>
+              </button>
 
-            {/* Subtle showreel audio toggle */}
-            <button
-              onClick={toggleSound}
-              className="p-3 rounded-full text-[#86868b] hover:text-white transition-colors cursor-pointer"
-              title={isMuted ? 'Unmute' : 'Mute'}
-              aria-label="Toggle Audio"
-            >
-              {isMuted ? <VolumeX size={15} /> : <Volume2 size={15} />}
-            </button>
+              <button
+                onClick={toggleSound}
+                className="p-2.5 text-faint hover:text-paper transition-colors cursor-pointer"
+                title={isMuted ? 'Unmute' : 'Mute'}
+                aria-label="Toggle Audio"
+              >
+                {isMuted ? <VolumeX size={14} /> : <Volume2 size={14} />}
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Bottom Bar: Quiet Apple-style specs divider */}
-      <div className="hero-bottom-bar relative z-10 max-w-1700 mx-auto w-full px-6 md:px-12 border-t border-white/[0.08] pt-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs text-[#86868b]">
-        <div className="flex flex-wrap items-center gap-6 font-mono text-[11px] tracking-wider uppercase">
+      {/* Foot line of the cover */}
+      <div className="hero-bottom-bar relative z-10 max-w-1700 mx-auto w-full px-6 md:px-12 border-t border-rule pt-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-2 eyebrow">
           <span>{ui.hero.statExp}</span>
-          <span className="text-white/20">/</span>
+          <span className="text-faint/50">/</span>
           <span>{ui.hero.statProjects}</span>
-          <span className="text-white/20">/</span>
+          <span className="text-faint/50">/</span>
           <span>{ui.hero.statBrands}</span>
         </div>
 
         <button
           onClick={onExplore}
-          className="flex items-center space-x-1.5 text-[#86868b] hover:text-white transition-colors text-xs font-mono tracking-wider cursor-pointer"
+          className="group inline-flex items-center gap-2 eyebrow text-muted hover:text-paper transition-colors cursor-pointer"
         >
-          <span>{ui.hero.scroll}</span>
-          <ArrowDown size={12} />
+          {ui.hero.scroll}
+          <ArrowDown
+            size={11}
+            className="transition-transform duration-300 group-hover:translate-y-0.5"
+          />
         </button>
       </div>
     </section>

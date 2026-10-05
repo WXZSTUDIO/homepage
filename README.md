@@ -8,7 +8,7 @@
 
 ## 1. Project Overview (项目概览)
 
-This project is a high-end, bespoke portfolio website for **Zheng Canfeng (郑灿峰 / 정찬봉)**, built with an editorial dark aesthetic inspired by modern luxury creative agencies and Apple's refined design language. 
+This project is a high-end, bespoke portfolio website for **Zheng Canfeng (郑灿峰 / 정찬봉)**, built as a **dark editorial / magazine layout** — ink-black pages, newsprint-warm type, serif display headlines, hairline rules, folio numbering and an asymmetric grid that gives every work its own measure.
 
 The site serves as an interactive showcase of 13 years of cross-border visual direction, commercial filmmaking, brand identity systems (BI/VI), and generative AI production pipelines for premier brands including **Shinsegae Duty Free (新世界免税店)**, **Amorepacific (爱茉莉太平洋: HERA, IOPE, Vital Beautie)**, **eke Cosmetics**, **Samyang Food**, and **high & gogo**.
 
@@ -72,8 +72,12 @@ Designed to depart completely from generic templates, the site employs cinematic
 ## 4. Technical Stack (技术栈)
 
 - **Framework**: React 19 + TypeScript + Vite
-- **Styling**: Tailwind CSS + Custom Dark Theme Tokens (`#000000`, `#0d0d0f`, `#f5f5f7`, `#FFC900`)
-- **Typography**: Apple System Font Stack (`-apple-system`, `SF Pro Display`, `SF Pro Text`, `PingFang SC`, `Apple SD Gothic Neo`, `Inter`)
+- **Styling**: Tailwind CSS (local PostCSS build, no CDN) with an editorial token set:
+  - ink `#09090b` · paper `#F4F1EC` · muted `#9A958C` · faint `#6B675F` · accent `#FFC900`
+- **Typography**: a three-voice editorial stack
+  - Display (serif): `Instrument Serif` → `Noto Serif SC` → `Songti SC`
+  - Text (grotesque): `Inter` → `PingFang SC` / `Apple SD Gothic Neo`
+  - Meta (mono): `JetBrains Mono`, used for eyebrows, folios and captions
 - **Motion & Kinetic Physics**:
   - `gsap` (GreenSock Animation Platform) + `ScrollTrigger`
   - `framer-motion` (for reactive UI hover states & AnimatePresence modals)
@@ -97,6 +101,8 @@ npm run build
 # Preview production build locally
 npm run preview
 ```
+
+Pushes to `main` trigger `.github/workflows/deploy.yml`, which builds and publishes `dist/` to GitHub Pages. The Vite `base` is relative (`./`), so the same build works at a user-site root or under `/homepage/`.
 
 ---
 

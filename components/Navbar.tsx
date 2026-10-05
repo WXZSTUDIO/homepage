@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../LanguageContext';
 import LanguageSwitcher from './LanguageSwitcher';
-import { ArrowUpRight, Menu, X } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 
 interface NavbarProps {
   activeSection: string;
@@ -13,10 +13,8 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-    window.addEventListener('scroll', handleScroll);
+    const handleScroll = () => setIsScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -32,122 +30,123 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
     setIsMobileMenuOpen(false);
     const element = document.getElementById(id);
     if (element) {
-      const offset = 80;
-      const bodyRect = document.body.getBoundingClientRect().top;
-      const elementRect = element.getBoundingClientRect().top;
-      const elementPosition = elementRect - bodyRect;
-      const offsetPosition = elementPosition - offset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
+      const top = element.getBoundingClientRect().top + window.scrollY - 72;
+      window.scrollTo({ top, behavior: 'smooth' });
     }
   };
 
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           isScrolled
-            ? 'bg-black/90 backdrop-blur-xl border-b border-white/[0.08] py-3'
-            : 'bg-black/40 backdrop-blur-sm py-4'
+            ? 'bg-ink/95 backdrop-blur-xl border-b border-rule py-3'
+            : 'bg-transparent border-b border-transparent py-5'
         }`}
       >
-        <div className="max-w-1700 mx-auto px-6 md:px-12 flex items-center justify-between">
-          {/* Brand Mark */}
+        <div className="max-w-1700 mx-auto px-6 md:px-12 flex items-center justify-between gap-6">
+          {/* Masthead brand */}
           <button
             onClick={() => scrollTo('hero')}
-            className="flex items-center space-x-2 text-left focus:outline-none cursor-pointer"
+            className="group text-left focus:outline-none cursor-pointer shrink-0"
           >
-            <span className="font-semibold text-sm sm:text-base text-white tracking-[-0.02em] hover:text-[#a1a1a6] transition-colors">
+            <span className="block font-display text-lg sm:text-xl leading-none text-paper tracking-tight">
               {ui.nav.brand}
+            </span>
+            <span className="block eyebrow mt-1 text-[9px] tracking-[0.28em] text-faint group-hover:text-muted transition-colors">
+              {ui.hero.roleBadge}
             </span>
           </button>
 
-          {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center space-x-8 text-xs font-normal tracking-tight">
-            {navItems.map((item) => {
+          {/* Desktop nav — the running-head of the magazine */}
+          <nav className="hidden lg:flex items-center gap-7">
+            {navItems.map((item, idx) => {
               const isActive = activeSection === item.id;
               return (
                 <button
                   key={item.id}
                   onClick={() => scrollTo(item.id)}
-                  className={`py-1 transition-colors cursor-pointer ${
-                    isActive ? 'text-white font-medium' : 'text-[#86868b] hover:text-white'
+                  className={`relative group py-1 font-mono text-[10px] uppercase tracking-[0.2em] transition-colors cursor-pointer ${
+                    isActive ? 'text-paper' : 'text-faint hover:text-paper'
                   }`}
                 >
-                  <span>{item.label}</span>
+                  <span className="mr-1.5 text-[9px] text-faint/70">
+                    {String(idx + 1).padStart(2, '0')}
+                  </span>
+                  {item.label}
+                  <span
+                    className={`absolute left-0 -bottom-1 h-px bg-accent transition-all duration-500 ${
+                      isActive ? 'w-full' : 'w-0 group-hover:w-full'
+                    }`}
+                  />
                 </button>
               );
             })}
           </nav>
 
-          {/* Right Action Area: Language Switcher + Fast Touchpoint */}
-          <div className="hidden sm:flex items-center space-x-3 text-xs">
+          {/* Right rail */}
+          <div className="hidden sm:flex items-center gap-4 shrink-0">
             <LanguageSwitcher />
-
             <a
               href="https://naver.me/5fdFDeXr"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[#86868b] hover:text-white transition-colors flex items-center space-x-1 px-3 py-1.5 rounded-full border border-white/[0.1] hover:border-white/20"
+              className="hidden xl:inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-[0.18em] text-muted hover:text-paper transition-colors link-rule"
             >
-              <span>{ui.nav.portfolioDoc}</span>
-              <ArrowUpRight size={11} />
+              {ui.nav.portfolioDoc}
+              <ArrowUpRight size={10} />
             </a>
-
             <button
               onClick={() => scrollTo('contact')}
-              className="px-4 py-1.5 rounded-full bg-white text-black font-medium hover:bg-[#e5e5ea] transition-colors cursor-pointer"
+              className="border border-rule px-4 py-2 font-mono text-[10px] uppercase tracking-[0.18em] text-paper hover:bg-paper hover:text-ink transition-colors duration-300 cursor-pointer"
             >
-              <span>{ui.nav.getInTouch}</span>
+              {ui.nav.getInTouch}
             </button>
           </div>
 
-          {/* Mobile Menu Trigger & Mobile Lang */}
-          <div className="flex items-center space-x-2 lg:hidden">
+          {/* Mobile trigger */}
+          <div className="flex items-center gap-3 sm:hidden">
             <LanguageSwitcher />
             <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-1.5 text-[#86868b] hover:text-white focus:outline-none cursor-pointer"
+              onClick={() => setIsMobileMenuOpen((v) => !v)}
+              className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted hover:text-paper transition-colors cursor-pointer"
+              aria-expanded={isMobileMenuOpen}
               aria-label="Toggle Navigation"
             >
-              {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+              {isMobileMenuOpen ? 'Close' : 'Index'}
             </button>
           </div>
         </div>
       </header>
 
-      {/* Mobile Menu Dropdown */}
+      {/* Mobile index — a table of contents */}
       {isMobileMenuOpen && (
-        <div className="lg:hidden fixed inset-0 z-40 bg-black/95 backdrop-blur-2xl pt-24 px-6 flex flex-col justify-between pb-12">
-          <div className="space-y-3">
-            <div className="text-xs uppercase tracking-widest text-[#86868b] mb-4 font-mono">
-              {ui.nav.menu}
-            </div>
-
-            {navItems.map((item) => (
+        <div className="fixed inset-0 z-40 bg-ink pt-28 pb-10 px-6 flex flex-col justify-between overflow-y-auto">
+          <nav className="border-t border-rule">
+            {navItems.map((item, idx) => (
               <button
                 key={item.id}
                 onClick={() => scrollTo(item.id)}
-                className="w-full text-left py-3 text-lg font-medium text-white hover:text-[#a1a1a6] transition-colors border-b border-white/[0.06]"
+                className="w-full text-left flex items-baseline gap-4 py-4 border-b border-rule-soft cursor-pointer"
               >
-                <span>{item.label}</span>
+                <span className="font-mono text-[10px] text-accent">
+                  {String(idx + 1).padStart(2, '0')}
+                </span>
+                <span className="font-display text-3xl text-paper leading-none">
+                  {item.label}
+                </span>
               </button>
             ))}
-          </div>
+          </nav>
 
-          <div className="pt-6 border-t border-white/[0.08] space-y-3">
+          <div className="pt-8 space-y-4">
             <button
               onClick={() => scrollTo('contact')}
-              className="w-full py-3 rounded-full bg-white text-black font-medium text-xs tracking-tight"
+              className="w-full border border-rule py-3 font-mono text-[10px] uppercase tracking-[0.2em] text-paper hover:bg-paper hover:text-ink transition-colors"
             >
-              <span>{ui.nav.getInTouch}</span>
+              {ui.nav.getInTouch}
             </button>
-            <div className="text-center text-xs font-mono text-[#86868b]">
-              ro3eandcat@gmail.com
-            </div>
+            <div className="text-center eyebrow">ro3eandcat@gmail.com</div>
           </div>
         </div>
       )}
