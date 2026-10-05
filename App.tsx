@@ -67,7 +67,7 @@ const MainApp: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black text-[#f5f5f7] selection:bg-white selection:text-black">
+    <div className="min-h-screen bg-ink text-paper selection:bg-accent selection:text-ink">
       {/* High-Impact Opening Shutter Wipe & Numerical Preloader */}
       {/* Mounted ONLY until completed, so scroll state updates NEVER re-trigger it */}
       {!isIntroDone && (

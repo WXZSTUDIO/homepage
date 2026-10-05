@@ -13,25 +13,23 @@ const LanguageSwitcher: React.FC<{ isMobile?: boolean }> = ({ isMobile = false }
 
   return (
     <div
-      className={`inline-flex items-center p-0.5 rounded-full bg-white/[0.04] border border-white/[0.08] ${
-        isMobile ? 'w-full justify-between py-1 px-1.5' : ''
+      className={`inline-flex items-stretch border border-rule ${
+        isMobile ? 'w-full' : ''
       }`}
       role="group"
       aria-label="Language selector"
     >
-      {options.map((opt) => {
+      {options.map((opt, idx) => {
         const isActive = language === opt.id;
         return (
           <button
             key={opt.id}
             type="button"
             onClick={() => setLanguage(opt.id)}
-            className={`px-2.5 py-0.5 rounded-full text-[11px] transition-colors cursor-pointer ${
-              isMobile ? 'flex-1 text-center font-medium' : ''
-            } ${
-              isActive
-                ? 'bg-white text-black font-medium'
-                : 'text-[#86868b] hover:text-white'
+            className={`px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.12em] transition-colors cursor-pointer ${
+              idx > 0 ? 'border-l border-rule' : ''
+            } ${isMobile ? 'flex-1 text-center' : ''} ${
+              isActive ? 'bg-paper text-ink' : 'text-faint hover:text-paper'
             }`}
             aria-pressed={isActive}
           >

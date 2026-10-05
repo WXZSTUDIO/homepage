@@ -3,9 +3,33 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '../LanguageContext';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Play, ArrowUpRight, X } from 'lucide-react';
+import { Play, X } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
+
+/* Editorial rhythm: the grid never repeats the same measure twice.
+   Written as literal strings so Tailwind's scanner can see them. */
+const SPANS = [
+  'lg:col-span-7',
+  'lg:col-span-5',
+  'lg:col-span-5',
+  'lg:col-span-7',
+  'lg:col-span-4',
+  'lg:col-span-4',
+  'lg:col-span-4',
+  'lg:col-span-12',
+];
+const ASPECTS = [
+  'aspect-[16/10]',
+  'aspect-[4/5]',
+  'aspect-[4/5]',
+  'aspect-[16/10]',
+  'aspect-square',
+  'aspect-square',
+  'aspect-square',
+  'aspect-[21/9]',
+];
+const OFFSETS = ['', 'lg:mt-24', '', 'lg:mt-16', '', 'lg:mt-10', '', ''];
 
 const ProjectsSection: React.FC = () => {
   const { ui, projects, language } = useLanguage();
@@ -13,7 +37,6 @@ const ProjectsSection: React.FC = () => {
   const [filter, setFilter] = useState<string>('all');
   const [selectedProject, setSelectedProject] = useState<any | null>(null);
 
-  // GSAP ScrollTrigger Sequence for Projects Title
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.fromTo(
@@ -25,10 +48,7 @@ const ProjectsSection: React.FC = () => {
           opacity: 1,
           duration: 1.2,
           ease: 'expo.out',
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'top 75%',
-          }
+          scrollTrigger: { trigger: sectionRef.current, start: 'top 75%' }
         }
       );
     }, sectionRef);
@@ -44,51 +64,48 @@ const ProjectsSection: React.FC = () => {
     { key: 'package', label: 'Packaging & Editorial' },
   ];
 
-  const filteredProjects = filter === 'all'
-    ? projects
-    : projects.filter((p: any) => p.category === filter);
+  const filteredProjects =
+    filter === 'all' ? projects : projects.filter((p: any) => p.category === filter);
 
   return (
-    <section 
-      ref={sectionRef} 
-      id="projects" 
-      className="relative py-28 md:py-36 bg-black border-t border-white/[0.08]"
+    <section
+      ref={sectionRef}
+      id="projects"
+      className="relative py-24 md:py-36 bg-ink border-t border-rule"
     >
       <div className="max-w-1700 mx-auto px-6 md:px-12">
-        {/* Section Header: Pure Typographic Hierarchy */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 pb-6 border-b border-white/[0.08]">
+        {/* Section head */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 pb-6 border-b border-rule">
           <div>
-            <div className="text-xs uppercase tracking-[0.2em] text-[#86868b] font-mono mb-3">
-              {ui.projects.tag}
-            </div>
+            <div className="eyebrow mb-3">{ui.projects.tag}</div>
             <div className="overflow-hidden py-1">
-              <h2 className="projects-title-line text-3xl sm:text-5xl md:text-6xl font-semibold text-white tracking-[-0.03em] block will-change-transform">
+              <h2 className="projects-title-line font-display text-[clamp(2.2rem,5.4vw,4.5rem)] leading-[0.98] text-paper block will-change-transform">
                 {ui.projects.title}
               </h2>
             </div>
           </div>
-          <p className="text-[#86868b] text-sm md:text-base font-normal max-w-md mt-3 md:mt-0 leading-relaxed">
+          <p className="text-sm md:text-base text-muted max-w-md leading-relaxed md:text-right">
             {ui.projects.subtitle}
           </p>
         </div>
 
-        {/* Minimalist Apple-style Text Tabs */}
-        <div className="flex items-center space-x-6 md:space-x-8 overflow-x-auto no-scrollbar pb-3 border-b border-white/[0.08] mb-14 text-xs md:text-sm">
+        {/* Filter rail */}
+        <div className="flex items-center gap-6 md:gap-8 overflow-x-auto no-scrollbar pb-3 border-b border-rule mb-14">
           {filters.map((f) => {
             const isActive = filter === f.key;
             return (
               <button
                 key={f.key}
                 onClick={() => setFilter(f.key)}
-                className={`pb-3 transition-colors cursor-pointer relative whitespace-nowrap text-xs md:text-sm tracking-tight ${
-                  isActive ? 'text-white font-medium' : 'text-[#86868b] hover:text-white'
+                className={`relative whitespace-nowrap pb-3 font-mono text-[10px] uppercase tracking-[0.18em] transition-colors cursor-pointer ${
+                  isActive ? 'text-paper' : 'text-faint hover:text-paper'
                 }`}
               >
                 {f.label}
                 {isActive && (
-                  <motion.span 
+                  <motion.span
                     layoutId="activeTabUnderline"
-                    className="absolute bottom-0 left-0 right-0 h-[1.5px] bg-white" 
+                    className="absolute bottom-0 left-0 right-0 h-px bg-accent"
                   />
                 )}
               </button>
@@ -96,84 +113,96 @@ const ProjectsSection: React.FC = () => {
           })}
         </div>
 
-        {/* Image-Centric Gallery Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-16 md:gap-x-12 md:gap-y-20">
-          {filteredProjects.map((project: any) => (
-            <div 
-              key={project.id}
-              onClick={() => setSelectedProject(project)}
-              className="group cursor-pointer flex flex-col select-none"
-            >
-              {/* Image Frame: Pure Media Asset without Dark Gradients or Overlay Badges */}
-              <div className="relative aspect-[16/10] w-full overflow-hidden bg-[#111111] rounded-xl border border-white/[0.08] group-hover:border-white/20 transition-colors duration-300">
-                <img
-                  src={project.src}
-                  alt={project.title}
-                  loading="lazy"
-                  className="w-full h-full object-cover transition-transform duration-500 ease-[0.16,1,0.3,1] group-hover:scale-[1.02] will-change-transform"
-                />
-                
-                {/* Subtle video indicator if applicable */}
-                {project.videoSrc && (
-                  <div className="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/70 backdrop-blur-md border border-white/15 flex items-center justify-center text-white opacity-80 group-hover:opacity-100 transition-opacity">
-                    <Play size={13} fill="currentColor" />
-                  </div>
-                )}
-              </div>
+        {/* Asymmetric editorial grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-x-8 gap-y-14 md:gap-x-12 md:gap-y-20">
+          {filteredProjects.map((project: any, i: number) => {
+            const span = SPANS[i % SPANS.length];
+            const aspect = ASPECTS[i % ASPECTS.length];
+            const offset = OFFSETS[i % OFFSETS.length];
 
-              {/* Minimalist Caption Beneath Image: Pure typography, zero noise */}
-              <div className="mt-4 flex items-start justify-between">
-                <div>
-                  <div className="flex items-center space-x-2">
-                    <h3 className="text-lg md:text-xl font-medium text-white tracking-tight group-hover:text-[#a1a1a6] transition-colors">
-                      {project.title}
-                    </h3>
-                    <ArrowUpRight size={14} className="text-[#86868b] opacity-0 group-hover:opacity-100 transition-opacity shrink-0" />
-                  </div>
-                  <div className="text-xs text-[#86868b] mt-1">
-                    {project.categoryLabel}
+            return (
+              <article
+                key={project.id}
+                onClick={() => setSelectedProject(project)}
+                className={`group cursor-pointer flex flex-col ${span} ${offset}`}
+              >
+                {/* Folio + category */}
+                <div className="flex items-baseline justify-between gap-4 border-b border-rule pb-2 mb-4">
+                  <span
+                    className={`font-mono text-[11px] tracking-[0.2em] ${
+                      project.featured ? 'text-accent' : 'text-faint'
+                    }`}
+                  >
+                    {String(i + 1).padStart(2, '0')}
+                    {project.featured && <span className="ml-3 text-[9px] tracking-[0.25em]">★ Featured</span>}
+                  </span>
+                  <span className="eyebrow text-right">{project.categoryLabel}</span>
+                </div>
+
+                {/* Plate */}
+                <div className={`frame ${aspect} w-full`}>
+                  <img
+                    src={project.src}
+                    alt={project.title}
+                    loading="lazy"
+                    className="w-full h-full object-cover transition-transform duration-[900ms] ease-editorial group-hover:scale-[1.04] will-change-transform"
+                  />
+                  {project.videoSrc && (
+                    <div className="absolute top-4 right-4 w-9 h-9 border border-rule bg-ink/70 backdrop-blur-sm flex items-center justify-center text-paper opacity-70 group-hover:opacity-100 transition-opacity">
+                      <Play size={12} fill="currentColor" />
+                    </div>
+                  )}
+                  {/* accent hairline draws in on hover */}
+                  <span className="pointer-events-none absolute bottom-0 left-0 h-px w-full origin-left scale-x-0 bg-accent transition-transform duration-700 ease-editorial group-hover:scale-x-100" />
+                </div>
+
+                {/* Caption */}
+                <div className="mt-4 flex items-start justify-between gap-6 border-t border-rule-soft pt-3">
+                  <h3 className="font-display text-xl sm:text-2xl text-paper leading-tight group-hover:text-accent transition-colors duration-300">
+                    {project.title}
+                  </h3>
+                  <div className="eyebrow text-right shrink-0">
+                    {project.client} · {project.year}
                   </div>
                 </div>
-                <div className="text-xs font-mono text-[#86868b] shrink-0 ml-4 text-right">
-                  <span>{project.client}</span>
-                  <span className="mx-1.5 text-white/20">·</span>
-                  <span>{project.year}</span>
-                </div>
-              </div>
-            </div>
-          ))}
+              </article>
+            );
+          })}
         </div>
       </div>
 
-      {/* Minimalist Lightbox Modal */}
+      {/* Lightbox — a full page spread */}
       <AnimatePresence>
         {selectedProject && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-12 bg-black/95 backdrop-blur-2xl"
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-8 md:p-12 bg-ink/97 backdrop-blur-sm overflow-y-auto"
             onClick={() => setSelectedProject(null)}
           >
             <motion.div
-              initial={{ scale: 0.96, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.96, opacity: 0 }}
-              transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-              className="relative max-w-5xl w-full bg-[#0a0a0a] rounded-2xl border border-white/[0.1] overflow-hidden p-6 sm:p-8"
+              initial={{ y: 24, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 24, opacity: 0 }}
+              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              className="relative max-w-6xl w-full bg-ink border border-rule p-5 sm:p-8"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Close Button */}
               <button
                 onClick={() => setSelectedProject(null)}
-                className="absolute top-6 right-6 p-2 rounded-full text-[#86868b] hover:text-white transition-colors cursor-pointer z-10"
+                className="absolute top-4 right-4 sm:top-6 sm:right-6 p-2 text-muted hover:text-paper transition-colors cursor-pointer z-10"
                 aria-label="Close dialog"
               >
-                <X size={20} />
+                <X size={18} />
               </button>
 
-              {/* Main Media Preview */}
-              <div className="w-full aspect-[16/9] rounded-xl overflow-hidden bg-black mb-6 border border-white/[0.06]">
+              <div className="eyebrow mb-4 pb-3 border-b border-rule-soft pr-10">
+                {selectedProject.categoryLabel} · {selectedProject.client} ·{' '}
+                {selectedProject.year}
+              </div>
+
+              <div className="frame aspect-[16/9] w-full mb-6">
                 {selectedProject.videoSrc ? (
                   <video
                     controls
@@ -191,26 +220,29 @@ const ProjectsSection: React.FC = () => {
                 )}
               </div>
 
-              {/* Project Details */}
-              <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
-                <div>
-                  <div className="text-[11px] font-mono tracking-widest text-[#86868b] uppercase mb-1">
-                    {selectedProject.categoryLabel} · {selectedProject.client} · {selectedProject.year}
-                  </div>
-                  <h3 className="text-2xl font-semibold text-white tracking-tight">
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+                <div className="md:col-span-7">
+                  <h3 className="font-display text-3xl sm:text-4xl text-paper leading-tight">
                     {selectedProject.title}
                   </h3>
-                  <p className="text-sm text-[#86868b] mt-2 max-w-2xl leading-relaxed">
+                  <p className="text-sm text-paper-70 mt-4 leading-relaxed">
                     {selectedProject.description}
                   </p>
                 </div>
 
                 {selectedProject.deliverables && (
-                  <div className="shrink-0 space-y-1 text-xs text-[#86868b] border-t md:border-t-0 md:border-l border-white/[0.08] pt-4 md:pt-0 md:pl-6">
-                    <span className="text-white font-medium block mb-1">Scope:</span>
-                    {selectedProject.deliverables.map((item: string, idx: number) => (
-                      <div key={idx}>— {item}</div>
-                    ))}
+                  <div className="md:col-span-5 md:border-l md:border-rule md:pl-8">
+                    <div className="eyebrow mb-3">Scope</div>
+                    <ul className="space-y-2">
+                      {selectedProject.deliverables.map((item: string, idx: number) => (
+                        <li key={idx} className="text-sm text-muted flex gap-3">
+                          <span className="text-faint font-mono text-[10px] pt-1">
+                            {String(idx + 1).padStart(2, '0')}
+                          </span>
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 )}
               </div>

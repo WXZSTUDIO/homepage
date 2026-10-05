@@ -1,48 +1,153 @@
-/* Apple-style Pure Minimalist Typography & Global Architecture */
-html {
-  scroll-behavior: smooth;
-  color-scheme: dark;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   EDITORIAL / MAGAZINE DESIGN SYSTEM
+   Ink-black pages, newsprint-warm type, hairline rules.
+   ============================================================ */
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    color-scheme: dark;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: #09090b;
+    color: #f4f1ec;
+    overflow-x: hidden;
+    font-family: theme('fontFamily.sans');
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    letter-spacing: -0.011em;
+  }
+
+  ::selection {
+    background-color: #ffc900;
+    color: #09090b;
+  }
+
+  /* Hairline scrollbar */
+  ::-webkit-scrollbar {
+    width: 3px;
+    height: 3px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #09090b;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(244, 241, 236, 0.18);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(244, 241, 236, 0.35);
+  }
+
+  /* Serif display faces need a touch of positive tracking at small sizes
+     and tight negative tracking when huge. */
+  h1,
+  h2,
+  h3 {
+    font-family: theme('fontFamily.display');
+    font-weight: 400;
+  }
 }
 
-body {
-  margin: 0;
-  padding: 0;
-  background-color: #000000;
-  color: #f5f5f7;
-  overflow-x: hidden;
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "SF Pro", "Inter", "PingFang SC", "Hiragino Sans GB", "Apple SD Gothic Neo", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  letter-spacing: -0.011em;
+@layer components {
+  /* --- Masthead / meta label: the mono voice of the magazine --- */
+  .eyebrow {
+    @apply font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-muted;
+  }
+
+  .rule-h {
+    @apply border-t border-rule;
+  }
+
+  /* --- Vertical (rotated) spine label, a classic magazine device --- */
+  .spine {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+  }
+
+  /* --- Oversized folio / issue number --- */
+  .folio {
+    @apply font-display leading-none text-paper;
+    font-variant-numeric: lining-nums;
+  }
+
+  /* --- Drop-cap for editorial lead paragraphs --- */
+  .dropcap::first-letter {
+    @apply font-display float-left mr-3 leading-[0.82];
+    font-size: 4.2em;
+    color: #f4f1ec;
+  }
+
+  /* --- Underline-only form fields --- */
+  .field {
+    @apply w-full bg-transparent pb-2 text-sm text-paper placeholder:text-faint
+           border-b border-rule outline-none transition-colors duration-300
+           focus:border-paper;
+    border-radius: 0;
+  }
+  select.field {
+    @apply appearance-none cursor-pointer;
+  }
+  select.field option {
+    background-color: #101013;
+    color: #f4f1ec;
+  }
+
+  /* --- Link with a rule that draws in on hover --- */
+  .link-rule {
+    @apply relative inline-block;
+  }
+  .link-rule::after {
+    content: '';
+    @apply absolute left-0 -bottom-0.5 h-px w-full origin-left scale-x-0 bg-paper transition-transform duration-500;
+    transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .link-rule:hover::after {
+    @apply scale-x-100;
+  }
+
+  /* --- Thin "cut out" frame used around media --- */
+  .frame {
+    @apply relative overflow-hidden bg-ink-card;
+  }
 }
 
-/* Subtle Minimal Selection */
-::selection {
-  background-color: #ffffff;
-  color: #000000;
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Faint paper grain over solid ink, keeps black from looking flat */
+  .grain::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
 }
 
-/* Minimal Scrollbar */
-::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
-}
-::-webkit-scrollbar-track {
-  background: #000000;
-}
-::-webkit-scrollbar-thumb {
-  background: #242426;
-  border-radius: 2px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #38383a;
-}
-
-/* Hide scrollbar utility */
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+/* Respect reduced-motion: kill transforms, keep opacity fades */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
 }

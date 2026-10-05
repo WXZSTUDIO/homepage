@@ -11,7 +11,6 @@ const OpeningAnimation: React.FC<OpeningAnimationProps> = ({ onComplete }) => {
   const topCurtainRef = useRef<HTMLDivElement>(null);
   const bottomCurtainRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
-  const counterRef = useRef<HTMLDivElement>(null);
   const onCompleteRef = useRef(onComplete);
 
   useEffect(() => {
@@ -27,117 +26,94 @@ const OpeningAnimation: React.FC<OpeningAnimationProps> = ({ onComplete }) => {
         }
       });
 
-      // Step 1: Animate Counter 0 -> 100 with smooth easing
       tl.to(progressObj, {
         value: 100,
         duration: 1.4,
         ease: 'power2.inOut',
-        onUpdate: () => {
-          setProgress(Math.floor(progressObj.value));
-        }
+        onUpdate: () => setProgress(Math.floor(progressObj.value))
       });
 
-      // Step 2: Fade out center counter and title
-      tl.to(contentRef.current, {
-        opacity: 0,
-        y: -30,
-        duration: 0.35,
-        ease: 'power3.in'
-      }, '+=0.06');
+      tl.to(
+        contentRef.current,
+        { opacity: 0, y: -30, duration: 0.35, ease: 'power3.in' },
+        '+=0.06'
+      );
 
-      // Step 3: Split curtain wipe reveal (top curtain moves -100%, bottom moves +100%)
-      tl.to(topCurtainRef.current, {
-        yPercent: -100,
-        duration: 1.1,
-        ease: 'expo.inOut'
-      }, '-=0.15');
+      tl.to(
+        topCurtainRef.current,
+        { yPercent: -100, duration: 1.1, ease: 'expo.inOut' },
+        '-=0.15'
+      );
 
-      tl.to(bottomCurtainRef.current, {
-        yPercent: 100,
-        duration: 1.1,
-        ease: 'expo.inOut'
-      }, '<');
+      tl.to(
+        bottomCurtainRef.current,
+        { yPercent: 100, duration: 1.1, ease: 'expo.inOut' },
+        '<'
+      );
 
-      // Step 4: Hide overall container
-      tl.to(containerRef.current, {
-        opacity: 0,
-        duration: 0.1
-      });
+      tl.to(containerRef.current, { opacity: 0, duration: 0.1 });
     }, containerRef);
 
     return () => ctx.revert();
-  }, []); // Run once on mount - never restart unexpectedly
+  }, []);
 
-  // Handle immediate skip
   const handleSkip = () => {
     gsap.to(containerRef.current, {
       opacity: 0,
       duration: 0.2,
-      onComplete: () => {
-        onCompleteRef.current();
-      }
+      onComplete: () => onCompleteRef.current()
     });
   };
 
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 z-[9999] pointer-events-auto select-none overflow-hidden bg-black"
+      className="fixed inset-0 z-[9999] select-none overflow-hidden bg-ink"
     >
-      {/* Top Shutter Curtain */}
+      {/* Top curtain */}
       <div
         ref={topCurtainRef}
-        className="absolute top-0 left-0 w-full h-1/2 bg-[#050507] border-b border-white/10 flex items-end justify-between px-8 sm:px-14 pb-8 will-change-transform shadow-[0_10px_30px_rgba(0,0,0,0.8)]"
+        className="absolute top-0 left-0 w-full h-1/2 bg-ink border-b border-rule flex items-end justify-between px-6 sm:px-12 pb-6 will-change-transform"
       >
-        <div className="text-[11px] text-[#86868b] font-mono tracking-widest uppercase">
-          ZHENG CANFENG · PORTFOLIO ARCHIVE
-        </div>
-        <div className="text-[11px] text-[#86868b] font-mono tracking-widest uppercase">
-          EST. 2013 / SEOUL, KR
-        </div>
+        <div className="eyebrow">ZHENG CANFENG · PORTFOLIO ARCHIVE</div>
+        <div className="eyebrow hidden sm:block">EST. 2013 / SEOUL, KR</div>
       </div>
 
-      {/* Bottom Shutter Curtain */}
+      {/* Bottom curtain */}
       <div
         ref={bottomCurtainRef}
-        className="absolute bottom-0 left-0 w-full h-1/2 bg-[#050507] border-t border-white/10 flex items-start justify-between px-8 sm:px-14 pt-8 will-change-transform shadow-[0_-10px_30px_rgba(0,0,0,0.8)]"
+        className="absolute bottom-0 left-0 w-full h-1/2 bg-ink border-t border-rule flex items-start justify-between px-6 sm:px-12 pt-6 will-change-transform"
       >
-        <div className="text-[11px] text-[#6e6e73] font-mono tracking-widest uppercase">
+        <div className="eyebrow text-faint">
           VISUAL DIRECTION · AI WORKFLOW · BRAND VI
         </div>
         <button
           onClick={handleSkip}
-          className="text-[11px] text-[#86868b] hover:text-white font-mono tracking-widest uppercase transition-colors cursor-pointer"
+          className="eyebrow text-muted hover:text-paper transition-colors cursor-pointer"
         >
-          [SKIP INTRO]
+          [SKIP]
         </button>
       </div>
 
-      {/* Center Animated Content & Numerical Counter */}
+      {/* Centre: serif folio counter */}
       <div
         ref={contentRef}
         className="absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-none"
       >
-        {/* Designer Monogram / Title */}
-        <div className="overflow-hidden mb-4">
-          <div className="text-xs uppercase tracking-[0.3em] text-[#86868b] font-mono text-center">
-            CREATIVE DIRECTOR & VISUAL ARCHITECT
-          </div>
+        <div className="eyebrow mb-6 tracking-[0.3em] text-center">
+          CREATIVE DIRECTOR &amp; VISUAL ARCHITECT
         </div>
 
-        {/* Big Apple-Style Counter */}
-        <div
-          ref={counterRef}
-          className="text-7xl sm:text-9xl md:text-[11rem] font-semibold text-[#f5f5f7] tracking-[-0.04em] font-sans leading-none"
-        >
+        <div className="folio text-[6rem] sm:text-[9rem] md:text-[11rem] tracking-[-0.03em]">
           {String(progress).padStart(2, '0')}
-          <span className="text-3xl sm:text-5xl text-[#86868b] ml-1 font-normal">%</span>
+          <span className="font-sans text-2xl sm:text-4xl text-faint ml-2 align-top">
+            %
+          </span>
         </div>
 
-        {/* Minimal Loading Bar */}
-        <div className="w-48 sm:w-64 h-[1.5px] bg-white/[0.1] rounded-full mt-8 overflow-hidden">
+        <div className="w-40 sm:w-64 h-px bg-rule mt-10 overflow-hidden">
           <div
-            className="h-full bg-white transition-all duration-75 ease-out"
+            className="h-full bg-paper transition-all duration-75 ease-out"
             style={{ width: `${progress}%` }}
           />
         </div>
