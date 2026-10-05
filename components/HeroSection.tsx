@@ -179,12 +179,12 @@ const HeroSection: React.FC<HeroSectionProps> = ({
       ref={heroRef}
       id="hero"
       className={`relative w-full ${
-        heavy ? 'h-[220svh]' : 'min-h-[100svh]'
+        heavy ? 'h-[220svh]' : 'min-h-viewport'
       }`}
     >
       <div
         className={`w-full overflow-hidden bg-ink ${
-          heavy ? 'sticky top-0 h-[100svh]' : 'relative min-h-[100svh]'
+          heavy ? 'sticky top-0 h-viewport' : 'relative min-h-viewport'
         } grain`}
       >
         {/* --- Layer 0: the plate --- */}
@@ -224,11 +224,11 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           <span className="w-px h-16 bg-rule" />
         </div>
 
-        <div className="relative z-10 max-w-1700 mx-auto w-full h-full px-6 md:px-12 flex flex-col justify-between pt-32 pb-8">
+        <div className="relative z-10 max-w-1700 mx-auto w-full h-full px-6 md:px-12 flex flex-col justify-between pt-28 sm:pt-32 pb-8 pb-safe">
           {/* Running head */}
           <motion.div
             style={chromeStyle}
-            className="hero-eyebrow flex items-center justify-between border-b border-rule pb-3 mt-6"
+            className="hero-eyebrow flex items-center justify-between border-b border-rule pb-3 mt-2 sm:mt-6"
           >
             <span className="eyebrow text-accent">Vol. 01</span>
             <span className="eyebrow hidden sm:block">
@@ -237,7 +237,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             <span className="eyebrow">Seoul, KR</span>
           </motion.div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-end py-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10 lg:gap-16 items-end py-6 sm:py-10">
             {/* Cover headline — foreground layer */}
             <motion.h1
               style={titleStyle}

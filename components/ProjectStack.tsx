@@ -112,7 +112,7 @@ const ProjectStack: React.FC<{
       className="relative"
       style={{ height: `${Math.max(total * 55, 170)}vh` }}
     >
-      <div className="sticky top-0 h-[100svh] overflow-hidden">
+      <div className="sticky top-0 h-viewport overflow-hidden">
         {projects.map((project, i) => (
           <DeckCard
             key={project.id}
