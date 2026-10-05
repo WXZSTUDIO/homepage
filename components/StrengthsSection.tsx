@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { useLanguage } from '../LanguageContext';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import DepthLayer from './DepthLayer';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -63,19 +64,26 @@ const StrengthsSection: React.FC = () => {
     kicker: string;
     title: string;
     body: string;
-  }> = ({ index, image, alt, kicker, title, body }) => (
+    depth?: number;
+  }> = ({ index, image, alt, kicker, title, body, depth = 0.4 }) => (
     <div className="strengths-card flex flex-col group">
       <div className="flex items-baseline justify-between gap-4 border-b border-rule pb-2 mb-4">
         <span className="font-mono text-[11px] tracking-[0.2em] text-accent">{index}</span>
         <span className="eyebrow">{kicker}</span>
       </div>
       <div className="frame aspect-[16/10] w-full">
-        <img
-          src={image}
-          alt={alt}
-          loading="lazy"
-          className="w-full h-full object-cover transition-transform duration-[900ms] ease-editorial group-hover:scale-[1.04]"
-        />
+        <DepthLayer
+          depth={depth}
+          travel={55}
+          className="absolute inset-x-0 -top-[10%] -bottom-[10%]"
+        >
+          <img
+            src={image}
+            alt={alt}
+            loading="lazy"
+            className="w-full h-full object-cover transition-transform duration-[900ms] ease-editorial group-hover:scale-[1.04]"
+          />
+        </DepthLayer>
         <span className="pointer-events-none absolute bottom-0 left-0 h-px w-full origin-left scale-x-0 bg-accent transition-transform duration-700 ease-editorial group-hover:scale-x-100" />
       </div>
       <h3 className="font-display text-2xl sm:text-3xl text-paper leading-tight mt-5">
@@ -119,13 +127,14 @@ const StrengthsSection: React.FC = () => {
           />
           <div className="md:mt-24">
             <Chapter
-              index="02"
-              image="images/ai-generative-sculpture.jpg"
-              alt="AI Generative Design"
-              kicker="AI SYNTHESIS & PIPELINE"
-              title={ui.strengths.skillTitle}
-              body={ui.strengths.skillSubtitle}
-            />
+            index="02"
+            image="images/ai-generative-sculpture.jpg"
+            alt="AI Generative Design"
+            kicker="AI SYNTHESIS & PIPELINE"
+            title={ui.strengths.skillTitle}
+            body={ui.strengths.skillSubtitle}
+            depth={0.68}
+          />
           </div>
         </div>
 

@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '../LanguageContext';
+import { useMotionProfile } from '../hooks/useMotionProfile';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Play, X } from 'lucide-react';
+import { X } from 'lucide-react';
+import ProjectStack from './ProjectStack';
+import { ProjectItem, ProjectPlate, ProjectFolio, ProjectCaption } from './ProjectCard';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -33,9 +36,10 @@ const OFFSETS = ['', 'lg:mt-24', '', 'lg:mt-16', '', 'lg:mt-10', '', ''];
 
 const ProjectsSection: React.FC = () => {
   const { ui, projects, language } = useLanguage();
+  const { heavy } = useMotionProfile();
   const sectionRef = useRef<HTMLElement>(null);
   const [filter, setFilter] = useState<string>('all');
-  const [selectedProject, setSelectedProject] = useState<any | null>(null);
+  const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -64,8 +68,8 @@ const ProjectsSection: React.FC = () => {
     { key: 'package', label: 'Packaging & Editorial' },
   ];
 
-  const filteredProjects =
-    filter === 'all' ? projects : projects.filter((p: any) => p.category === filter);
+  const filteredProjects: ProjectItem[] =
+    filter === 'all' ? projects : projects.filter((p: ProjectItem) => p.category === filter);
 
   return (
     <section
@@ -112,64 +116,38 @@ const ProjectsSection: React.FC = () => {
             );
           })}
         </div>
-
-        {/* Asymmetric editorial grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-x-8 gap-y-14 md:gap-x-12 md:gap-y-20">
-          {filteredProjects.map((project: any, i: number) => {
-            const span = SPANS[i % SPANS.length];
-            const aspect = ASPECTS[i % ASPECTS.length];
-            const offset = OFFSETS[i % OFFSETS.length];
-
-            return (
-              <article
-                key={project.id}
-                onClick={() => setSelectedProject(project)}
-                className={`group cursor-pointer flex flex-col ${span} ${offset}`}
-              >
-                {/* Folio + category */}
-                <div className="flex items-baseline justify-between gap-4 border-b border-rule pb-2 mb-4">
-                  <span
-                    className={`font-mono text-[11px] tracking-[0.2em] ${
-                      project.featured ? 'text-accent' : 'text-faint'
-                    }`}
-                  >
-                    {String(i + 1).padStart(2, '0')}
-                    {project.featured && <span className="ml-3 text-[9px] tracking-[0.25em]">★ Featured</span>}
-                  </span>
-                  <span className="eyebrow text-right">{project.categoryLabel}</span>
-                </div>
-
-                {/* Plate */}
-                <div className={`frame ${aspect} w-full`}>
-                  <img
-                    src={project.src}
-                    alt={project.title}
-                    loading="lazy"
-                    className="w-full h-full object-cover transition-transform duration-[900ms] ease-editorial group-hover:scale-[1.04] will-change-transform"
-                  />
-                  {project.videoSrc && (
-                    <div className="absolute top-4 right-4 w-9 h-9 border border-rule bg-ink/70 backdrop-blur-sm flex items-center justify-center text-paper opacity-70 group-hover:opacity-100 transition-opacity">
-                      <Play size={12} fill="currentColor" />
-                    </div>
-                  )}
-                  {/* accent hairline draws in on hover */}
-                  <span className="pointer-events-none absolute bottom-0 left-0 h-px w-full origin-left scale-x-0 bg-accent transition-transform duration-700 ease-editorial group-hover:scale-x-100" />
-                </div>
-
-                {/* Caption */}
-                <div className="mt-4 flex items-start justify-between gap-6 border-t border-rule-soft pt-3">
-                  <h3 className="font-display text-xl sm:text-2xl text-paper leading-tight group-hover:text-accent transition-colors duration-300">
-                    {project.title}
-                  </h3>
-                  <div className="eyebrow text-right shrink-0">
-                    {project.client} · {project.year}
-                  </div>
-                </div>
-              </article>
-            );
-          })}
-        </div>
       </div>
+
+      {/* Desktop: a pinned deck. Everything else: the editorial grid. */}
+      {heavy ? (
+        <ProjectStack projects={filteredProjects} onOpen={setSelectedProject} />
+      ) : (
+        <div className="max-w-1700 mx-auto px-6 md:px-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-x-8 gap-y-14 md:gap-x-12 md:gap-y-20">
+            {filteredProjects.map((project, i) => {
+              const span = SPANS[i % SPANS.length];
+              const aspect = ASPECTS[i % ASPECTS.length];
+              const offset = OFFSETS[i % OFFSETS.length];
+
+              return (
+                <article
+                  key={project.id}
+                  onClick={() => setSelectedProject(project)}
+                  className={`group cursor-pointer flex flex-col ${span} ${offset}`}
+                >
+                  <ProjectFolio
+                    folio={String(i + 1).padStart(2, '0')}
+                    featured={project.featured}
+                    categoryLabel={project.categoryLabel}
+                  />
+                  <ProjectPlate project={project} aspect={aspect} />
+                  <ProjectCaption project={project} />
+                </article>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       {/* Lightbox — a full page spread */}
       <AnimatePresence>

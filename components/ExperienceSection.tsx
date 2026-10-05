@@ -3,6 +3,7 @@ import { useLanguage } from '../LanguageContext';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Mail, Copy, Check } from 'lucide-react';
+import DepthLayer from './DepthLayer';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -84,12 +85,18 @@ const ExperienceSection: React.FC = () => {
           <div className="lg:col-span-5 exp-stagger-item">
             <figure className="m-0">
               <div className="frame aspect-[3/4] w-full">
-                <img
-                  src="images/designer-chanbong-portrait.jpg"
-                  alt={ui.nav.brand}
-                  className="w-full h-full object-cover grayscale contrast-105 brightness-95 hover:grayscale-0 transition-[filter] duration-700"
-                  loading="lazy"
-                />
+                <DepthLayer
+                  depth={0.45}
+                  travel={70}
+                  className="absolute inset-x-0 -top-[12%] -bottom-[12%]"
+                >
+                  <img
+                    src="images/designer-chanbong-portrait.jpg"
+                    alt={ui.nav.brand}
+                    className="w-full h-full object-cover grayscale contrast-105 brightness-95 hover:grayscale-0 transition-[filter] duration-700"
+                    loading="lazy"
+                  />
+                </DepthLayer>
               </div>
               <figcaption className="mt-5 border-t border-rule pt-4">
                 <div className="flex items-baseline justify-between gap-4">

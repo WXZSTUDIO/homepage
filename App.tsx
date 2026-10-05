@@ -7,9 +7,12 @@ import ExperienceSection from './components/ExperienceSection';
 import ProjectsSection from './components/ProjectsSection';
 import StrengthsSection from './components/StrengthsSection';
 import ContactSection from './components/ContactSection';
+import SmoothScroll, { scrollToTarget } from './components/SmoothScroll';
+import { useMotionProfile } from './hooks/useMotionProfile';
 
 const MainApp: React.FC = () => {
   const [activeSection, setActiveSection] = useState('hero');
+  const { heavy } = useMotionProfile();
   
   // Track whether opening intro animation has completed
   const [isIntroDone, setIsIntroDone] = useState<boolean>(() => {
@@ -50,24 +53,12 @@ const MainApp: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const scrollToSection = (id: string) => {
-    const el = document.getElementById(id);
-    if (el) {
-      const offset = 80;
-      const bodyRect = document.body.getBoundingClientRect().top;
-      const elementRect = el.getBoundingClientRect().top;
-      const elementPosition = elementRect - bodyRect;
-      const offsetPosition = elementPosition - offset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
-    }
-  };
+  const scrollToSection = (id: string) => scrollToTarget(id, -80);
 
   return (
     <div className="min-h-screen bg-ink text-paper selection:bg-accent selection:text-ink">
+      {/* Inertial scrolling — the substrate every scrub effect depends on */}
+      <SmoothScroll enabled={heavy} />
       {/* High-Impact Opening Shutter Wipe & Numerical Preloader */}
       {/* Mounted ONLY until completed, so scroll state updates NEVER re-trigger it */}
       {!isIntroDone && (
