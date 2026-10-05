@@ -212,7 +212,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               />
             )}
           </motion.div>
-          <div className="absolute inset-0 bg-gradient-to-b from-ink/90 via-ink/62 to-ink/95" />
+          <div className="absolute inset-0 bg-gradient-to-b from-ink/78 via-ink/45 to-ink/92" />
         </div>
 
         {/* Right-edge spine label */}
@@ -230,7 +230,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             style={chromeStyle}
             className="hero-eyebrow flex items-center justify-between border-b border-rule pb-3 mt-2 sm:mt-6"
           >
-            <span className="eyebrow text-accent">Vol. 01</span>
+            <span className="eyebrow text-paper">Vol. 01</span>
             <span className="eyebrow hidden sm:block">
               {ui.nav.brand} — Archive
             </span>
@@ -264,7 +264,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               <div className="hero-content-fade flex flex-wrap items-center gap-3 mt-8">
                 <button
                   onClick={onExplore}
-                  className="group inline-flex items-center gap-2 border border-paper bg-paper px-5 py-2.5 font-mono text-[10px] uppercase tracking-[0.2em] text-ink hover:bg-transparent hover:text-paper transition-colors duration-300 cursor-pointer"
+                  className="group btn-pill cursor-pointer"
                 >
                   {ui.hero.btnExplore}
                   <ArrowDown
@@ -275,7 +275,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
 
                 <button
                   onClick={onContact}
-                  className="group inline-flex items-center gap-2 border border-rule px-5 py-2.5 font-mono text-[10px] uppercase tracking-[0.2em] text-paper hover:border-paper transition-colors duration-300 cursor-pointer"
+                  className="group btn-pill-ghost cursor-pointer"
                 >
                   {ui.hero.btnContact}
                   <span className="transition-transform duration-300 group-hover:translate-x-0.5">
@@ -297,7 +297,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               {heavy && (
                 <span className="ml-2 text-paper-70">
                   Frame{' '}
-                  <span className="text-accent">
+                  <span className="text-paper">
                     {String(frameIndex + 1).padStart(2, '0')}
                   </span>
                   <span className="text-faint">
@@ -328,7 +328,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
               <div key={src} className="relative flex-1 h-[3px] bg-rule-soft">
                 <span
                   className={`absolute inset-0 origin-left transition-transform duration-200 ${
-                    i <= frameIndex ? 'bg-accent scale-x-100' : 'scale-x-0'
+                    i <= frameIndex ? 'bg-paper scale-x-100' : 'scale-x-0'
                   }`}
                 />
               </div>

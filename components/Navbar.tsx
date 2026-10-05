@@ -55,7 +55,7 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           isScrolled
-            ? 'bg-ink/95 backdrop-blur-xl border-b border-rule py-3'
+            ? 'bg-ink/85 backdrop-blur-xl border-b border-rule py-3'
             : 'bg-transparent border-b border-transparent py-5'
         }`}
       >
@@ -90,7 +90,7 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
                   </span>
                   {item.label}
                   <span
-                    className={`absolute left-0 -bottom-1 h-px bg-accent transition-all duration-500 ${
+                    className={`absolute left-0 -bottom-1 h-px bg-paper transition-all duration-500 ${
                       isActive ? 'w-full' : 'w-0 group-hover:w-full'
                     }`}
                   />
@@ -113,7 +113,7 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
             </a>
             <button
               onClick={() => scrollTo('contact')}
-              className="border border-rule px-4 py-2 font-mono text-[10px] uppercase tracking-[0.18em] text-paper hover:bg-paper hover:text-ink transition-colors duration-300 cursor-pointer"
+              className="rounded-full bg-paper px-5 py-2 font-mono text-[10px] uppercase tracking-[0.18em] text-ink hover:bg-ink-deep hover:text-paper transition-colors duration-300 cursor-pointer"
             >
               {ui.nav.getInTouch}
             </button>
@@ -144,7 +144,7 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
                 onClick={() => scrollTo(item.id)}
                 className="w-full text-left flex items-baseline gap-4 py-4 border-b border-rule-soft cursor-pointer"
               >
-                <span className="font-mono text-[10px] text-accent">
+                <span className="font-mono text-[10px] text-muted">
                   {String(idx + 1).padStart(2, '0')}
                 </span>
                 <span className="font-display text-3xl text-paper leading-none">
@@ -157,7 +157,7 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
           <div className="pt-8 space-y-4">
             <button
               onClick={() => scrollTo('contact')}
-              className="w-full border border-rule py-3 font-mono text-[10px] uppercase tracking-[0.2em] text-paper hover:bg-paper hover:text-ink transition-colors"
+              className="w-full rounded-full bg-paper py-3.5 font-mono text-[10px] uppercase tracking-[0.2em] text-ink hover:bg-ink-deep hover:text-paper transition-colors"
             >
               {ui.nav.getInTouch}
             </button>

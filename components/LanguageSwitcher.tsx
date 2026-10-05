@@ -13,7 +13,7 @@ const LanguageSwitcher: React.FC<{ isMobile?: boolean }> = ({ isMobile = false }
 
   return (
     <div
-      className={`inline-flex items-stretch border border-rule ${
+      className={`inline-flex items-stretch rounded-full border border-rule overflow-hidden ${
         isMobile ? 'w-full' : ''
       }`}
       role="group"
@@ -29,7 +29,7 @@ const LanguageSwitcher: React.FC<{ isMobile?: boolean }> = ({ isMobile = false }
             className={`px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.12em] transition-colors cursor-pointer ${
               idx > 0 ? 'border-l border-rule' : ''
             } ${isMobile ? 'flex-1 text-center' : ''} ${
-              isActive ? 'bg-paper text-ink' : 'text-faint hover:text-paper'
+              isActive ? 'bg-paper text-ink' : 'text-muted hover:text-paper'
             }`}
             aria-pressed={isActive}
           >

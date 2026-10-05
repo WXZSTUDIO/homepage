@@ -90,7 +90,7 @@ const ProjectsSection: React.FC = () => {
           <div>
             <div className="eyebrow mb-3">{ui.projects.tag}</div>
             <div className="overflow-hidden py-1">
-              <h2 className="projects-title-line font-display text-[clamp(2.2rem,5.4vw,4.5rem)] leading-[0.98] text-paper block will-change-transform">
+              <h2 className="projects-title-line dot-title text-[clamp(2.2rem,5.4vw,4.5rem)] leading-[1.02] block will-change-transform">
                 {ui.projects.title}
               </h2>
             </div>
@@ -100,25 +100,21 @@ const ProjectsSection: React.FC = () => {
           </p>
         </div>
 
-        {/* Filter rail */}
-        <div className="flex items-center gap-6 md:gap-8 overflow-x-auto no-scrollbar pb-3 border-b border-rule mb-14">
+        {/* Filter rail — AUVI pill chips */}
+        <div className="flex items-center gap-2.5 overflow-x-auto no-scrollbar pb-1 mb-14">
           {filters.map((f) => {
             const isActive = filter === f.key;
             return (
               <button
                 key={f.key}
                 onClick={() => setFilter(f.key)}
-                className={`relative whitespace-nowrap pb-3 font-mono text-[10px] uppercase tracking-[0.18em] transition-colors cursor-pointer ${
-                  isActive ? 'text-paper' : 'text-faint hover:text-paper'
+                className={`relative whitespace-nowrap rounded-full px-4 py-2 font-mono text-[10px] uppercase tracking-[0.14em] transition-colors cursor-pointer border ${
+                  isActive
+                    ? 'bg-paper text-ink border-paper'
+                    : 'text-muted border-rule hover:border-paper/40 hover:text-paper'
                 }`}
               >
                 {f.label}
-                {isActive && (
-                  <motion.span
-                    layoutId="activeTabUnderline"
-                    className="absolute bottom-0 left-0 right-0 h-px bg-accent"
-                  />
-                )}
               </button>
             );
           })}
@@ -174,7 +170,7 @@ const ProjectsSection: React.FC = () => {
                 animate={{ y: 0, opacity: 1 }}
                 exit={{ y: 24, opacity: 0 }}
                 transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                className="relative max-w-6xl w-full bg-ink border border-rule p-5 sm:p-8"
+                className="relative max-w-6xl w-full bg-ink rounded-plate border border-rule p-5 sm:p-8 shadow-[0_24px_80px_rgba(22,22,20,0.18)]"
                 onClick={(e) => e.stopPropagation()}
               >
                 <button

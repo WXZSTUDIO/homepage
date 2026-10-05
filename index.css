@@ -3,14 +3,16 @@
 @tailwind utilities;
 
 /* ============================================================
-   EDITORIAL / MAGAZINE DESIGN SYSTEM
-   Ink-black pages, newsprint-warm type, hairline rules.
+   AUVI-STYLE LIGHT SYSTEM
+   Warm light-grey surfaces, near-black foreground, black pill
+   buttons, soft rounded cards, hairline rules. Historical
+   token names kept — values inverted (see tailwind.config.js).
    ============================================================ */
 
 @layer base {
   html {
     scroll-behavior: smooth;
-    color-scheme: dark;
+    color-scheme: light;
     -webkit-text-size-adjust: 100%;
     /* Kill the grey flash on tap; pointer feedback is designed per control. */
     -webkit-tap-highlight-color: transparent;
@@ -19,8 +21,8 @@
   body {
     margin: 0;
     padding: 0;
-    background-color: #09090b;
-    color: #f4f1ec;
+    background-color: #f0efec;
+    color: #161614;
     overflow-x: hidden;
     overscroll-behavior-y: none;
     font-family: theme('fontFamily.sans');
@@ -30,8 +32,8 @@
   }
 
   ::selection {
-    background-color: #ffc900;
-    color: #09090b;
+    background-color: #161614;
+    color: #ffc900;
   }
 
   /* Hairline scrollbar */
@@ -40,27 +42,26 @@
     height: 3px;
   }
   ::-webkit-scrollbar-track {
-    background: #09090b;
+    background: #f0efec;
   }
   ::-webkit-scrollbar-thumb {
-    background: rgba(244, 241, 236, 0.18);
+    background: rgba(22, 22, 20, 0.22);
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(244, 241, 236, 0.35);
+    background: rgba(22, 22, 20, 0.4);
   }
 
-  /* Serif display faces need a touch of positive tracking at small sizes
-     and tight negative tracking when huge. */
   h1,
   h2,
   h3 {
     font-family: theme('fontFamily.display');
-    font-weight: 400;
+    font-weight: 500;
+    letter-spacing: -0.025em;
   }
 }
 
 @layer components {
-  /* --- Masthead / meta label: the mono voice of the magazine --- */
+  /* --- Meta label: the mono voice --- */
   .eyebrow {
     @apply font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-muted;
   }
@@ -69,47 +70,83 @@
     @apply border-t border-rule;
   }
 
-  /* --- Vertical (rotated) spine label, a classic magazine device --- */
+  /* --- Vertical (rotated) spine label --- */
   .spine {
     writing-mode: vertical-rl;
     text-orientation: mixed;
   }
 
-  /* --- Oversized folio / issue number --- */
+  /* --- Oversized stat numeral --- */
   .folio {
     @apply font-display leading-none text-paper;
     font-variant-numeric: lining-nums;
+    letter-spacing: -0.03em;
   }
 
   /* --- Drop-cap for editorial lead paragraphs --- */
   .dropcap::first-letter {
     @apply font-display float-left mr-3 leading-[0.82];
     font-size: 4.2em;
-    color: #f4f1ec;
+    color: #161614;
+  }
+
+  /* --- Solid black pill button (primary) --- */
+  .btn-pill {
+    @apply inline-flex items-center gap-2 rounded-full bg-paper px-5 py-2.5
+           font-mono text-[10px] uppercase tracking-[0.18em] text-ink
+           transition-all duration-300 cursor-pointer
+           hover:bg-ink-deep hover:text-paper;
+  }
+
+  /* --- Outlined pill button (secondary) --- */
+  .btn-pill-ghost {
+    @apply inline-flex items-center gap-2 rounded-full border border-rule
+           px-5 py-2.5 font-mono text-[10px] uppercase tracking-[0.18em] text-paper
+           transition-colors duration-300 cursor-pointer
+           hover:border-paper hover:bg-paper hover:text-ink;
+  }
+
+  /* --- Small outlined tag, the AUVI meta chip --- */
+  .tag-pill {
+    @apply inline-flex items-center rounded-full border border-rule
+           px-2.5 py-0.5 font-mono text-[9px] uppercase tracking-[0.14em] text-muted;
+  }
+
+  /* --- Soft grey card --- */
+  .card-soft {
+    @apply rounded-card bg-ink-card;
+  }
+
+  /* --- Section head with the leading dot: “• Bestsellers” --- */
+  .dot-title {
+    @apply relative inline-block font-display font-medium text-paper;
+  }
+  .dot-title::before {
+    content: '';
+    @apply mr-[0.35em] inline-block h-[0.32em] w-[0.32em] rounded-full bg-paper align-middle;
   }
 
   /* --- Underline-only form fields ---
      16px minimum on touch sizes: anything smaller makes iOS Safari zoom the
      whole viewport the moment the field takes focus. */
   .field {
-    @apply w-full bg-transparent pb-2 text-[16px] sm:text-sm text-paper
-           placeholder:text-faint border-b border-rule outline-none
-           transition-colors duration-300 focus:border-paper;
-    border-radius: 0;
+    @apply w-full rounded-full bg-ink-deep/60 px-5 py-3 text-[16px] sm:text-sm text-paper
+           placeholder:text-faint border border-transparent outline-none
+           transition-colors duration-300 focus:border-paper/40;
   }
   textarea.field {
-    @apply leading-relaxed;
+    @apply leading-relaxed rounded-2xl;
   }
   select.field {
-    @apply appearance-none cursor-pointer pr-6;
+    @apply appearance-none cursor-pointer pr-10;
   }
   select.field option {
-    background-color: #101013;
-    color: #f4f1ec;
+    background-color: #f0efec;
+    color: #161614;
   }
   /* appearance-none strips the native arrow, so draw the arm back in */
   .field-arrow {
-    @apply pointer-events-none absolute right-0 bottom-3 text-faint;
+    @apply pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-faint;
   }
 
   /* --- Link with a rule that draws in on hover --- */
@@ -125,9 +162,9 @@
     @apply scale-x-100;
   }
 
-  /* --- Thin "cut out" frame used around media --- */
+  /* --- Rounded media plate --- */
   .frame {
-    @apply relative overflow-hidden bg-ink-card;
+    @apply relative overflow-hidden rounded-card bg-ink-card;
   }
 }
 
@@ -157,13 +194,13 @@
     scrollbar-width: none;
   }
 
-  /* Faint paper grain over solid ink, keeps black from looking flat */
+  /* Faint grain over the warm grey, keeps large surfaces from looking flat */
   .grain::before {
     content: '';
     position: absolute;
     inset: 0;
     pointer-events: none;
-    opacity: 0.035;
+    opacity: 0.028;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 }
@@ -195,7 +232,7 @@ html.lenis body {
   will-change: transform;
 }
 
-/* --- Client wordmark strip --- */
+/* --- Brand logo strip --- */
 @keyframes marquee {
   from {
     transform: translate3d(0, 0, 0);
@@ -206,7 +243,7 @@ html.lenis body {
 }
 
 .marquee-track {
-  animation: marquee 46s linear infinite;
+  animation: marquee 42s linear infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {

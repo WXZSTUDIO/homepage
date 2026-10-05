@@ -86,8 +86,8 @@ const StrengthsSection: React.FC = () => {
     depth?: number;
   }> = ({ index, image, alt, kicker, title, body, depth = 0.4 }) => (
     <div className="strengths-card flex flex-col group">
-      <div className="flex items-baseline justify-between gap-4 border-b border-rule pb-2 mb-4">
-        <span className="font-mono text-[11px] tracking-[0.2em] text-accent">{index}</span>
+      <div className="flex items-baseline justify-between gap-4 pb-2 mb-4">
+        <span className="font-mono text-[11px] tracking-[0.2em] text-faint">{index}</span>
         <span className="eyebrow">{kicker}</span>
       </div>
       <div className="frame aspect-[16/10] w-full">
@@ -103,7 +103,7 @@ const StrengthsSection: React.FC = () => {
             className="w-full h-full object-cover transition-transform duration-[900ms] ease-editorial group-hover:scale-[1.04]"
           />
         </DepthLayer>
-        <span className="pointer-events-none absolute bottom-0 left-0 h-px w-full origin-left scale-x-0 bg-accent transition-transform duration-700 ease-editorial group-hover:scale-x-100" />
+        <span className="pointer-events-none absolute inset-0 rounded-card ring-1 ring-inset ring-transparent group-hover:ring-paper/20 transition-all duration-500" />
       </div>
       <h3 className="font-display text-2xl sm:text-3xl text-paper leading-tight mt-5">
         {title}
@@ -124,7 +124,7 @@ const StrengthsSection: React.FC = () => {
           <div>
             <div className="eyebrow mb-3">{ui.strengths.tag}</div>
             <div className="overflow-hidden py-1">
-              <h2 className="strengths-title-line font-display text-[clamp(2.2rem,5.4vw,4.5rem)] leading-[0.98] text-paper block will-change-transform">
+              <h2 className="strengths-title-line dot-title text-[clamp(2.2rem,5.4vw,4.5rem)] leading-[1.02] block will-change-transform">
                 {ui.strengths.title}
               </h2>
             </div>
@@ -161,16 +161,16 @@ const StrengthsSection: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 border-t border-rule pt-12">
           <div className="lg:col-span-7">
             <div className="eyebrow mb-5">Hardware Arsenal (Owned)</div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-rule-soft border border-rule-soft">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {gearItems.map((item) => (
                 <div
                   key={item.name}
-                  className="group flex items-center gap-4 bg-ink px-4 py-3.5 hover:bg-ink-soft transition-colors duration-300"
+                  className="group flex items-center gap-4 bg-ink rounded-2xl px-4 py-3.5 hover:bg-ink-deep/70 transition-colors duration-300"
                 >
                   <item.icon
                     size={18}
                     strokeWidth={1.4}
-                    className="shrink-0 text-faint group-hover:text-accent transition-colors duration-300"
+                    className="shrink-0 text-faint group-hover:text-paper transition-colors duration-300"
                   />
                   <div className="min-w-0">
                     <div className="font-display text-base text-paper leading-none truncate">
@@ -187,16 +187,16 @@ const StrengthsSection: React.FC = () => {
 
           <div className="lg:col-span-5">
             <div className="eyebrow mb-5">Technical &amp; Creative Stack</div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-px bg-rule-soft border border-rule-soft">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
               {tools.map((tool) => (
                 <div
                   key={tool.name}
-                  className="group flex flex-col items-start gap-2.5 bg-ink px-3.5 py-3.5 hover:bg-ink-soft transition-colors duration-300"
+                  className="group flex flex-col items-start gap-2.5 bg-ink rounded-2xl px-3.5 py-3.5 hover:bg-ink-deep/70 transition-colors duration-300"
                 >
                   <tool.icon
                     size={15}
                     strokeWidth={1.4}
-                    className="text-faint group-hover:text-accent transition-colors duration-300"
+                    className="text-faint group-hover:text-paper transition-colors duration-300"
                   />
                   <span className="font-mono text-[10px] tracking-[0.08em] text-paper-70 leading-tight">
                     {tool.name}
@@ -207,7 +207,8 @@ const StrengthsSection: React.FC = () => {
 
             <div className="mt-8 border-t border-rule pt-4 flex items-baseline justify-between">
               <span className="eyebrow">Status</span>
-              <span className="font-display text-xl text-accent">
+              <span className="font-display text-xl text-paper flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-accent inline-block" aria-hidden="true" />
                 {ui.strengths.gearReady}
               </span>
             </div>

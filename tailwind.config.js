@@ -1,4 +1,13 @@
 /** @type {import('tailwindcss').Config} */
+
+/* AUVI-STYLE LIGHT SYSTEM
+   The historical names are kept (a full rename would touch every file), but
+   the VALUES are inverted:
+   - `ink`   → the page surface (warm light grey)
+   - `paper` → the foreground (near-black)
+   So `bg-ink text-paper` now renders a light page with dark text, and
+   `bg-paper text-ink` renders the solid dark pill button — exactly the
+   reference language (black pill buttons on warm grey cards). */
 export default {
   content: [
     './index.html',
@@ -8,35 +17,45 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Editorial "ink & newsprint" palette
-        ink: '#09090b',
-        'ink-soft': '#101013',
-        'ink-card': '#151517',
-        paper: '#F4F1EC',
-        'paper-70': 'rgba(244, 241, 236, 0.70)',
-        'paper-45': 'rgba(244, 241, 236, 0.45)',
-        muted: '#9A958C',
-        faint: '#6B675F',
-        rule: 'rgba(244, 241, 236, 0.14)',
-        'rule-soft': 'rgba(244, 241, 236, 0.07)',
+        // Surfaces
+        ink: '#F0EFEC',
+        'ink-soft': '#EAE8E3',
+        'ink-card': '#E5E3DD',
+        'ink-deep': '#DBD9D2',
+
+        // Foreground
+        paper: '#161614',
+        'paper-70': 'rgba(22, 22, 20, 0.70)',
+        'paper-45': 'rgba(22, 22, 20, 0.45)',
+        muted: '#6F6C65',
+        faint: '#9C9991',
+        rule: 'rgba(22, 22, 20, 0.13)',
+        'rule-soft': 'rgba(22, 22, 20, 0.06)',
         accent: '#FFC900',
 
         // legacy aliases (kept so older markup still resolves)
-        background: '#000000',
-        surface: '#0d0d0f',
-        'surface-card': '#121214',
-        'surface-elevated': '#18181b',
-        secondary: '#86868b',
+        background: '#F0EFEC',
+        surface: '#EAE8E3',
+        'surface-card': '#E5E3DD',
+        'surface-elevated': '#DBD9D2',
+        secondary: '#6F6C65',
       },
       fontFamily: {
+        // AUVI voice: one clean grotesque everywhere, tight display tracking
         display: [
-          '"Instrument Serif"',
-          '"Noto Serif SC"',
-          '"Songti SC"',
-          '"Source Han Serif SC"',
-          'SimSun',
-          'Georgia',
-          'serif',
+          '"Inter"',
+          '-apple-system',
+          'BlinkMacSystemFont',
+          '"SF Pro Display"',
+          '"PingFang SC"',
+          '"Hiragino Sans GB"',
+          '"Apple SD Gothic Neo"',
+          '"Microsoft YaHei"',
+          '"Malgun Gothic"',
+          '"Helvetica Neue"',
+          'Helvetica',
+          'Arial',
+          'sans-serif',
         ],
         sans: [
           '"Inter"',
@@ -57,6 +76,10 @@ export default {
       },
       maxWidth: {
         1700: '1700px',
+      },
+      borderRadius: {
+        card: '1.5rem',
+        plate: '2rem',
       },
       transitionTimingFunction: {
         editorial: 'cubic-bezier(0.16, 1, 0.3, 1)',

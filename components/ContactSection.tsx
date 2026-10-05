@@ -125,7 +125,7 @@ const ContactSection: React.FC = () => {
               {/* Email */}
               <div className="py-5 border-b border-rule-soft">
                 <div className="eyebrow mb-2 flex items-center gap-2">
-                  <Mail size={12} strokeWidth={1.5} className="text-accent" />
+                  <Mail size={12} strokeWidth={1.5} className="text-paper" />
                   {ui.contact.officialEmail}
                 </div>
                 <div className="flex items-center justify-between gap-4">
@@ -140,7 +140,7 @@ const ContactSection: React.FC = () => {
                     className="eyebrow text-muted hover:text-paper transition-colors inline-flex items-center gap-1 cursor-pointer shrink-0 p-2 -m-2"
                   >
                     {copiedEmail ? (
-                      <Check size={11} className="text-accent" />
+                      <Check size={11} className="text-paper" />
                     ) : (
                       <Copy size={11} />
                     )}
@@ -153,7 +153,7 @@ const ContactSection: React.FC = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 py-5 border-b border-rule-soft">
                 <div>
                   <div className="eyebrow mb-2 flex items-center gap-2">
-                    <MessageCircle size={12} strokeWidth={1.5} className="text-accent" />
+                    <MessageCircle size={12} strokeWidth={1.5} className="text-paper" />
                     {ui.contact.wechat}
                   </div>
                   <div className="flex items-center gap-2">
@@ -164,7 +164,7 @@ const ContactSection: React.FC = () => {
                       aria-label="Copy WeChat ID"
                     >
                       {copiedWeChat ? (
-                        <Check size={11} className="text-accent" />
+                        <Check size={11} className="text-paper" />
                       ) : (
                         <Copy size={11} />
                       )}
@@ -173,7 +173,7 @@ const ContactSection: React.FC = () => {
                 </div>
                 <div>
                   <div className="eyebrow mb-2 flex items-center gap-2">
-                    <Phone size={12} strokeWidth={1.5} className="text-accent" />
+                    <Phone size={12} strokeWidth={1.5} className="text-paper" />
                     {phoneLabel}
                   </div>
                   <a
@@ -191,13 +191,13 @@ const ContactSection: React.FC = () => {
                   href="https://naver.me/5fdFDeXr"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group inline-flex items-center gap-3 font-display text-lg sm:text-xl text-paper hover:text-accent transition-colors"
+                  className="group inline-flex items-center gap-3 font-display text-lg sm:text-xl text-paper hover:opacity-60 transition-opacity"
                 >
-                  <FileText size={15} strokeWidth={1.4} className="text-accent" />
+                  <FileText size={15} strokeWidth={1.4} className="text-paper" />
                   {naverDocText}
                   <ArrowUpRight
                     size={14}
-                    className="text-muted group-hover:text-accent transition-colors"
+                    className="text-muted group-hover:text-paper transition-colors"
                   />
                 </a>
               </div>
@@ -286,7 +286,7 @@ const ContactSection: React.FC = () => {
 
                 <button
                   type="submit"
-                  className="inline-flex items-center gap-3 border border-paper bg-paper px-7 py-3 font-mono text-[10px] uppercase tracking-[0.2em] text-ink hover:bg-transparent hover:text-paper transition-colors duration-300 cursor-pointer"
+                  className="btn-pill px-7 py-3.5 cursor-pointer"
                 >
                   {ui.contact.submitBtn}
                   <span>→</span>

@@ -73,7 +73,7 @@ const ExperienceSection: React.FC = () => {
           <div>
             <div className="eyebrow mb-3">{ui.experience.tag}</div>
             <div className="overflow-hidden py-1">
-              <h2 className="exp-title-line font-display text-[clamp(2.2rem,5.4vw,4.5rem)] leading-[0.98] text-paper block will-change-transform">
+              <h2 className="exp-title-line dot-title text-[clamp(2.2rem,5.4vw,4.5rem)] leading-[1.02] block will-change-transform">
                 {ui.experience.title}
               </h2>
             </div>
@@ -121,7 +121,7 @@ const ExperienceSection: React.FC = () => {
                     <span className="normal-case tracking-normal">
                       ro3eandcat@gmail.com
                     </span>
-                    {copiedEmail && <Check size={11} className="text-accent" />}
+                    {copiedEmail && <Check size={11} className="text-paper" />}
                   </button>
                   <span className="text-faint/60">/</span>
                   <span>WeChat: icf304</span>
@@ -149,7 +149,7 @@ const ExperienceSection: React.FC = () => {
                     <Icon
                       size={15}
                       strokeWidth={1.4}
-                      className="text-accent mb-3"
+                      className="text-muted mb-3"
                       aria-hidden="true"
                     />
                     <div className="folio text-3xl sm:text-5xl">{m.value}</div>
@@ -173,7 +173,7 @@ const ExperienceSection: React.FC = () => {
                   >
                     <span className="eyebrow text-faint">{career.period}</span>
                     <div>
-                      <h3 className="font-display text-xl sm:text-2xl text-paper leading-tight group-hover:text-accent transition-colors duration-300">
+                      <h3 className="font-display text-xl sm:text-2xl text-paper leading-tight">
                         {career.company}
                       </h3>
                       <div className="text-xs text-muted mt-1">
