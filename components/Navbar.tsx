@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../LanguageContext';
 import LanguageSwitcher from './LanguageSwitcher';
+import { scrollToTarget } from './SmoothScroll';
 import { ArrowUpRight } from 'lucide-react';
 
 interface NavbarProps {
@@ -18,6 +19,14 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Lock the page behind the mobile index, so the background doesn't scroll.
+  useEffect(() => {
+    document.body.style.overflow = isMobileMenuOpen ? 'hidden' : '';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isMobileMenuOpen]);
+
   const navItems = [
     { id: 'hero', label: ui.nav.overview },
     { id: 'experience', label: ui.nav.experience },
@@ -28,11 +37,7 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
 
   const scrollTo = (id: string) => {
     setIsMobileMenuOpen(false);
-    const element = document.getElementById(id);
-    if (element) {
-      const top = element.getBoundingClientRect().top + window.scrollY - 72;
-      window.scrollTo({ top, behavior: 'smooth' });
-    }
+    scrollToTarget(id, -72);
   };
 
   return (

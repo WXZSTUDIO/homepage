@@ -7,6 +7,7 @@ import ExperienceSection from './components/ExperienceSection';
 import ProjectsSection from './components/ProjectsSection';
 import StrengthsSection from './components/StrengthsSection';
 import ContactSection from './components/ContactSection';
+import BrandMarquee from './components/BrandMarquee';
 import SmoothScroll, { scrollToTarget } from './components/SmoothScroll';
 import { useMotionProfile } from './hooks/useMotionProfile';
 
@@ -76,6 +77,9 @@ const MainApp: React.FC = () => {
           onContact={() => scrollToSection('contact')}
           isIntroDone={isIntroDone}
         />
+
+        {/* 1.5 Client wordmark strip — the trust line right off the cover */}
+        <BrandMarquee />
 
         {/* 2. Personal Profile & Experience (Portrait, Bio, Contacts, Metrics, Career Timeline) */}
         <ExperienceSection />

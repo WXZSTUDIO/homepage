@@ -166,6 +166,28 @@ html.lenis body {
   will-change: transform;
 }
 
+/* --- Client wordmark strip --- */
+@keyframes marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.marquee-track {
+  animation: marquee 46s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+    flex-wrap: wrap;
+    width: auto;
+  }
+}
+
 /* Respect reduced-motion: kill transforms, keep opacity fades */
 @media (prefers-reduced-motion: reduce) {
   html {
