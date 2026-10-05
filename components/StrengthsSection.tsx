@@ -2,8 +2,40 @@ import React, { useEffect, useRef } from 'react';
 import { useLanguage } from '../LanguageContext';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import DepthLayer from './DepthLayer';
+import {
+  Aperture, Palette, Sun, Orbit, MonitorPlay, Mic,
+  Cpu, Sparkles, Clapperboard, Scissors, Wand2, Image as ImageIcon,
+  PenTool, Figma, Boxes, Camera,
+} from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
+
+/* Equipment and stack reduced to icon + name + one technical keyword.
+   The long-form role descriptions repeated what the images already showed. */
+const GEAR_ITEMS = [
+  { icon: Aperture, name: 'Sony FX3 / A7S III', spec: '4K 120p Cinema Line' },
+  { icon: Palette, name: 'DaVinci Resolve Studio', spec: 'HDR Color Science' },
+  { icon: Sun, name: 'Aputure & Nanlite', spec: 'High-Output Lighting' },
+  { icon: Orbit, name: 'DJI Ronin RS3 Pro', spec: '3-Axis Stabilization' },
+  { icon: MonitorPlay, name: 'Atomos Ninja V+', spec: 'ProRes RAW 10-Bit' },
+  { icon: Mic, name: 'Sennheiser & Rode', spec: 'Wireless Audio Suite' },
+];
+
+const TOOLS = [
+  { icon: Cpu, name: 'ComfyUI' },
+  { icon: Sparkles, name: 'Midjourney v6' },
+  { icon: Clapperboard, name: 'Runway Gen-3' },
+  { icon: Palette, name: 'DaVinci Resolve' },
+  { icon: Scissors, name: 'Premiere Pro' },
+  { icon: Wand2, name: 'After Effects' },
+  { icon: ImageIcon, name: 'Photoshop' },
+  { icon: PenTool, name: 'Illustrator' },
+  { icon: Figma, name: 'Figma' },
+  { icon: Boxes, name: 'Blender 3D' },
+  { icon: Camera, name: 'Lightroom Classic' },
+  { icon: Cpu, name: 'Stable Diffusion' },
+];
 
 const StrengthsSection: React.FC = () => {
   const { ui, language } = useLanguage();
@@ -41,20 +73,8 @@ const StrengthsSection: React.FC = () => {
     return () => ctx.revert();
   }, [language]);
 
-  const gearItems = [
-    { name: 'Sony FX3 / A7S III', role: 'Full-Frame 4K 120p Cinema Line' },
-    { name: 'DaVinci Resolve Studio', role: 'HDR Color Science & Grading Deck' },
-    { name: 'Aputure & Nanlite Rig', role: 'Studio High-Output Lighting Array' },
-    { name: 'DJI Ronin RS3 Pro', role: 'Cinema 3-Axis Stabilization' },
-    { name: 'Atomos Ninja V+', role: 'ProRes RAW 10-Bit External Recording' },
-    { name: 'Sennheiser & Rode', role: 'Professional Wireless Audio Suite' },
-  ];
-
-  const tools = [
-    'ComfyUI', 'Midjourney v6', 'Runway Gen-3', 'DaVinci Resolve',
-    'Premiere Pro', 'After Effects', 'Photoshop', 'Illustrator',
-    'Figma', 'Blender 3D', 'Stable Diffusion', 'Lightroom Classic'
-  ];
+  const gearItems = GEAR_ITEMS;
+  const tools = TOOLS;
 
   const Chapter: React.FC<{
     index: string;
@@ -63,19 +83,26 @@ const StrengthsSection: React.FC = () => {
     kicker: string;
     title: string;
     body: string;
-  }> = ({ index, image, alt, kicker, title, body }) => (
+    depth?: number;
+  }> = ({ index, image, alt, kicker, title, body, depth = 0.4 }) => (
     <div className="strengths-card flex flex-col group">
       <div className="flex items-baseline justify-between gap-4 border-b border-rule pb-2 mb-4">
         <span className="font-mono text-[11px] tracking-[0.2em] text-accent">{index}</span>
         <span className="eyebrow">{kicker}</span>
       </div>
       <div className="frame aspect-[16/10] w-full">
-        <img
-          src={image}
-          alt={alt}
-          loading="lazy"
-          className="w-full h-full object-cover transition-transform duration-[900ms] ease-editorial group-hover:scale-[1.04]"
-        />
+        <DepthLayer
+          depth={depth}
+          travel={55}
+          className="absolute inset-x-0 -top-[10%] -bottom-[10%]"
+        >
+          <img
+            src={image}
+            alt={alt}
+            loading="lazy"
+            className="w-full h-full object-cover transition-transform duration-[900ms] ease-editorial group-hover:scale-[1.04]"
+          />
+        </DepthLayer>
         <span className="pointer-events-none absolute bottom-0 left-0 h-px w-full origin-left scale-x-0 bg-accent transition-transform duration-700 ease-editorial group-hover:scale-x-100" />
       </div>
       <h3 className="font-display text-2xl sm:text-3xl text-paper leading-tight mt-5">
@@ -119,30 +146,40 @@ const StrengthsSection: React.FC = () => {
           />
           <div className="md:mt-24">
             <Chapter
-              index="02"
-              image="images/ai-generative-sculpture.jpg"
-              alt="AI Generative Design"
-              kicker="AI SYNTHESIS & PIPELINE"
-              title={ui.strengths.skillTitle}
-              body={ui.strengths.skillSubtitle}
-            />
+            index="02"
+            image="images/ai-generative-sculpture.jpg"
+            alt="AI Generative Design"
+            kicker="AI SYNTHESIS & PIPELINE"
+            title={ui.strengths.skillTitle}
+            body={ui.strengths.skillSubtitle}
+            depth={0.68}
+          />
           </div>
         </div>
 
-        {/* Specs columns */}
+        {/* Specs — icon plates, no prose */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 border-t border-rule pt-12">
           <div className="lg:col-span-7">
             <div className="eyebrow mb-5">Hardware Arsenal (Owned)</div>
-            <div className="border-t border-rule-soft">
-              {gearItems.map((item, idx) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-rule-soft border border-rule-soft">
+              {gearItems.map((item) => (
                 <div
-                  key={idx}
-                  className="py-3.5 flex items-baseline justify-between gap-6 border-b border-rule-soft"
+                  key={item.name}
+                  className="group flex items-center gap-4 bg-ink px-4 py-3.5 hover:bg-ink-soft transition-colors duration-300"
                 >
-                  <span className="font-display text-lg text-paper leading-none">
-                    {item.name}
-                  </span>
-                  <span className="eyebrow text-right">{item.role}</span>
+                  <item.icon
+                    size={18}
+                    strokeWidth={1.4}
+                    className="shrink-0 text-faint group-hover:text-accent transition-colors duration-300"
+                  />
+                  <div className="min-w-0">
+                    <div className="font-display text-base text-paper leading-none truncate">
+                      {item.name}
+                    </div>
+                    <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-faint mt-1.5">
+                      {item.spec}
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
@@ -150,14 +187,21 @@ const StrengthsSection: React.FC = () => {
 
           <div className="lg:col-span-5">
             <div className="eyebrow mb-5">Technical &amp; Creative Stack</div>
-            <div className="flex flex-wrap gap-2">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-px bg-rule-soft border border-rule-soft">
               {tools.map((tool) => (
-                <span
-                  key={tool}
-                  className="border border-rule px-2.5 py-1 font-mono text-[10px] tracking-[0.1em] text-paper-70 hover:border-paper hover:text-paper transition-colors duration-300"
+                <div
+                  key={tool.name}
+                  className="group flex flex-col items-start gap-2.5 bg-ink px-3.5 py-3.5 hover:bg-ink-soft transition-colors duration-300"
                 >
-                  {tool}
-                </span>
+                  <tool.icon
+                    size={15}
+                    strokeWidth={1.4}
+                    className="text-faint group-hover:text-accent transition-colors duration-300"
+                  />
+                  <span className="font-mono text-[10px] tracking-[0.08em] text-paper-70 leading-tight">
+                    {tool.name}
+                  </span>
+                </div>
               ))}
             </div>
 

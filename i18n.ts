@@ -486,9 +486,9 @@ export const I18N_CAREER: LocalizedCareer[] = [
   {
     id: 'early',
     company: {
-      zh: '北京利佰雅建筑装饰 & 王府井百货 (早期资历)',
+      zh: '北京丽贝亚建筑装饰 & 王府井百货 (早期资历)',
       en: 'Beijing Architecture & Wangfujing (Early Foundation)',
-      ko: '베이징 리배야 & 왕푸징 백화점 (초기 경력)'
+      ko: '베이징 리베이야 & 왕푸징 백화점 (초기 경력)'
     },
     period: '2012.07 ~ 2016.12',
     duration: {
@@ -508,17 +508,17 @@ export const I18N_CAREER: LocalizedCareer[] = [
     },
     highlights: {
       zh: [
-        '北京利佰雅建筑装饰工程：参与高端酒店品牌识别设计，负责大堂与客房艺术背景墙（Art Wall）图形系统开发',
+        '北京丽贝亚建筑装饰工程：参与高端酒店品牌识别设计，负责大堂与客房艺术背景墙（Art Wall）图形系统开发',
         '王府井百货：负责春节、国庆等核心大促视觉主画面（Key Visual）、商场大型海报与中庭美陈陈列（VMD）',
         '哈尔滨地铁报社：负责主流地铁报纸媒介广告版面规划与商业客户视觉定制呈现'
       ],
       en: [
-        'Beijing Libaiya: Engineered hotel visual identities and bespoke architectural Art Wall graphics.',
+        'Beijing Libeya: Engineered hotel visual identities and bespoke architectural Art Wall graphics.',
         'Wangfujing Department Store: Spearheaded festival promotional key visuals, atrium VMD installations, and signage.',
         'Harbin Metro Media: Planned print publication layouts and tailored media advertising visuals.'
       ],
       ko: [
-        '베이징 리배야 건축공사: 프리미엄 호텔 브랜드 아이덴티티 및 호텔 로비/객실 포인트 Art Wall 패턴 디자인',
+        '베이징 리베이야 건축공사: 프리미엄 호텔 브랜드 아이덴티티 및 호텔 로비/객실 포인트 Art Wall 패턴 디자인',
         '왕푸징 백화점: 주요 명절(춘절, 국경절) 대형 프로모션 포스터 및 백화점 내부 팝업존 VMD 연출 설계',
         '하얼빈 지하철 신문사: 신문 지면 광고 기획 및 지면 비주얼 레이아웃 제작'
       ]

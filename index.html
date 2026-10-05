@@ -2,7 +2,12 @@
 <html lang="zh" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <!-- No user-scalable=no: it never worked on iOS (ignored since iOS 10) and
+         broke pinch-zoom accessibility. Zoom-on-focus is fixed at the CSS layer. -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
     <title>ZHENG CANFENG | 정찬봉 · Visual &amp; AI Design Director</title>
     <meta
       name="description"

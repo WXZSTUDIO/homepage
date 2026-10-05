@@ -2,7 +2,16 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useLanguage } from '../LanguageContext';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Copy, Check, ArrowUpRight } from 'lucide-react';
+import {
+  Copy,
+  Check,
+  ArrowUpRight,
+  ChevronDown,
+  Mail,
+  MessageCircle,
+  Phone,
+  FileText,
+} from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -115,17 +124,20 @@ const ContactSection: React.FC = () => {
             <div className="border-t border-rule">
               {/* Email */}
               <div className="py-5 border-b border-rule-soft">
-                <div className="eyebrow mb-2">{ui.contact.officialEmail}</div>
+                <div className="eyebrow mb-2 flex items-center gap-2">
+                  <Mail size={12} strokeWidth={1.5} className="text-accent" />
+                  {ui.contact.officialEmail}
+                </div>
                 <div className="flex items-center justify-between gap-4">
                   <a
                     href="mailto:ro3eandcat@gmail.com"
-                    className="font-display text-xl sm:text-2xl text-paper link-rule"
+                    className="font-display text-lg sm:text-2xl text-paper link-rule break-all"
                   >
                     ro3eandcat@gmail.com
                   </a>
                   <button
                     onClick={handleCopyEmail}
-                    className="eyebrow text-muted hover:text-paper transition-colors inline-flex items-center gap-1 cursor-pointer shrink-0"
+                    className="eyebrow text-muted hover:text-paper transition-colors inline-flex items-center gap-1 cursor-pointer shrink-0 p-2 -m-2"
                   >
                     {copiedEmail ? (
                       <Check size={11} className="text-accent" />
@@ -140,12 +152,15 @@ const ContactSection: React.FC = () => {
               {/* WeChat + phone */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 py-5 border-b border-rule-soft">
                 <div>
-                  <div className="eyebrow mb-2">{ui.contact.wechat}</div>
+                  <div className="eyebrow mb-2 flex items-center gap-2">
+                    <MessageCircle size={12} strokeWidth={1.5} className="text-accent" />
+                    {ui.contact.wechat}
+                  </div>
                   <div className="flex items-center gap-2">
                     <span className="font-mono text-base text-paper">icf304</span>
                     <button
                       onClick={handleCopyWeChat}
-                      className="text-faint hover:text-paper transition-colors cursor-pointer"
+                      className="text-faint hover:text-paper transition-colors cursor-pointer p-2 -m-2"
                       aria-label="Copy WeChat ID"
                     >
                       {copiedWeChat ? (
@@ -157,10 +172,13 @@ const ContactSection: React.FC = () => {
                   </div>
                 </div>
                 <div>
-                  <div className="eyebrow mb-2">{phoneLabel}</div>
+                  <div className="eyebrow mb-2 flex items-center gap-2">
+                    <Phone size={12} strokeWidth={1.5} className="text-accent" />
+                    {phoneLabel}
+                  </div>
                   <a
                     href="tel:+82108388388"
-                    className="font-mono text-base text-paper link-rule"
+                    className="inline-block font-mono text-base text-paper link-rule"
                   >
                     +82 010-****-8388
                   </a>
@@ -173,8 +191,9 @@ const ContactSection: React.FC = () => {
                   href="https://naver.me/5fdFDeXr"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group inline-flex items-center gap-2 font-display text-xl text-paper hover:text-accent transition-colors"
+                  className="group inline-flex items-center gap-3 font-display text-lg sm:text-xl text-paper hover:text-accent transition-colors"
                 >
+                  <FileText size={15} strokeWidth={1.4} className="text-accent" />
                   {naverDocText}
                   <ArrowUpRight
                     size={14}
@@ -236,17 +255,20 @@ const ContactSection: React.FC = () => {
                   </div>
                   <div>
                     <label className="eyebrow block mb-2">{ui.contact.typeLabel}</label>
-                    <select
-                      value={formData.budget}
-                      onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
-                      className="field"
-                    >
-                      <option value="">{ui.contact.typeDefault}</option>
-                      <option value="video">{ui.contact.typeVideo}</option>
-                      <option value="brand">{ui.contact.typeBrand}</option>
-                      <option value="china">{ui.contact.typeChina}</option>
-                      <option value="ai">{ui.contact.typeAi}</option>
-                    </select>
+                    <div className="relative">
+                      <select
+                        value={formData.budget}
+                        onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
+                        className="field"
+                      >
+                        <option value="">{ui.contact.typeDefault}</option>
+                        <option value="video">{ui.contact.typeVideo}</option>
+                        <option value="brand">{ui.contact.typeBrand}</option>
+                        <option value="china">{ui.contact.typeChina}</option>
+                        <option value="ai">{ui.contact.typeAi}</option>
+                      </select>
+                      <ChevronDown size={14} className="field-arrow" />
+                    </div>
                   </div>
                 </div>
 

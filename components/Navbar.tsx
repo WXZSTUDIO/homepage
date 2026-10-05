@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useLanguage } from '../LanguageContext';
 import LanguageSwitcher from './LanguageSwitcher';
+import { scrollToTarget } from './SmoothScroll';
+import { useScrollLock } from '../hooks/useScrollLock';
 import { ArrowUpRight } from 'lucide-react';
 
 interface NavbarProps {
@@ -18,6 +20,23 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const closeMenu = useCallback(() => setIsMobileMenuOpen(false), []);
+
+  // Freeze the page behind the mobile index (and stop Lenis with it).
+  useScrollLock(isMobileMenuOpen, closeMenu);
+
+  // If the viewport grows into the desktop layout while the index is open, the
+  // overlay would sit there with no way to reach it.
+  useEffect(() => {
+    if (!isMobileMenuOpen) return;
+    const mq = window.matchMedia('(min-width: 640px)');
+    const sync = () => {
+      if (mq.matches) setIsMobileMenuOpen(false);
+    };
+    mq.addEventListener('change', sync);
+    return () => mq.removeEventListener('change', sync);
+  }, [isMobileMenuOpen]);
+
   const navItems = [
     { id: 'hero', label: ui.nav.overview },
     { id: 'experience', label: ui.nav.experience },
@@ -28,11 +47,7 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
 
   const scrollTo = (id: string) => {
     setIsMobileMenuOpen(false);
-    const element = document.getElementById(id);
-    if (element) {
-      const top = element.getBoundingClientRect().top + window.scrollY - 72;
-      window.scrollTo({ top, behavior: 'smooth' });
-    }
+    scrollToTarget(id, -72);
   };
 
   return (
@@ -109,7 +124,7 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
             <LanguageSwitcher />
             <button
               onClick={() => setIsMobileMenuOpen((v) => !v)}
-              className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted hover:text-paper transition-colors cursor-pointer"
+              className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted hover:text-paper transition-colors cursor-pointer p-2 -mr-2"
               aria-expanded={isMobileMenuOpen}
               aria-label="Toggle Navigation"
             >
@@ -121,7 +136,7 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
 
       {/* Mobile index — a table of contents */}
       {isMobileMenuOpen && (
-        <div className="fixed inset-0 z-40 bg-ink pt-28 pb-10 px-6 flex flex-col justify-between overflow-y-auto">
+        <div className="fixed inset-0 z-40 bg-ink pt-28 pb-10 pb-safe px-6 flex flex-col justify-between overflow-y-auto overscroll-contain">
           <nav className="border-t border-rule">
             {navItems.map((item, idx) => (
               <button

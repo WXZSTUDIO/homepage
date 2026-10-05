@@ -2,7 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useLanguage } from '../LanguageContext';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Mail, Copy, Check } from 'lucide-react';
+import { Mail, Copy, Check, CalendarClock, Package, TrendingUp, Camera } from 'lucide-react';
+import DepthLayer from './DepthLayer';
+
+/* Metrics carry an icon so they can be read at a glance — the supporting
+   sentences restated what the numbers already said. */
+const METRIC_ICONS = [CalendarClock, Package, TrendingUp, Camera];
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -82,14 +87,21 @@ const ExperienceSection: React.FC = () => {
         <div className="exp-content-trigger grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           {/* Left: portrait plate */}
           <div className="lg:col-span-5 exp-stagger-item">
-            <figure className="m-0">
+            {/* Portrait reads as a plate, not a phone-filling column */}
+            <figure className="m-0 max-w-[78%] sm:max-w-full mx-auto lg:mx-0">
               <div className="frame aspect-[3/4] w-full">
-                <img
-                  src="images/designer-chanbong-portrait.jpg"
-                  alt={ui.nav.brand}
-                  className="w-full h-full object-cover grayscale contrast-105 brightness-95 hover:grayscale-0 transition-[filter] duration-700"
-                  loading="lazy"
-                />
+                <DepthLayer
+                  depth={0.45}
+                  travel={70}
+                  className="absolute inset-x-0 -top-[12%] -bottom-[12%]"
+                >
+                  <img
+                    src="images/designer-chanbong-portrait.jpg"
+                    alt={ui.nav.brand}
+                    className="w-full h-full object-cover grayscale contrast-105 brightness-95 hover:grayscale-0 transition-[filter] duration-700"
+                    loading="lazy"
+                  />
+                </DepthLayer>
               </div>
               <figcaption className="mt-5 border-t border-rule pt-4">
                 <div className="flex items-baseline justify-between gap-4">
@@ -127,15 +139,24 @@ const ExperienceSection: React.FC = () => {
 
             {/* Metrics — set on a hairline grid */}
             <div className="grid grid-cols-2 sm:grid-cols-4 border-t border-rule">
-              {metrics.map((m: any, idx: number) => (
-                <div
-                  key={idx}
-                  className={`pt-5 pb-1 ${idx > 0 ? 'sm:border-l sm:border-rule sm:pl-5' : ''}`}
-                >
-                  <div className="folio text-4xl sm:text-5xl">{m.value}</div>
-                  <div className="eyebrow mt-2">{m.unit}</div>
-                </div>
-              ))}
+              {metrics.map((m: any, idx: number) => {
+                const Icon = METRIC_ICONS[idx % METRIC_ICONS.length];
+                return (
+                  <div
+                    key={idx}
+                    className={`pt-5 pb-1 ${idx > 0 ? 'sm:border-l sm:border-rule sm:pl-5' : ''}`}
+                  >
+                    <Icon
+                      size={15}
+                      strokeWidth={1.4}
+                      className="text-accent mb-3"
+                      aria-hidden="true"
+                    />
+                    <div className="folio text-3xl sm:text-5xl">{m.value}</div>
+                    <div className="eyebrow mt-2">{m.unit}</div>
+                  </div>
+                );
+              })}
             </div>
 
             {/* Career — contents table */}

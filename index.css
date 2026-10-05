@@ -12,6 +12,8 @@
     scroll-behavior: smooth;
     color-scheme: dark;
     -webkit-text-size-adjust: 100%;
+    /* Kill the grey flash on tap; pointer feedback is designed per control. */
+    -webkit-tap-highlight-color: transparent;
   }
 
   body {
@@ -20,6 +22,7 @@
     background-color: #09090b;
     color: #f4f1ec;
     overflow-x: hidden;
+    overscroll-behavior-y: none;
     font-family: theme('fontFamily.sans');
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -85,19 +88,28 @@
     color: #f4f1ec;
   }
 
-  /* --- Underline-only form fields --- */
+  /* --- Underline-only form fields ---
+     16px minimum on touch sizes: anything smaller makes iOS Safari zoom the
+     whole viewport the moment the field takes focus. */
   .field {
-    @apply w-full bg-transparent pb-2 text-sm text-paper placeholder:text-faint
-           border-b border-rule outline-none transition-colors duration-300
-           focus:border-paper;
+    @apply w-full bg-transparent pb-2 text-[16px] sm:text-sm text-paper
+           placeholder:text-faint border-b border-rule outline-none
+           transition-colors duration-300 focus:border-paper;
     border-radius: 0;
   }
+  textarea.field {
+    @apply leading-relaxed;
+  }
   select.field {
-    @apply appearance-none cursor-pointer;
+    @apply appearance-none cursor-pointer pr-6;
   }
   select.field option {
     background-color: #101013;
     color: #f4f1ec;
+  }
+  /* appearance-none strips the native arrow, so draw the arm back in */
+  .field-arrow {
+    @apply pointer-events-none absolute right-0 bottom-3 text-faint;
   }
 
   /* --- Link with a rule that draws in on hover --- */
@@ -120,6 +132,23 @@
 }
 
 @layer utilities {
+  /* Viewport units with a fallback chain: browsers that don't know svh still
+     get vh, and everything gets one that accounts for the mobile URL bar. */
+  .min-h-viewport {
+    min-height: 100vh;
+    min-height: 100svh;
+  }
+
+  .h-viewport {
+    height: 100vh;
+    height: 100svh;
+  }
+
+  /* Notch / home-indicator clearance for anything pinned to an edge */
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
@@ -136,6 +165,55 @@
     pointer-events: none;
     opacity: 0.035;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+}
+
+/* ============================================================
+   LENIS SMOOTH SCROLL
+   Required host styles — Lenis drives window scroll itself, so the
+   native smooth behaviour has to step aside while it is active.
+   ============================================================ */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* Depth layers are transform-only; hint the compositor once, not per-frame. */
+.depth {
+  will-change: transform;
+}
+
+/* --- Client wordmark strip --- */
+@keyframes marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.marquee-track {
+  animation: marquee 46s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+    flex-wrap: wrap;
+    width: auto;
   }
 }
 
