@@ -219,33 +219,46 @@
       );
   }
 
-  /* --- Topbar --- */
+  /* --- Topbar (contained compact bar) --- */
   .topbar {
     @apply fixed top-0 left-0 right-0 z-50;
   }
   .topbar-inner {
-    position: absolute;
-    inset: 0;
+    position: relative;
+    max-width: 1520px;
+    margin-inline: auto;
+    padding-inline: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+    height: calc(78 * var(--u));
   }
 
-  .brand-mark {
-    position: absolute;
-    left: calc(75 * var(--u));
-    top: calc(27 * var(--u));
-    width: calc(31.5 * var(--u));
-    height: calc(48.5 * var(--u));
+  .brand-text {
+    font-size: calc(19 * var(--u));
+    letter-spacing: 0.04em;
+    font-weight: 300;
+    color: #b6b5b5;
+    white-space: nowrap;
+  }
+  .brand-text b {
+    color: #fafafa;
+    font-weight: 700;
   }
 
   .links {
-    position: absolute;
-    left: 50%;
-    top: calc(51 * var(--u));
-    transform: translate(-50%, -50%);
     display: flex;
     align-items: center;
-    gap: calc(24.5 * var(--u));
-    font-size: calc(19 * var(--u));
+    gap: calc(20 * var(--u));
+    font-size: calc(15.5 * var(--u));
+    letter-spacing: 0.02em;
     color: #b6b5b5;
+  }
+  .links-sep {
+    color: #4b4b4b;
+    font-weight: 300;
+    user-select: none;
   }
   .links a {
     white-space: nowrap;
@@ -258,13 +271,18 @@
     color: #fafafa;
   }
 
+  .topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: calc(20 * var(--u));
+  }
+
   .pill-nav {
-    position: absolute;
-    right: calc(75.4 * var(--u));
-    top: calc(27 * var(--u));
-    width: calc(175 * var(--u));
+    width: auto;
+    min-width: calc(160 * var(--u));
+    padding-inline: calc(30 * var(--u));
     height: calc(49 * var(--u));
-    font-size: calc(20.6 * var(--u));
+    font-size: calc(17 * var(--u));
   }
   .pill-nav > span {
     transform: translateY(calc(1 * var(--u)));
@@ -559,15 +577,16 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 16px;
+    height: auto;
     padding: 14px 20px;
   }
-  .brand-mark {
-    position: static;
-    width: 26px;
-    height: 40px;
+  .brand-text {
+    font-size: 13px;
+    letter-spacing: 0.06em;
   }
   .links,
-  .pill-nav {
+  .topbar-actions {
     display: none;
   }
 

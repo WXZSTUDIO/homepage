@@ -9,7 +9,6 @@ import {
   ChevronDown,
   Mail,
   Chat,
-  Phone,
   Download,
   User,
   AtSign,
@@ -77,7 +76,6 @@ const ContactSection: React.FC = () => {
 
   const copiedText = ui.experience?.copied || 'Copied';
   const naverDocText = ui.contact?.naverDocLink || ui.nav?.portfolioDoc || 'Portfolio';
-  const phoneLabel = ui.contact?.phone || 'Phone / Direct';
   const messageTitleText = ui.contact?.messageTitle || ui.contact?.formTitle || 'Project Inquiry';
   const successTitleText =
     ui.contact?.submittedTitle || ui.contact?.successTitle || 'Message Sent';
@@ -142,35 +140,21 @@ const ContactSection: React.FC = () => {
                 </div>
               </div>
 
-              {/* WeChat + phone */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 py-5 border-b border-rule-soft">
-                <div>
-                  <div className="eyebrow mb-2 flex items-center gap-2">
-                    <Chat size={12} />
-                    {ui.contact.wechat}
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-base text-paper">icf304</span>
-                    <button
-                      onClick={handleCopyWeChat}
-                      className="text-faint hover:text-paper transition-colors cursor-pointer p-2 -m-2"
-                      aria-label="Copy WeChat ID"
-                    >
-                      {copiedWeChat ? <Check size={11} /> : <Copy size={11} />}
-                    </button>
-                  </div>
+              {/* WeChat */}
+              <div className="py-5 border-b border-rule-soft">
+                <div className="eyebrow mb-2 flex items-center gap-2">
+                  <Chat size={12} />
+                  {ui.contact.wechat}
                 </div>
-                <div>
-                  <div className="eyebrow mb-2 flex items-center gap-2">
-                    <Phone size={12} />
-                    {phoneLabel}
-                  </div>
-                  <a
-                    href="tel:+82108388388"
-                    className="inline-block text-base text-paper link-rule"
+                <div className="flex items-center gap-2">
+                  <span className="text-base text-paper">icf304</span>
+                  <button
+                    onClick={handleCopyWeChat}
+                    className="text-faint hover:text-paper transition-colors cursor-pointer p-2 -m-2"
+                    aria-label="Copy WeChat ID"
                   >
-                    +82 010-****-8388
-                  </a>
+                    {copiedWeChat ? <Check size={11} /> : <Copy size={11} />}
+                  </button>
                 </div>
               </div>
 

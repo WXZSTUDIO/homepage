@@ -129,22 +129,22 @@ const StrengthsSection: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6">
           <div className="lg:col-span-7">
             <div className="eyebrow mb-4">Hardware</div>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+            <div className="grid grid-cols-2 gap-2.5">
               {GEAR_ITEMS.map((item) => {
                 const Icon = item.icon;
                 return (
                   <div
                     key={item.spec}
-                    className="tile tile-hover flex flex-col items-start gap-4 px-4 py-5"
+                    className="tile tile-hover flex flex-col items-start gap-4 px-5 py-6"
                   >
-                    <span className="chip w-9 h-9 text-paper">
-                      <Icon size={16} />
+                    <span className="chip w-10 h-10 text-paper">
+                      <Icon size={17} />
                     </span>
                     <div className="min-w-0">
-                      <div className="text-paper text-base leading-none font-medium">
+                      <div className="text-paper text-lg leading-none font-medium">
                         {item.label[lang]}
                       </div>
-                      <div className="eyebrow mt-2 text-[9px]">
+                      <div className="eyebrow mt-2.5 text-[10px]">
                         {item.spec}
                       </div>
                     </div>
@@ -171,18 +171,6 @@ const StrengthsSection: React.FC = () => {
                   </div>
                 );
               })}
-            </div>
-
-            <div className="mt-4 tile px-6 py-5 flex items-baseline justify-between">
-              <span className="eyebrow">Status</span>
-              <span className="text-lg text-paper flex items-center gap-2.5 font-medium">
-                <span
-                  className="w-2 h-2 rounded-full animate-pulse"
-                  style={{ background: '#55D98C' }}
-                  aria-hidden="true"
-                />
-                {ui.strengths.gearReady}
-              </span>
             </div>
           </div>
         </div>

@@ -4,23 +4,40 @@ import { CASES, CaseItem } from '../cases';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Close, Heart } from './Icons';
+import { BrandMark } from './Navbar';
 import { useScrollLock } from '../hooks/useScrollLock';
 
 gsap.registerPlugin(ScrollTrigger);
 
-/* Featured cases — the published feed as a quiet masonry grid:
-   cover, one-line title, studio line. Tapping a tile opens the
-   media large. No filters, no chrome — the work carries it. */
+/* Featured cases split into two archives:
+   graphic works (native aspect, never cropped) and films
+   (dark stage tiles carrying the studio brand mark). */
 
-/* Grid tiles always show the cover still; motion lives in the lightbox. */
-const CaseMedia: React.FC<{ item: CaseItem }> = ({ item }) => (
+/* Image tiles keep their native aspect ratio — no crop. */
+const CaseImage: React.FC<{ item: CaseItem }> = ({ item }) => (
   <img
     src={item.src}
     alt={item.title.zh}
     loading="lazy"
     draggable={false}
-    className="w-full h-full object-cover"
+    className="w-full h-auto"
   />
+);
+
+/* Video tiles: quiet dark stage with the studio mark + play chip. */
+const CaseVideoCover: React.FC<{ item: CaseItem }> = ({ item }) => (
+  <div className="relative aspect-[3/4] w-full flex items-center justify-center overflow-hidden">
+    <div
+      className="absolute inset-0"
+      style={{
+        background:
+          'radial-gradient(ellipse 62% 46% at 50% 42%, rgba(255,255,255,0.075), transparent 72%)',
+      }}
+      aria-hidden="true"
+    />
+    <BrandMark className="w-[24%] opacity-90" />
+    <span className="sr-only">{item.title.zh}</span>
+  </div>
 );
 
 const CasesSection: React.FC = () => {
@@ -70,6 +87,46 @@ const CasesSection: React.FC = () => {
   }, [selected, close]);
 
   const author = 'STUDIO (WXZ)';
+  const visualCases = CASES.filter((c) => c.type === 'img');
+  const filmCases = CASES.filter((c) => c.type === 'video');
+
+  const renderCard = (item: CaseItem) => (
+    <button
+      key={item.id}
+      onClick={() => setSelected(item)}
+      className="case-card group mb-3 md:mb-4 break-inside-avoid w-full text-left cursor-pointer"
+      aria-label={item.title[language as 'zh' | 'ko']}
+    >
+      <div className="relative overflow-hidden rounded-xl bg-white/[0.03] border border-rule-soft">
+        {item.type === 'video' ? (
+          <CaseVideoCover item={item} />
+        ) : (
+          <CaseImage item={item} />
+        )}
+        {item.videoSrc && (
+          <span className="absolute top-3 right-3 chip w-8 h-8 text-paper/80">
+            <svg viewBox="0 0 24 24" width="11" height="11" fill="currentColor" aria-hidden="true">
+              <path d="M9 5.8v12.4a.6.6 0 0 0 .92.5l9.3-6.2a.6.6 0 0 0 0-1l-9.3-6.2a.6.6 0 0 0-.92.5Z" />
+            </svg>
+          </span>
+        )}
+        <span className="pointer-events-none absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
+      </div>
+
+      <div className="pt-3 px-0.5">
+        <div className="text-[13.5px] leading-snug text-paper-70 group-hover:text-paper transition-colors truncate">
+          {item.title[language as 'zh' | 'ko']}
+        </div>
+        <div className="mt-1.5 flex items-center justify-between gap-3 text-[11px] text-faint">
+          <span className="truncate">{author}</span>
+          <span className="inline-flex items-center gap-1 shrink-0">
+            <Heart size={11} strokeWidth={1.7} />
+            {item.tag[language as 'zh' | 'ko']}
+          </span>
+        </div>
+      </div>
+    </button>
+  );
 
   return (
     <section ref={sectionRef} id="projects" className="relative py-24 md:py-36">
@@ -84,43 +141,16 @@ const CasesSection: React.FC = () => {
           </div>
         </div>
 
-        {/* Feed grid */}
+        {/* Graphic works — native aspect, uncropped */}
+        <div className="eyebrow mb-4">{ui.projects.groupVisual}</div>
         <div className="cases-grid columns-2 md:columns-3 xl:columns-4 gap-3 md:gap-4">
-          {CASES.map((item) => (
-            <button
-              key={item.id}
-              onClick={() => setSelected(item)}
-              className="case-card group mb-3 md:mb-4 break-inside-avoid w-full text-left cursor-pointer"
-              aria-label={item.title[language as 'zh' | 'ko']}
-            >
-              <div className="relative overflow-hidden rounded-xl bg-white/[0.03] border border-rule-soft">
-                <div className="aspect-[3/4] w-full">
-                  <CaseMedia item={item} />
-                </div>
-                {item.videoSrc && (
-                  <span className="absolute top-3 right-3 chip w-8 h-8 text-paper/80">
-                    <svg viewBox="0 0 24 24" width="11" height="11" fill="currentColor" aria-hidden="true">
-                      <path d="M9 5.8v12.4a.6.6 0 0 0 .92.5l9.3-6.2a.6.6 0 0 0 0-1l-9.3-6.2a.6.6 0 0 0-.92.5Z" />
-                    </svg>
-                  </span>
-                )}
-                <span className="pointer-events-none absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
-              </div>
+          {visualCases.map(renderCard)}
+        </div>
 
-              <div className="pt-3 px-0.5">
-                <div className="text-[13.5px] leading-snug text-paper-70 group-hover:text-paper transition-colors truncate">
-                  {item.title[language as 'zh' | 'ko']}
-                </div>
-                <div className="mt-1.5 flex items-center justify-between gap-3 text-[11px] text-faint">
-                  <span className="truncate">{author}</span>
-                  <span className="inline-flex items-center gap-1 shrink-0">
-                    <Heart size={11} strokeWidth={1.7} />
-                    {item.tag[language as 'zh' | 'ko']}
-                  </span>
-                </div>
-              </div>
-            </button>
-          ))}
+        {/* Films — brand-mark stage tiles */}
+        <div className="eyebrow mb-4 mt-16">{ui.projects.groupFilm}</div>
+        <div className="cases-grid columns-2 md:columns-3 xl:columns-4 gap-3 md:gap-4">
+          {filmCases.map(renderCard)}
         </div>
       </div>
 

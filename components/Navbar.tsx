@@ -90,37 +90,44 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
         }`}
       >
         <div className="topbar-inner">
+          {/* Text wordmark — "DESIGN BY <name>" */}
           <a
             href="#hero"
             onClick={(e) => {
               e.preventDefault();
               scrollTo('hero');
             }}
-            className="brand-mark rise block"
+            className="brand-text rise"
             aria-label="Home"
           >
-            <BrandMark className="w-full h-full" />
+            DESIGN BY <b>{ui.nav.brand}</b>
           </a>
 
-          {/* Centered links — single line, never wrapping */}
+          {/* Centered links with hairline separators — single line */}
           <nav className="links rise-nav" aria-label="Primary">
-            {navItems.map((item) => (
-              <a
-                key={item.id}
-                href={`#${item.id}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  scrollTo(item.id);
-                }}
-                className={activeSection === item.id ? 'is-active' : ''}
-              >
-                {item.label}
-              </a>
+            {navItems.map((item, idx) => (
+              <React.Fragment key={item.id}>
+                {idx > 0 && (
+                  <span className="links-sep" aria-hidden="true">
+                    /
+                  </span>
+                )}
+                <a
+                  href={`#${item.id}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollTo(item.id);
+                  }}
+                  className={activeSection === item.id ? 'is-active' : ''}
+                >
+                  {item.label}
+                </a>
+              </React.Fragment>
             ))}
           </nav>
 
-          {/* Desktop right cluster: language + pill */}
-          <div className="absolute right-[calc(75.4*var(--u))] top-[calc(27*var(--u))] hidden md:flex items-center gap-5 rise">
+          {/* Right cluster: language + pill */}
+          <div className="topbar-actions rise">
             <div className="hidden xl:block">
               <LanguageSwitcher />
             </div>
