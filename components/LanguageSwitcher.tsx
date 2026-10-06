@@ -13,7 +13,7 @@ const LanguageSwitcher: React.FC<{ isMobile?: boolean }> = ({ isMobile = false }
 
   return (
     <div
-      className={`inline-flex items-stretch rounded-full border border-rule overflow-hidden ${
+      className={`inline-flex items-stretch rounded-full glass-tile overflow-hidden ${
         isMobile ? 'w-full' : ''
       }`}
       role="group"

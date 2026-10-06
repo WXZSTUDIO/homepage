@@ -3,17 +3,16 @@
 @tailwind utilities;
 
 /* ============================================================
-   LEXINGTON-STYLE SYSTEM
-   White pages, near-black type, serif display with italic
-   accents, four bright brand colours, hairline list rows,
-   halftone dither textures. Historical token names kept —
-   values set in tailwind.config.js.
+   LIQUID GLASS (iOS 26)
+   Translucent panels over a vivid blurred backdrop: blur +
+   saturation, a bright specular edge, a soft drop shadow. Type
+   is sparse — icons carry meaning instead of paragraphs.
    ============================================================ */
 
 @layer base {
   html {
     scroll-behavior: smooth;
-    color-scheme: light;
+    color-scheme: dark;
     -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: transparent;
   }
@@ -21,46 +20,47 @@
   body {
     margin: 0;
     padding: 0;
-    background-color: #ffffff;
-    color: #0a0a0a;
+    background-color: #08080b;
+    color: #ffffff;
     overflow-x: hidden;
     overscroll-behavior-y: none;
     font-family: theme('fontFamily.sans');
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    letter-spacing: -0.011em;
+    letter-spacing: -0.014em;
   }
 
   ::selection {
-    background-color: #0a0a0a;
-    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #08080b;
   }
 
   ::-webkit-scrollbar {
-    width: 3px;
-    height: 3px;
+    width: 4px;
+    height: 4px;
   }
   ::-webkit-scrollbar-track {
-    background: #ffffff;
+    background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background: rgba(10, 10, 10, 0.22);
+    background: rgba(255, 255, 255, 0.18);
+    border-radius: 999px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(10, 10, 10, 0.4);
+    background: rgba(255, 255, 255, 0.32);
   }
 
   h1,
   h2,
   h3 {
     font-family: theme('fontFamily.display');
-    font-weight: 400;
-    letter-spacing: -0.015em;
+    font-weight: 600;
+    letter-spacing: -0.03em;
   }
 }
 
 @layer components {
-  /* --- Meta label --- */
+  /* --- Meta label: tiny, tracked out, never a sentence --- */
   .eyebrow {
     @apply font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-muted;
   }
@@ -74,75 +74,139 @@
     text-orientation: mixed;
   }
 
-  /* --- Oversized stat numeral (colour applied per-metric) --- */
+  /* --- Oversized stat numeral --- */
   .folio {
-    @apply font-display leading-none;
+    @apply font-display leading-none text-paper;
     font-variant-numeric: lining-nums;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.04em;
   }
 
-  /* --- Drop-cap lead paragraph --- */
-  .dropcap::first-letter {
-    @apply font-display float-left mr-3 leading-[0.82];
-    font-size: 4.2em;
-    color: #0a0a0a;
+  /* --- Glass panel: the base material --- */
+  .glass {
+    position: relative;
+    background: rgba(255, 255, 255, 0.07);
+    backdrop-filter: blur(26px) saturate(180%);
+    -webkit-backdrop-filter: blur(26px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow:
+      0 10px 40px rgba(0, 0, 0, 0.32),
+      inset 0 1px 0 rgba(255, 255, 255, 0.22),
+      inset 0 -1px 0 rgba(255, 255, 255, 0.05);
   }
 
-  /* --- Solid black pill button --- */
-  .btn-pill {
-    @apply inline-flex items-center gap-2 rounded-full bg-paper px-5 py-2.5
-           font-mono text-[10px] uppercase tracking-[0.18em] text-ink
-           transition-all duration-300 cursor-pointer
-           hover:opacity-75;
-  }
-
-  /* --- Outlined pill button --- */
-  .btn-pill-ghost {
-    @apply inline-flex items-center gap-2 rounded-full border border-paper/25
-           px-5 py-2.5 font-mono text-[10px] uppercase tracking-[0.18em] text-paper
-           transition-colors duration-300 cursor-pointer
-           hover:border-paper;
-  }
-
-  /* --- Outlined tag chip --- */
-  .tag-pill {
-    @apply inline-flex items-center rounded-full border border-paper/25
-           px-2.5 py-0.5 font-mono text-[9px] uppercase tracking-[0.14em] text-muted;
-  }
-
-  /* --- Light surface block --- */
-  .card-soft {
-    @apply bg-ink-card;
-  }
-
-  /* --- Section head with the leading dot --- */
-  .dot-title {
-    @apply relative inline-block font-display text-paper;
-  }
-  .dot-title::before {
+  /* Specular sheen — the light catching the top of the pane */
+  .glass::before {
     content: '';
-    @apply mr-[0.35em] inline-block h-[0.3em] w-[0.3em] rounded-full bg-paper align-middle;
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: linear-gradient(
+      160deg,
+      rgba(255, 255, 255, 0.18) 0%,
+      rgba(255, 255, 255, 0.03) 38%,
+      rgba(255, 255, 255, 0) 62%
+    );
   }
 
-  /* --- Form fields: flat, hairline, square-shouldered --- */
+  /* --- Thicker glass for floating panels / nav --- */
+  .glass-strong {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(38px) saturate(190%);
+    -webkit-backdrop-filter: blur(38px) saturate(190%);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow:
+      0 18px 60px rgba(0, 0, 0, 0.45),
+      inset 0 1px 0 rgba(255, 255, 255, 0.28);
+  }
+
+  /* --- Glass tile: rows, chips, small plates --- */
+  .glass-tile {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(18px) saturate(150%);
+    -webkit-backdrop-filter: blur(18px) saturate(150%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition:
+      background-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+      border-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .glass-tile:hover {
+    background: rgba(255, 255, 255, 0.11);
+    border-color: rgba(255, 255, 255, 0.22);
+  }
+
+  /* --- Glass pill button (primary) --- */
+  .btn-pill {
+    @apply inline-flex items-center gap-2 rounded-full px-5 py-2.5
+           font-mono text-[10px] uppercase tracking-[0.18em] cursor-pointer;
+    background: rgba(255, 255, 255, 0.92);
+    color: #08080b;
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    box-shadow:
+      0 8px 26px rgba(0, 0, 0, 0.35),
+      inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    transition:
+      opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .btn-pill:hover {
+    opacity: 0.86;
+    transform: translateY(-1px);
+  }
+
+  /* --- Glass pill button (secondary) --- */
+  .btn-pill-ghost {
+    @apply inline-flex items-center gap-2 rounded-full px-5 py-2.5
+           font-mono text-[10px] uppercase tracking-[0.18em] text-paper cursor-pointer;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transition:
+      background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .btn-pill-ghost:hover {
+    background: rgba(255, 255, 255, 0.16);
+    transform: translateY(-1px);
+  }
+
+  /* --- Glass chip / tag --- */
+  .tag-pill {
+    @apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5
+           font-mono text-[9px] uppercase tracking-[0.14em] text-paper-70;
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+  }
+
+  /* --- Form fields: glass, pill, icon-led --- */
   .field {
-    @apply w-full bg-transparent px-0 py-3 text-[16px] sm:text-sm text-paper
-           placeholder:text-faint border-b border-rule outline-none
-           transition-colors duration-300 focus:border-paper;
-    border-radius: 0;
+    @apply w-full rounded-full px-5 py-3.5 text-[16px] sm:text-sm text-paper
+           placeholder:text-faint outline-none transition-colors duration-300;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(16px) saturate(150%);
+    -webkit-backdrop-filter: blur(16px) saturate(150%);
+  }
+  .field:focus {
+    background: rgba(255, 255, 255, 0.11);
+    border-color: rgba(255, 255, 255, 0.3);
   }
   textarea.field {
-    @apply leading-relaxed;
+    @apply leading-relaxed rounded-2xl;
   }
   select.field {
-    @apply appearance-none cursor-pointer pr-6;
+    @apply appearance-none cursor-pointer pr-10;
   }
   select.field option {
-    background-color: #ffffff;
-    color: #0a0a0a;
+    background-color: #101014;
+    color: #ffffff;
   }
   .field-arrow {
-    @apply pointer-events-none absolute right-0 bottom-3.5 text-faint;
+    @apply pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-faint;
   }
 
   /* --- Link with a rule that draws in on hover --- */
@@ -158,9 +222,9 @@
     @apply scale-x-100;
   }
 
-  /* --- Media / colour plate: square-shouldered --- */
+  /* --- Media / colour plate --- */
   .frame {
-    @apply relative overflow-hidden bg-ink-card;
+    @apply relative overflow-hidden rounded-glass bg-ink-card;
   }
 }
 
@@ -186,52 +250,35 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+}
 
-  /* Halftone dither: two scales of dots multiplied over a colour block,
-     the bitmap texture the reference uses in place of photography. */
-  .dither {
-    position: relative;
+/* --- Colour blooms: what the glass refracts --- */
+@keyframes bloom-drift-a {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
   }
-  .dither::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background-image:
-      radial-gradient(circle, rgba(0, 0, 0, 0.5) 1px, transparent 1.35px),
-      radial-gradient(circle, rgba(0, 0, 0, 0.28) 0.7px, transparent 1px);
-    background-size:
-      5px 5px,
-      9px 9px;
-    background-position:
-      0 0,
-      2px 3px;
-    mix-blend-mode: multiply;
+  50% {
+    transform: translate3d(6%, -8%, 0) scale(1.12);
   }
 }
 
-/* ============================================================
-   LENIS SMOOTH SCROLL
-   ============================================================ */
-html.lenis,
-html.lenis body {
-  height: auto;
+@keyframes bloom-drift-b {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1.05);
+  }
+  50% {
+    transform: translate3d(-8%, 6%, 0) scale(0.92);
+  }
 }
 
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
+.bloom-a {
+  animation: bloom-drift-a 26s ease-in-out infinite;
 }
 
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
-}
-
-.lenis.lenis-stopped {
-  overflow: hidden;
-}
-
-.depth {
-  will-change: transform;
+.bloom-b {
+  animation: bloom-drift-b 34s ease-in-out infinite;
 }
 
 /* --- Brand logo strip --- */
@@ -249,8 +296,12 @@ html.lenis body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .marquee-track {
+  .marquee-track,
+  .bloom-a,
+  .bloom-b {
     animation: none;
+  }
+  .marquee-track {
     flex-wrap: wrap;
     width: auto;
   }

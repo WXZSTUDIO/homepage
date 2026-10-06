@@ -122,7 +122,7 @@ const BrandMarquee: React.FC = () => {
   return (
     <section
       aria-label={label}
-      className="relative bg-ink py-12 md:py-16 overflow-hidden select-none"
+      className="relative glass overflow-hidden select-none py-12 md:py-16"
     >
       <div className="max-w-1700 mx-auto px-6 md:px-12 mb-8 md:mb-10 flex items-center justify-between">
         <span className="eyebrow flex items-center gap-3">
@@ -135,8 +135,8 @@ const BrandMarquee: React.FC = () => {
 
       <div className="relative">
         {/* Edge fades keep the strip from ending abruptly */}
-        <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-16 md:w-32 z-10 bg-gradient-to-r from-ink to-transparent" />
-        <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-16 md:w-32 z-10 bg-gradient-to-l from-ink to-transparent" />
+        <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-16 md:w-32 z-10 bg-gradient-to-r from-ink/80 to-transparent" />
+        <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-16 md:w-32 z-10 bg-gradient-to-l from-ink/80 to-transparent" />
 
         <div className="marquee-track flex w-max items-center gap-14 md:gap-20 px-6 md:px-12">
           {strip.map((brand, i) => (
@@ -147,7 +147,7 @@ const BrandMarquee: React.FC = () => {
                   alt={brand.alt}
                   loading="lazy"
                   draggable={false}
-                  className={`${brand.h} w-auto object-contain grayscale opacity-40 hover:opacity-100 hover:grayscale-0 transition-all duration-300`}
+                  className={`${brand.h} w-auto object-contain brightness-0 invert opacity-45 hover:opacity-100 transition-all duration-300`}
                 />
               ) : (
                 <span className="whitespace-nowrap">{brand.node}</span>

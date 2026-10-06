@@ -11,6 +11,11 @@ import {
   MessageCircle,
   Phone,
   FileText,
+  User,
+  AtSign,
+  Building2,
+  LayoutGrid,
+  MessageSquare,
 } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -74,10 +79,6 @@ const ContactSection: React.FC = () => {
   const copiedText = ui.experience?.copied || 'Copied';
   const naverDocText = ui.contact?.naverDocLink || ui.nav?.portfolioDoc || 'Naver Portfolio';
   const phoneLabel = ui.contact?.phone || 'Phone / Direct';
-  const confText =
-    ui.contact?.confidentialityNote ||
-    ui.contact?.response24h ||
-    'All inquiries are strictly confidential.';
   const messageTitleText = ui.contact?.messageTitle || ui.contact?.formTitle || 'Project Inquiry Brief';
   const successTitleText =
     ui.contact?.submittedTitle || ui.contact?.successTitle || 'Message Sent Successfully';
@@ -93,7 +94,7 @@ const ContactSection: React.FC = () => {
     <footer
       ref={sectionRef}
       id="contact"
-      className="relative min-h-[90vh] flex flex-col justify-between bg-ink border-t border-rule pt-24 pb-10"
+      className="relative min-h-[90vh] flex flex-col justify-between pt-24 pb-10"
     >
       <div className="max-w-1700 mx-auto w-full px-6 md:px-12 my-auto">
         {/* Colophon headline */}
@@ -111,14 +112,11 @@ const ContactSection: React.FC = () => {
               </span>
             </span>
           </h2>
-          <p className="text-sm md:text-base text-muted max-w-2xl mt-6 leading-relaxed border-t border-rule pt-5">
-            {ui.contact.subtitle}
-          </p>
         </div>
 
         {/* Direct channels + brief form */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start pb-16 border-b border-rule">
-          <div className="lg:col-span-5">
+          <div className="lg:col-span-5 glass rounded-glass p-6 sm:p-8">
             <div className="eyebrow mb-6">{ui.contact.directChannels}</div>
 
             <div className="border-t border-rule">
@@ -203,11 +201,10 @@ const ContactSection: React.FC = () => {
               </div>
             </div>
 
-            <p className="text-xs text-faint leading-relaxed pt-6">{confText}</p>
           </div>
 
           {/* Brief form */}
-          <div className="lg:col-span-7">
+          <div className="lg:col-span-7 glass rounded-glass p-6 sm:p-8">
             <div className="eyebrow mb-6">{messageTitleText}</div>
 
             {formSubmitted ? (
@@ -219,7 +216,7 @@ const ContactSection: React.FC = () => {
               <form onSubmit={handleSubmit} className="border-t border-rule pt-8 space-y-7">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-7">
                   <div>
-                    <label className="eyebrow block mb-2">{ui.contact.nameLabel} *</label>
+                    <label className="eyebrow flex items-center gap-2 mb-3"><User size={11} strokeWidth={1.6} />{ui.contact.nameLabel}</label>
                     <input
                       type="text"
                       required
@@ -230,7 +227,7 @@ const ContactSection: React.FC = () => {
                     />
                   </div>
                   <div>
-                    <label className="eyebrow block mb-2">{emailLabelText}</label>
+                    <label className="eyebrow flex items-center gap-2 mb-3"><AtSign size={11} strokeWidth={1.6} />{emailLabelText}</label>
                     <input
                       type="email"
                       required
@@ -244,7 +241,7 @@ const ContactSection: React.FC = () => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-7">
                   <div>
-                    <label className="eyebrow block mb-2">{ui.contact.brandLabel}</label>
+                    <label className="eyebrow flex items-center gap-2 mb-3"><Building2 size={11} strokeWidth={1.6} />{ui.contact.brandLabel}</label>
                     <input
                       type="text"
                       placeholder={ui.contact.brandPlaceholder}
@@ -254,7 +251,7 @@ const ContactSection: React.FC = () => {
                     />
                   </div>
                   <div>
-                    <label className="eyebrow block mb-2">{ui.contact.typeLabel}</label>
+                    <label className="eyebrow flex items-center gap-2 mb-3"><LayoutGrid size={11} strokeWidth={1.6} />{ui.contact.typeLabel}</label>
                     <div className="relative">
                       <select
                         value={formData.budget}
@@ -273,7 +270,7 @@ const ContactSection: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="eyebrow block mb-2">{ui.contact.detailsLabel}</label>
+                  <label className="eyebrow flex items-center gap-2 mb-3"><MessageSquare size={11} strokeWidth={1.6} />{ui.contact.detailsLabel}</label>
                   <textarea
                     rows={3}
                     required

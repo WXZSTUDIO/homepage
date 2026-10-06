@@ -2,13 +2,15 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useLanguage } from '../LanguageContext';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Mail, Copy, Check, CalendarClock, Package, TrendingUp, Camera } from 'lucide-react';
+import { Mail, Copy, Check, CalendarClock, Package, TrendingUp, Camera, MapPin } from 'lucide-react';
 
-/* Metrics carry an icon so they can be read at a glance. */
-const METRIC_ICONS = [CalendarClock, Package, TrendingUp, Camera];
-
-/* Lexington brand colours, one per metric. */
-const METRIC_COLORS = ['#4F7CFF', '#FF5A1F', '#FF7AC3', '#55D98C'];
+/* Metric → icon + bloom colour. The label stays to one word. */
+const METRICS = [
+  { icon: CalendarClock, color: '#4F7CFF' },
+  { icon: Package, color: '#FF7A2F' },
+  { icon: TrendingUp, color: '#FF5FA2' },
+  { icon: Camera, color: '#55D98C' },
+];
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -21,10 +23,9 @@ const ExperienceSection: React.FC = () => {
     const ctx = gsap.context(() => {
       gsap.fromTo(
         '.exp-title-line',
-        { yPercent: 110, skewY: 2, opacity: 0 },
+        { yPercent: 110, opacity: 0 },
         {
           yPercent: 0,
-          skewY: 0,
           opacity: 1,
           duration: 1.2,
           ease: 'expo.out',
@@ -34,14 +35,14 @@ const ExperienceSection: React.FC = () => {
 
       gsap.fromTo(
         '.exp-stagger-item',
-        { y: 40, opacity: 0 },
+        { y: 30, opacity: 0 },
         {
           y: 0,
           opacity: 1,
-          duration: 0.9,
+          duration: 0.85,
           ease: 'power3.out',
-          stagger: 0.1,
-          scrollTrigger: { trigger: '.exp-content-trigger', start: 'top 80%' }
+          stagger: 0.08,
+          scrollTrigger: { trigger: '.exp-content-trigger', start: 'top 82%' }
         }
       );
     }, sectionRef);
@@ -56,123 +57,115 @@ const ExperienceSection: React.FC = () => {
   };
 
   const metrics = ui.experience?.metrics || [
-    { value: '13+', unit: 'Years Active', sub: 'Dedicated to visual design & cinema' },
-    { value: '120+', unit: 'Deliveries', sub: 'Commercial brand systems & video' },
-    { value: '15M+', unit: 'Impressions', sub: 'Viral reach across platforms' },
-    { value: '100%', unit: 'Autonomous Gear', sub: 'Zero rental delay' }
+    { value: '13+', unit: 'Years' },
+    { value: '120+', unit: 'Deliveries' },
+    { value: '15M+', unit: 'Impressions' },
+    { value: '100%', unit: 'In-house' },
   ];
 
   return (
     <section
       ref={sectionRef}
       id="experience"
-      className="relative py-24 md:py-36 bg-paper text-ink"
+      className="relative py-24 md:py-36"
     >
       <div className="max-w-1700 mx-auto px-6 md:px-12">
         {/* Section head */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14 pb-6 border-b border-white/15">
-          <div>
-            <div className="eyebrow mb-3 !text-white/50">{ui.experience.tag}</div>
-            <div className="overflow-hidden py-1">
-              <h2 className="exp-title-line font-display text-[clamp(2.2rem,5.4vw,4.5rem)] leading-[1.02] text-ink block will-change-transform">
-                {ui.experience.title}
-              </h2>
-            </div>
+        <div className="mb-12">
+          <div className="eyebrow mb-4">{ui.experience.tag}</div>
+          <div className="overflow-hidden py-1">
+            <h2 className="exp-title-line text-[clamp(2.2rem,5.4vw,4.5rem)] leading-[1.02] block will-change-transform">
+              {ui.experience.title}
+            </h2>
           </div>
-          <p className="text-sm md:text-base text-white/60 max-w-md leading-relaxed md:text-right">
-            {ui.experience.subtitle}
-          </p>
         </div>
 
-        <div className="exp-content-trigger grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-          {/* Left: identity block — type instead of a portrait */}
-          <div className="lg:col-span-4 exp-stagger-item">
-            <div className="font-display text-[clamp(3rem,6vw,5rem)] leading-[0.95] text-ink">
+        <div className="exp-content-trigger grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6 items-start">
+          {/* Identity panel */}
+          <div className="lg:col-span-4 exp-stagger-item glass rounded-glass p-7 md:p-8">
+            <div className="relative z-10 font-display text-[clamp(2.4rem,4vw,3.4rem)] leading-[1] text-paper">
               ZHENG
               <br />
               CANFENG
             </div>
-            <div className="mt-3 text-sm text-white/60">{ui.nav.title}</div>
+            <div className="relative z-10 mt-3 text-sm text-paper-70">{ui.nav.title}</div>
 
-            <div className="mt-8 border-t border-white/15 pt-5 space-y-3 eyebrow !text-white/50">
-              <div className="flex items-center gap-2">
-                <Mail size={11} />
-                <button
-                  onClick={handleCopyEmail}
-                  className="inline-flex items-center gap-1.5 text-white/60 hover:text-ink transition-colors cursor-pointer"
-                >
-                  <span className="normal-case tracking-normal">
-                    ro3eandcat@gmail.com
-                  </span>
-                  {copiedEmail ? (
-                    <Check size={11} className="text-ink" />
-                  ) : (
-                    <Copy size={11} />
-                  )}
-                </button>
+            <div className="relative z-10 mt-8 pt-6 border-t border-rule space-y-3">
+              <button
+                onClick={handleCopyEmail}
+                className="w-full flex items-center gap-2.5 text-sm text-paper-70 hover:text-paper transition-colors cursor-pointer"
+              >
+                <Mail size={14} strokeWidth={1.5} />
+                <span className="truncate">ro3eandcat@gmail.com</span>
+                {copiedEmail ? (
+                  <Check size={13} className="text-paper shrink-0" />
+                ) : (
+                  <Copy size={13} className="shrink-0" />
+                )}
+              </button>
+              <div className="flex items-center gap-2.5 text-sm text-paper-70">
+                <MapPin size={14} strokeWidth={1.5} />
+                Seoul, KR
               </div>
-              <div>Seoul, KR — WeChat: icf304</div>
             </div>
           </div>
 
-          {/* Right: bio + metrics + career */}
-          <div className="lg:col-span-8 space-y-14">
-            <p className="exp-stagger-item text-base sm:text-lg text-white/75 leading-[1.75] max-w-2xl [&::first-letter]:font-display [&::first-letter]:float-left [&::first-letter]:mr-3 [&::first-letter]:leading-[0.82] [&::first-letter]:text-[4.2em] [&::first-letter]:text-ink">
-              {ui.experience.bioP1}
+          {/* Bio + metrics + career */}
+          <div className="lg:col-span-8 space-y-4 lg:space-y-6">
+            <p className="exp-stagger-item glass rounded-glass p-7 md:p-8 text-base sm:text-lg text-paper-70 leading-[1.7]">
+              <span className="relative z-10">{ui.experience.bioP1}</span>
             </p>
 
-            {/* Metrics — coloured serif numerals, the reference's signature */}
-            <div className="exp-stagger-item grid grid-cols-2 sm:grid-cols-4 gap-x-8 gap-y-10 border-t border-white/15 pt-10">
+            {/* Metrics — icon, coloured numeral, one-word label */}
+            <div className="exp-stagger-item grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3">
               {metrics.map((m: any, idx: number) => {
-                const Icon = METRIC_ICONS[idx % METRIC_ICONS.length];
-                const color = METRIC_COLORS[idx % METRIC_COLORS.length];
+                const meta = METRICS[idx % METRICS.length];
+                const Icon = meta.icon;
                 return (
-                  <div key={idx}>
-                    <div className="flex items-center gap-2 mb-4">
+                  <div
+                    key={idx}
+                    className="glass rounded-glass p-5 md:p-6 flex flex-col justify-between min-h-[9rem] md:min-h-[10.5rem]"
+                  >
+                    <div className="relative z-10 flex items-center justify-between">
                       <span
-                        className="w-2 h-2 inline-block"
-                        style={{ backgroundColor: color }}
-                        aria-hidden="true"
-                      />
-                      <Icon size={13} strokeWidth={1.6} className="text-white/50" aria-hidden="true" />
+                        className="w-8 h-8 rounded-full flex items-center justify-center"
+                        style={{ background: `${meta.color}45` }}
+                      >
+                        <Icon size={14} strokeWidth={1.7} className="text-paper" />
+                      </span>
                     </div>
-                    <div className="folio text-5xl sm:text-6xl" style={{ color }}>
-                      {m.value}
+                    <div>
+                      <div className="folio text-4xl sm:text-5xl" style={{ color: meta.color }}>
+                        {m.value}
+                      </div>
+                      <div className="eyebrow mt-2.5">{m.unit}</div>
                     </div>
-                    <div className="eyebrow mt-3 !text-white/50">{m.unit}</div>
                   </div>
                 );
               })}
             </div>
 
-            {/* Career — Lexington list rows */}
-            <div className="exp-stagger-item border-t border-white/15 pt-2">
-              <div className="eyebrow !text-white/50 py-4">
-                {ui.experience.careerHistoryTitle || ui.experience.careerHistoryTag}
-              </div>
-              <div className="border-t border-white/10">
-                {careers.map((career: any, idx: number) => (
-                  <div
-                    key={career.id}
-                    className="group grid grid-cols-[3rem_1fr] sm:grid-cols-[4rem_1fr_auto] gap-x-4 gap-y-1 items-baseline border-b border-white/10 py-5 px-2 hover:bg-white/5 transition-colors duration-300"
-                  >
-                    <span className="font-mono text-[11px] tracking-[0.15em] text-white/40">
-                      {String(idx + 1).padStart(2, '0')}
-                    </span>
-                    <div className="min-w-0">
-                      <h3 className="font-display text-xl sm:text-2xl text-ink leading-tight">
-                        {career.company}
-                      </h3>
-                      <div className="text-xs text-white/50 mt-1">
-                        {career.role} · {career.type}
-                      </div>
-                    </div>
-                    <span className="tag-pill !border-white/25 !text-white/60 col-start-2 sm:col-start-auto justify-self-start sm:justify-self-end">
-                      {career.period}
-                    </span>
+            {/* Career — glass rows */}
+            <div className="exp-stagger-item flex flex-col gap-2.5">
+              {careers.map((career: any, idx: number) => (
+                <div
+                  key={career.id}
+                  className="glass-tile rounded-glass grid grid-cols-[2.5rem_1fr] sm:grid-cols-[3rem_1fr_auto] gap-x-4 gap-y-1 items-center px-5 sm:px-6 py-5"
+                >
+                  <span className="font-mono text-[11px] tracking-[0.15em] text-faint">
+                    {String(idx + 1).padStart(2, '0')}
+                  </span>
+                  <div className="min-w-0">
+                    <h3 className="font-display text-lg sm:text-xl text-paper leading-tight">
+                      {career.company}
+                    </h3>
+                    <div className="text-xs text-paper-45 mt-1">{career.role}</div>
                   </div>
-                ))}
-              </div>
+                  <span className="tag-pill col-start-2 sm:col-start-auto justify-self-start sm:justify-self-end">
+                    {career.period}
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
         </div>

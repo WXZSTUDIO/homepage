@@ -40,13 +40,13 @@ export const ProjectRow: React.FC<{
   return (
     <button
       onClick={() => onOpen(project)}
-      className="group relative w-full text-left grid grid-cols-[2.5rem_1fr_auto] sm:grid-cols-[3.5rem_1rem_1fr_auto] items-center gap-x-3 sm:gap-x-5 gap-y-1 border-b border-rule px-2 sm:px-4 py-5 transition-colors duration-300 cursor-pointer hover:bg-ink-soft"
+      className="group relative w-full text-left glass-tile rounded-glass grid grid-cols-[2.5rem_1fr_auto] sm:grid-cols-[3.5rem_1rem_1fr_auto] items-center gap-x-3 sm:gap-x-5 gap-y-1 px-4 sm:px-6 py-5 cursor-pointer"
       aria-label={project.title}
     >
-      {/* Featured rows carry a colour rail, the reference's highlighted row */}
+      {/* Featured rows carry a colour rail */}
       {project.featured && (
         <span
-          className="absolute left-0 top-0 bottom-0 w-[3px]"
+          className="absolute left-3 top-5 bottom-5 w-[3px] rounded-full"
           style={{ backgroundColor: hex }}
           aria-hidden="true"
         />
@@ -74,7 +74,8 @@ export const ProjectRow: React.FC<{
       <span className="flex items-center gap-3 sm:gap-5 shrink-0">
         <span className="tag-pill hidden md:inline-flex">{project.year}</span>
         <span
-          className="w-8 h-8 rounded-full border border-rule flex items-center justify-center text-paper transition-all duration-300 group-hover:bg-paper group-hover:text-ink group-hover:border-paper"
+          className="w-9 h-9 rounded-full flex items-center justify-center text-paper transition-all duration-300"
+          style={{ background: 'rgba(255,255,255,0.1)' }}
           aria-hidden="true"
         >
           <ArrowUpRight

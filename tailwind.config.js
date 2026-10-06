@@ -1,11 +1,12 @@
 /** @type {import('tailwindcss').Config} */
 
-/* LEXINGTON-STYLE SYSTEM
+/* LIQUID GLASS SYSTEM (iOS 26)
    Historical token names kept (a full rename would touch every file), values
-   set to the reference language:
-   - `ink`   → the page surface (white)
-   - `paper` → the foreground (near-black)
-   Four bright brand colours carry the identity: blue / orange / pink / green. */
+   set for a dark vivid base with translucent glass on top:
+   - `ink`   → the base surface (near-black, under the colour blooms)
+   - `paper` → the foreground (white)
+   Surfaces are translucent whites layered over blurred colour, which is what
+   glass has to refract — flat greys never read as glass. */
 export default {
   content: [
     './index.html',
@@ -15,51 +16,59 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Surfaces
-        ink: '#FFFFFF',
-        'ink-soft': '#F5F4F0',
-        'ink-card': '#F1F0EB',
-        'ink-deep': '#E8E6E0',
+        // Base + glass surfaces
+        ink: '#08080B',
+        'ink-soft': 'rgba(255, 255, 255, 0.06)',
+        'ink-card': 'rgba(255, 255, 255, 0.08)',
+        'ink-deep': 'rgba(255, 255, 255, 0.12)',
 
         // Foreground
-        paper: '#0A0A0A',
-        'paper-70': 'rgba(10, 10, 10, 0.70)',
-        'paper-45': 'rgba(10, 10, 10, 0.45)',
-        muted: '#5B5952',
-        faint: '#8D8B83',
-        rule: 'rgba(10, 10, 10, 0.14)',
-        'rule-soft': 'rgba(10, 10, 10, 0.06)',
+        paper: '#FFFFFF',
+        'paper-70': 'rgba(255, 255, 255, 0.70)',
+        'paper-45': 'rgba(255, 255, 255, 0.45)',
+        muted: 'rgba(255, 255, 255, 0.55)',
+        faint: 'rgba(255, 255, 255, 0.34)',
+        rule: 'rgba(255, 255, 255, 0.14)',
+        'rule-soft': 'rgba(255, 255, 255, 0.07)',
         accent: '#FFC900',
 
-        // Lexington brand palette
+        // Bloom palette — the blurred colour under the glass
         'c-blue': '#4F7CFF',
-        'c-orange': '#FF5A1F',
-        'c-pink': '#FF7AC3',
+        'c-violet': '#8B5CF6',
+        'c-orange': '#FF7A2F',
+        'c-pink': '#FF5FA2',
+        'c-teal': '#22D3EE',
         'c-green': '#55D98C',
 
         // legacy aliases (kept so older markup still resolves)
-        background: '#FFFFFF',
-        surface: '#F5F4F0',
-        'surface-card': '#F1F0EB',
-        'surface-elevated': '#E8E6E0',
-        secondary: '#5B5952',
+        background: '#08080B',
+        surface: 'rgba(255, 255, 255, 0.06)',
+        'surface-card': 'rgba(255, 255, 255, 0.08)',
+        'surface-elevated': 'rgba(255, 255, 255, 0.12)',
+        secondary: 'rgba(255, 255, 255, 0.55)',
       },
       fontFamily: {
-        // Lexington voice: serif display (roman + italic accents), grotesque body
+        // Apple voice: system SF first, Inter as the cross-platform fallback
         display: [
-          '"Instrument Serif"',
-          '"Noto Serif SC"',
-          '"Songti SC"',
-          '"Source Han Serif SC"',
-          'SimSun',
-          'Georgia',
-          'serif',
+          '-apple-system',
+          'BlinkMacSystemFont',
+          '"SF Pro Display"',
+          '"Inter"',
+          '"PingFang SC"',
+          '"Hiragino Sans GB"',
+          '"Apple SD Gothic Neo"',
+          '"Microsoft YaHei"',
+          '"Malgun Gothic"',
+          '"Helvetica Neue"',
+          'Helvetica',
+          'Arial',
+          'sans-serif',
         ],
         sans: [
-          '"Inter"',
           '-apple-system',
           'BlinkMacSystemFont',
           '"SF Pro Text"',
+          '"Inter"',
           '"PingFang SC"',
           '"Hiragino Sans GB"',
           '"Apple SD Gothic Neo"',
@@ -74,6 +83,11 @@ export default {
       },
       maxWidth: {
         1700: '1700px',
+      },
+      borderRadius: {
+        // Squircle-ish continuous radii
+        glass: '1.75rem',
+        tile: '1.25rem',
       },
       transitionTimingFunction: {
         editorial: 'cubic-bezier(0.16, 1, 0.3, 1)',

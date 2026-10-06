@@ -8,6 +8,7 @@ import ProjectsSection from './components/ProjectsSection';
 import StrengthsSection from './components/StrengthsSection';
 import ContactSection from './components/ContactSection';
 import BrandMarquee from './components/BrandMarquee';
+import Backdrop from './components/Backdrop';
 import SmoothScroll, { scrollToTarget } from './components/SmoothScroll';
 import { useMotionProfile } from './hooks/useMotionProfile';
 
@@ -57,7 +58,9 @@ const MainApp: React.FC = () => {
   const scrollToSection = (id: string) => scrollToTarget(id, -80);
 
   return (
-    <div className="min-h-screen bg-ink text-paper selection:bg-paper selection:text-ink">
+    <div className="min-h-screen text-paper selection:bg-paper selection:text-ink">
+      {/* Blurred colour field — everything else floats as glass on top */}
+      <Backdrop />
       {/* Inertial scrolling — the substrate every scrub effect depends on */}
       <SmoothScroll enabled={heavy} />
       {/* High-Impact Opening Shutter Wipe & Numerical Preloader */}

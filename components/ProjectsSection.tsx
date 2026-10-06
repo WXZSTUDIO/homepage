@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '../LanguageContext';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { X, ArrowUpRight } from 'lucide-react';
+import { X, CalendarClock } from 'lucide-react';
 import { useScrollLock } from '../hooks/useScrollLock';
 import { ProjectItem, ProjectRow, CATEGORY_HEX } from './ProjectCard';
 
@@ -66,22 +66,17 @@ const ProjectsSection: React.FC = () => {
     <section
       ref={sectionRef}
       id="projects"
-      className="relative py-24 md:py-36 bg-ink"
+      className="relative py-24 md:py-36"
     >
       <div className="max-w-1700 mx-auto px-6 md:px-12">
-        {/* Section head */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 pb-6 border-b border-rule">
-          <div>
-            <div className="eyebrow mb-3">{ui.projects.tag}</div>
-            <div className="overflow-hidden py-1">
-              <h2 className="projects-title-line text-[clamp(2.2rem,5.4vw,4.5rem)] leading-[1.02] block will-change-transform">
-                {ui.projects.title}
-              </h2>
-            </div>
+        {/* Section head — eyebrow + headline only */}
+        <div className="mb-10">
+          <div className="eyebrow mb-4">{ui.projects.tag}</div>
+          <div className="overflow-hidden py-1">
+            <h2 className="projects-title-line text-[clamp(2.2rem,5.4vw,4.5rem)] leading-[1.02] block will-change-transform">
+              {ui.projects.title}
+            </h2>
           </div>
-          <p className="text-sm md:text-base text-muted max-w-md leading-relaxed md:text-right">
-            {ui.projects.subtitle}
-          </p>
         </div>
 
         {/* Filter rail — pill chips */}
@@ -92,10 +87,10 @@ const ProjectsSection: React.FC = () => {
               <button
                 key={f.key}
                 onClick={() => setFilter(f.key)}
-                className={`relative whitespace-nowrap rounded-full px-4 py-2 font-mono text-[10px] uppercase tracking-[0.14em] transition-colors cursor-pointer border ${
+                className={`relative whitespace-nowrap rounded-full px-4 py-2 font-mono text-[10px] uppercase tracking-[0.14em] transition-colors cursor-pointer ${
                   isActive
-                    ? 'bg-paper text-ink border-paper'
-                    : 'text-muted border-rule hover:border-paper/40 hover:text-paper'
+                    ? 'bg-paper/[0.92] text-ink'
+                    : 'glass-tile text-paper-70'
                 }`}
               >
                 {f.label}
@@ -104,8 +99,8 @@ const ProjectsSection: React.FC = () => {
           })}
         </div>
 
-        {/* Lexington list */}
-        <div className="projects-list-trigger border-t border-rule">
+        {/* Glass list */}
+        <div className="projects-list-trigger flex flex-col gap-2.5">
           {filteredProjects.map((project, i) => (
             <div className="project-row" key={project.id}>
               <ProjectRow
@@ -125,7 +120,7 @@ const ProjectsSection: React.FC = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 overflow-y-auto overscroll-contain bg-ink/97 backdrop-blur-sm"
+            className="fixed inset-0 z-50 overflow-y-auto overscroll-contain bg-ink/70 backdrop-blur-md"
             onClick={closePanel}
           >
             <div className="min-h-full w-full flex items-center justify-center p-4 pb-safe sm:p-8 md:p-12">
@@ -134,7 +129,7 @@ const ProjectsSection: React.FC = () => {
                 animate={{ y: 0, opacity: 1 }}
                 exit={{ y: 24, opacity: 0 }}
                 transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                className="relative max-w-3xl w-full bg-ink border border-rule p-6 sm:p-10"
+                className="relative max-w-3xl w-full glass-strong rounded-glass p-6 sm:p-10"
                 onClick={(e) => e.stopPropagation()}
               >
                 <button
@@ -189,12 +184,9 @@ const ProjectsSection: React.FC = () => {
                   </div>
                 )}
 
-                <div className="mt-10 pt-6 border-t border-rule flex items-center justify-between">
-                  <span className="eyebrow">{ui.projects.client}: {selectedProject.client}</span>
-                  <span className="inline-flex items-center gap-1.5 eyebrow text-paper">
-                    {selectedProject.year}
-                    <ArrowUpRight size={11} />
-                  </span>
+                <div className="mt-10 pt-6 border-t border-rule flex items-center gap-2 eyebrow">
+                  <CalendarClock size={12} strokeWidth={1.5} />
+                  {selectedProject.year}
                 </div>
               </motion.div>
             </div>

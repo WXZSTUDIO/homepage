@@ -55,7 +55,7 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           isScrolled
-            ? 'bg-ink/85 backdrop-blur-xl border-b border-rule py-3'
+            ? 'glass-strong border-x-0 border-t-0 py-3'
             : 'bg-transparent border-b border-transparent py-5'
         }`}
       >
@@ -113,7 +113,7 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
             </a>
             <button
               onClick={() => scrollTo('contact')}
-              className="rounded-full bg-paper px-5 py-2 font-mono text-[10px] uppercase tracking-[0.18em] text-ink hover:bg-ink-deep hover:text-paper transition-colors duration-300 cursor-pointer"
+              className="btn-pill !px-5 !py-2"
             >
               {ui.nav.getInTouch}
             </button>
@@ -136,7 +136,7 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
 
       {/* Mobile index — a table of contents */}
       {isMobileMenuOpen && (
-        <div className="fixed inset-0 z-40 bg-ink pt-28 pb-10 pb-safe px-6 flex flex-col justify-between overflow-y-auto overscroll-contain">
+        <div className="fixed inset-0 z-40 glass-strong pt-28 pb-10 pb-safe px-6 flex flex-col justify-between overflow-y-auto overscroll-contain">
           <nav className="border-t border-rule">
             {navItems.map((item, idx) => (
               <button
@@ -157,7 +157,7 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
           <div className="pt-8 space-y-4">
             <button
               onClick={() => scrollTo('contact')}
-              className="w-full rounded-full bg-paper py-3.5 font-mono text-[10px] uppercase tracking-[0.2em] text-ink hover:bg-ink-deep hover:text-paper transition-colors"
+              className="btn-pill w-full justify-center !py-3.5"
             >
               {ui.nav.getInTouch}
             </button>
