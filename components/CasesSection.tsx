@@ -12,27 +12,16 @@ gsap.registerPlugin(ScrollTrigger);
    cover, one-line title, studio line. Tapping a tile opens the
    media large. No filters, no chrome — the work carries it. */
 
-const CaseMedia: React.FC<{ item: CaseItem; large?: boolean }> = ({ item, large }) =>
-  item.type === 'video' ? (
-    <video
-      src={item.src}
-      className="w-full h-full object-cover"
-      muted={!large}
-      loop={!large}
-      playsInline
-      autoPlay={!large}
-      controls={large}
-      preload="metadata"
-    />
-  ) : (
-    <img
-      src={item.src}
-      alt={item.title.zh}
-      loading="lazy"
-      draggable={false}
-      className="w-full h-full object-cover"
-    />
-  );
+/* Grid tiles always show the cover still; motion lives in the lightbox. */
+const CaseMedia: React.FC<{ item: CaseItem }> = ({ item }) => (
+  <img
+    src={item.src}
+    alt={item.title.zh}
+    loading="lazy"
+    draggable={false}
+    className="w-full h-full object-cover"
+  />
+);
 
 const CasesSection: React.FC = () => {
   const { ui, language } = useLanguage();
@@ -108,7 +97,7 @@ const CasesSection: React.FC = () => {
                 <div className="aspect-[3/4] w-full">
                   <CaseMedia item={item} />
                 </div>
-                {item.type === 'video' && (
+                {item.videoSrc && (
                   <span className="absolute top-3 right-3 chip w-8 h-8 text-paper/80">
                     <svg viewBox="0 0 24 24" width="11" height="11" fill="currentColor" aria-hidden="true">
                       <path d="M9 5.8v12.4a.6.6 0 0 0 .92.5l9.3-6.2a.6.6 0 0 0 0-1l-9.3-6.2a.6.6 0 0 0-.92.5Z" />
@@ -154,9 +143,9 @@ const CasesSection: React.FC = () => {
                 <Close size={16} />
               </button>
               <div className="overflow-hidden rounded-2xl border border-rule-soft bg-black">
-                {selected.type === 'video' ? (
+                {selected.videoSrc ? (
                   <video
-                    src={selected.src}
+                    src={selected.videoSrc}
                     className="w-full max-h-[76vh] object-contain bg-black"
                     controls
                     autoPlay

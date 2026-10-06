@@ -29,7 +29,7 @@ const BRANDS: BrandItem[] = [
     ),
   },
   { kind: 'img', src: 'brands/iope.png', alt: 'IOPE', h: 'h-5 md:h-6' },
-  { kind: 'img', src: 'brands/buldak.png', alt: 'Buldak (Samyang Foods)', h: 'h-4 md:h-5' },
+  { kind: 'img', src: 'brands/buldak-white.png', alt: 'Buldak (Samyang Foods)', h: 'h-4 md:h-5' },
   {
     kind: 'mark',
     node: (

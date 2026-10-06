@@ -1,173 +1,230 @@
 /* ------------------------------------------------------------------
-   Featured cases — the studio's published feed, exactly as posted.
-   Media lives in public/cases/ under the original file ids. Titles
-   are short bilingual descriptors; the author line is the studio.
+   Featured cases — rebuilt from the official portfolio deck
+   (portfolio.pptx, 3 chapters: Agency Campaigns / DearDoer branding /
+   Individual) plus selected on-set films from H:\4.red&dy.
+
+   Media naming:
+     pNN.jpg  — chapter slide covers from the deck
+     vNN.mp4  — campaign films embedded in the deck
+     rNN.mp4  — on-set / social clips from the red&dy archive
    ------------------------------------------------------------------ */
 
 export interface CaseItem {
   id: string;
   type: 'img' | 'video';
   src: string;
+  videoSrc?: string;
   title: { zh: string; ko: string };
   tag: { zh: string; ko: string };
 }
 
-const img = (id: string): string => `cases/${id}.jpg`;
-const vid = (id: string): string => `cases/${id}.mp4`;
+const img = (n: string): string => `cases/${n}.jpg`;
+const vid = (n: string): string => `cases/${n}.mp4`;
 
 export const CASES: CaseItem[] = [
+  /* ---- 01 · Agency Campaigns ------------------------------------ */
   {
-    id: 'c01',
+    id: 'p01',
+    type: 'img',
+    src: img('p01'),
+    title: { zh: '新世界免税店 · 美妆与时尚企划', ko: '신세계면세점 · 뷰티 & 패션 캠페인' },
+    tag: { zh: '美妆', ko: '뷰티' },
+  },
+  {
+    id: 'p02',
+    type: 'img',
+    src: img('p02'),
+    title: { zh: '新世界免税店 · SNS 卡片图集', ko: '신세계면세점 · SNS 카드 뉴스' },
+    tag: { zh: '品牌', ko: '브랜드' },
+  },
+  {
+    id: 'p03',
     type: 'video',
-    src: vid('3835002277783016823'),
-    title: { zh: '片场直击 · TVC 花絮', ko: '현장 필름 · TVC 메이킹' },
+    src: img('p03'),
+    videoSrc: vid('v01'),
+    title: { zh: '花妍 FLAVO 系列 · Beauty Festa', ko: '화해 플라보 시리즈 · 뷰티 페스타' },
     tag: { zh: '视频', ko: '영상' },
   },
   {
-    id: 'c02',
-    type: 'img',
-    src: img('3842501173282147534'),
-    title: { zh: '素颜感美妆 · 双人记录', ko: '내추럴 메이크업 기록' },
-    tag: { zh: '美妆', ko: '뷰티' },
-  },
-  {
-    id: 'c03',
-    type: 'img',
-    src: img('3879856868168940267'),
-    title: { zh: '复古红裙 · 编辑部造型 I', ko: '레드 드레스 에디토리얼 I' },
-    tag: { zh: '时装', ko: '패션' },
-  },
-  {
-    id: 'c04',
-    type: 'img',
-    src: img('3879856876037466219'),
-    title: { zh: '复古红裙 · 编辑部造型 II', ko: '레드 드레스 에디토리얼 II' },
-    tag: { zh: '时装', ko: '패션' },
-  },
-  {
-    id: 'c05',
-    type: 'img',
-    src: img('3879856878310749119'),
-    title: { zh: '复古红裙 · 编辑部造型 III', ko: '레드 드레스 에디토리얼 III' },
-    tag: { zh: '时装', ko: '패션' },
-  },
-  {
-    id: 'c06',
-    type: 'img',
-    src: img('3879856880542105084'),
-    title: { zh: '复古红裙 · 编辑部造型 IV', ko: '레드 드레스 에디토리얼 IV' },
-    tag: { zh: '时装', ko: '패션' },
-  },
-  {
-    id: 'c07',
-    type: 'img',
-    src: img('3879856882765108713'),
-    title: { zh: '复古红裙 · 编辑部造型 V', ko: '레드 드레스 에디토리얼 V' },
-    tag: { zh: '时装', ko: '패션' },
-  },
-  {
-    id: 'c08',
+    id: 'p04',
     type: 'video',
-    src: vid('3890363602232066293'),
-    title: { zh: '拍摄现场 · 机位实记', ko: '촬영 현장 스케치' },
+    src: img('p04'),
+    videoSrc: vid('v02'),
+    title: { zh: 'Portré × Paul and Joe', ko: '포트레 × 폴앤조 크림초' },
     tag: { zh: '视频', ko: '영상' },
   },
   {
-    id: 'c09',
+    id: 'p05',
     type: 'img',
-    src: img('3917128890585569390'),
-    title: { zh: '清透光泽底妆 · 特写 I', ko: '글로시 스킨 클로즈업 I' },
+    src: img('p05'),
+    title: { zh: 'KERASYS Color Lab 染护系列', ko: '케라시스 컬러랩 캠페인' },
     tag: { zh: '美妆', ko: '뷰티' },
   },
   {
-    id: 'c10',
-    type: 'img',
-    src: img('3917128893236266242'),
-    title: { zh: '清透光泽底妆 · 特写 II', ko: '글로시 스킨 클로즈업 II' },
-    tag: { zh: '美妆', ko: '뷰티' },
-  },
-  {
-    id: 'c11',
-    type: 'img',
-    src: img('3917128897397163422'),
-    title: { zh: '清透光泽底妆 · 特写 III', ko: '글로시 스킨 클로즈업 III' },
-    tag: { zh: '美妆', ko: '뷰티' },
-  },
-  {
-    id: 'c12',
-    type: 'img',
-    src: img('3918375488783355314'),
-    title: { zh: '卡帕多奇亚 · 旅拍 I', ko: '카파도키아 여행기 I' },
-    tag: { zh: '旅拍', ko: '여행' },
-  },
-  {
-    id: 'c13',
-    type: 'img',
-    src: img('3918375555221063446'),
-    title: { zh: '卡帕多奇亚 · 旅拍 II', ko: '카파도키아 여행기 II' },
-    tag: { zh: '旅拍', ko: '여행' },
-  },
-  {
-    id: 'c14',
-    type: 'img',
-    src: img('3918375560891844746'),
-    title: { zh: '卡帕多奇亚 · 旅拍 III', ko: '카파도키아 여행기 III' },
-    tag: { zh: '旅拍', ko: '여행' },
-  },
-  {
-    id: 'c15',
-    type: 'img',
-    src: img('3918375568407911506'),
-    title: { zh: '卡帕多奇亚 · 旅拍 IV', ko: '카파도키아 여행기 IV' },
-    tag: { zh: '旅拍', ko: '여행' },
-  },
-  {
-    id: 'c16',
-    type: 'img',
-    src: img('3918375580605013541'),
-    title: { zh: '卡帕多奇亚 · 旅拍 V', ko: '카파도키아 여행기 V' },
-    tag: { zh: '旅拍', ko: '여행' },
-  },
-  {
-    id: 'c17',
-    type: 'img',
-    src: img('3918375581838001718'),
-    title: { zh: '卡帕多奇亚 · 旅拍 VI', ko: '카파도키아 여행기 VI' },
-    tag: { zh: '旅拍', ko: '여행' },
-  },
-  {
-    id: 'c18',
-    type: 'img',
-    src: img('3918375592600693656'),
-    title: { zh: '卡帕多奇亚 · 旅拍 VII', ko: '카파도키아 여행기 VII' },
-    tag: { zh: '旅拍', ko: '여행' },
-  },
-  {
-    id: 'c19',
-    type: 'img',
-    src: img('3918375596115612921'),
-    title: { zh: '卡帕多奇亚 · 旅拍 VIII', ko: '카파도키아 여행기 VIII' },
-    tag: { zh: '旅拍', ko: '여행' },
-  },
-  {
-    id: 'c20',
-    type: 'img',
-    src: img('3918375603732227943'),
-    title: { zh: '卡帕多奇亚 · 旅拍 IX', ko: '카파도키아 여행기 IX' },
-    tag: { zh: '旅拍', ko: '여행' },
-  },
-  {
-    id: 'c21',
+    id: 'p06',
     type: 'video',
-    src: vid('3937121758414849158'),
-    title: { zh: '旅拍 · 动态片段', ko: '여행 무빙 클립' },
+    src: img('p06'),
+    videoSrc: vid('v03'),
+    title: { zh: 'KERASYS Royal Propolis 洗护', ko: '케라시스 로열 프로폴리스' },
     tag: { zh: '视频', ko: '영상' },
   },
   {
-    id: 'c22',
+    id: 'p07',
     type: 'img',
-    src: img('3946160993801094351'),
-    title: { zh: '2015 · 旧照片里的城市', ko: '2015년, 오래된 사진 속 도시' },
-    tag: { zh: '记录', ko: '기록' },
+    src: img('p07'),
+    title: { zh: 'Centellian24 社媒企划', ko: '센텔리안24 소셜 캠페인' },
+    tag: { zh: '品牌', ko: '브랜드' },
+  },
+  {
+    id: 'p08',
+    type: 'video',
+    src: img('p08'),
+    videoSrc: vid('v04'),
+    title: { zh: 'VITALBEAUTIE 内可美 内容系列', ko: '바이탈뷰티 콘텐츠 시리즈' },
+    tag: { zh: '视频', ko: '영상' },
+  },
+  {
+    id: 'p09',
+    type: 'img',
+    src: img('p09'),
+    title: { zh: 'LEADERS 氨基酸保湿面膜', ko: '리더즈 아미노 마스크' },
+    tag: { zh: '美妆', ko: '뷰티' },
+  },
+  {
+    id: 'p10',
+    type: 'img',
+    src: img('p10'),
+    title: { zh: 'COSRX 社媒企划', ko: '코스알엑스 SNS 캠페인' },
+    tag: { zh: '品牌', ko: '브랜드' },
+  },
+  {
+    id: 'p11',
+    type: 'video',
+    src: img('p11'),
+    videoSrc: vid('v05'),
+    title: { zh: '新世界 F&B · 仁川机场系列', ko: '신세계 F&B · 인천공항 시리즈' },
+    tag: { zh: '视频', ko: '영상' },
+  },
+  {
+    id: 'p12',
+    type: 'video',
+    src: img('p12'),
+    videoSrc: vid('v06'),
+    title: { zh: '醒可安 상쾌환 摇摇乐系列', ko: '상쾌환 각티입 시리즈' },
+    tag: { zh: '视频', ko: '영상' },
+  },
+  {
+    id: 'p13',
+    type: 'video',
+    src: img('p13'),
+    videoSrc: vid('v07'),
+    title: { zh: 'high&gogo 幼儿奶粉系列', ko: '하이앤고고 키즈분유 시리즈' },
+    tag: { zh: '视频', ko: '영상' },
+  },
+  {
+    id: 'p14',
+    type: 'video',
+    src: img('p14'),
+    videoSrc: vid('v08'),
+    title: { zh: 'HY · 李敏镐见面会展位设计', ko: 'HY · 프로젝트 윌 팬미팅 부스' },
+    tag: { zh: '空间', ko: '공간' },
+  },
+  {
+    id: 'p15',
+    type: 'video',
+    src: img('p15'),
+    videoSrc: vid('v09'),
+    title: { zh: '新世界 · 品牌联名影片', ko: '신세계 · 브랜드 콜라보 영상' },
+    tag: { zh: '视频', ko: '영상' },
+  },
+
+  /* ---- 02 · DearDoer branding ----------------------------------- */
+  {
+    id: 'p16',
+    type: 'img',
+    src: img('p16'),
+    title: { zh: 'DearDoer · 品牌识别系统', ko: '디어도어 · 브랜드 아이덴티티' },
+    tag: { zh: '品牌', ko: '브랜딩' },
+  },
+  {
+    id: 'p17',
+    type: 'img',
+    src: img('p17'),
+    title: { zh: 'DearDoer · PDP 详情页', ko: '디어도어 · PDP 상세페이지' },
+    tag: { zh: '品牌', ko: '브랜딩' },
+  },
+  {
+    id: 'p18',
+    type: 'video',
+    src: img('p18'),
+    videoSrc: vid('v10'),
+    title: { zh: 'DearDoer · 快闪店现场', ko: '디어도어 · 팝업스토어 현장' },
+    tag: { zh: '空间', ko: '공간' },
+  },
+
+  /* ---- 03 · Individual + on-set films (red&dy) ------------------ */
+  {
+    id: 'p19',
+    type: 'video',
+    src: img('p19'),
+    videoSrc: vid('v11'),
+    title: { zh: 'TOUCH IN SOL × 首尔时装周', ko: '터치인솔 × 서울패션위크' },
+    tag: { zh: '视频', ko: '영상' },
+  },
+  {
+    id: 'r07',
+    type: 'video',
+    src: img('p12'),
+    videoSrc: vid('r07'),
+    title: { zh: '醒可安 · 彩虹鸡尾酒（7月）', ko: '상쾌환 · 레인보우 칵테일' },
+    tag: { zh: '视频', ko: '영상' },
+  },
+  {
+    id: 'r06',
+    type: 'video',
+    src: img('p04'),
+    videoSrc: vid('r06'),
+    title: { zh: 'Portré · 纯净版成片', ko: '포트레 · 클린버전' },
+    tag: { zh: '视频', ko: '영상' },
+  },
+  {
+    id: 'r01',
+    type: 'video',
+    src: img('r01_poster'),
+    videoSrc: vid('r01'),
+    title: { zh: '婚礼影像', ko: '웨딩 필름' },
+    tag: { zh: '视频', ko: '영상' },
+  },
+  {
+    id: 'r02',
+    type: 'video',
+    src: img('r02_poster'),
+    videoSrc: vid('r02'),
+    title: { zh: 'HY · 新品上市影片', ko: 'HY · 신제품 출시 영상' },
+    tag: { zh: '视频', ko: '영상' },
+  },
+  {
+    id: 'r03',
+    type: 'video',
+    src: img('r03_poster'),
+    videoSrc: vid('r03'),
+    title: { zh: 'Denps · TikTok 系列', ko: '덴프스 · 틱톡 영상' },
+    tag: { zh: '视频', ko: '영상' },
+  },
+  {
+    id: 'r04',
+    type: 'video',
+    src: img('r04_poster'),
+    videoSrc: vid('r04'),
+    title: { zh: '新世界 × Hiker Ground', ko: '신세계 × 하이커 그라운드' },
+    tag: { zh: '视频', ko: '영상' },
+  },
+  {
+    id: 'r05',
+    type: 'video',
+    src: img('r05_poster'),
+    videoSrc: vid('r05'),
+    title: { zh: '新世界免税店 · Seoul Moon', ko: '신세계면세점 · 서울달' },
+    tag: { zh: '视频', ko: '영상' },
   },
 ];

@@ -14,10 +14,71 @@ const METRICS = [
 
 gsap.registerPlugin(ScrollTrigger);
 
+/* Count-up: eased 0 → target, runs once when the grid enters the viewport.
+   Honours prefers-reduced-motion by snapping straight to the final value. */
+const useCountUp = (target: number, run: boolean, duration = 1600) => {
+  const [n, setN] = useState(0);
+  useEffect(() => {
+    if (!run) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setN(target);
+      return;
+    }
+    let raf = 0;
+    const t0 = performance.now();
+    const tick = (t: number) => {
+      const p = Math.min(1, (t - t0) / duration);
+      const eased = 1 - Math.pow(1 - p, 3);
+      setN(Math.round(target * eased));
+      if (p < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [run, target, duration]);
+  return n;
+};
+
+const MetricTile: React.FC<{ m: any; run: boolean; icon: any }> = ({ m, run, icon: Icon }) => {
+  const n = useCountUp(Number(m.value) || 0, run);
+  const suffix = m.suffix ?? '';
+  return (
+    <div className="tile p-5 md:p-6 flex flex-col justify-between min-h-[9rem] md:min-h-[10rem]">
+      <span className="chip w-8 h-8 text-paper-70">
+        <Icon size={14} />
+      </span>
+      <div>
+        <div className="text-4xl sm:text-5xl text-paper font-light tracking-tight leading-none tabular-nums">
+          {n.toLocaleString()}
+          {suffix}
+        </div>
+        <div className="eyebrow mt-2.5">{m.unit}</div>
+      </div>
+    </div>
+  );
+};
+
 const ExperienceSection: React.FC = () => {
   const { ui, careers, language } = useLanguage();
   const sectionRef = useRef<HTMLElement>(null);
+  const metricsRef = useRef<HTMLDivElement>(null);
+  const [metricsInView, setMetricsInView] = useState(false);
   const [copiedEmail, setCopiedEmail] = useState(false);
+
+  useEffect(() => {
+    const el = metricsRef.current;
+    if (!el) return;
+    const ob = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setMetricsInView(true);
+          ob.disconnect();
+        }
+      },
+      { threshold: 0.35 }
+    );
+    ob.observe(el);
+    return () => ob.disconnect();
+  }, []);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -112,26 +173,12 @@ const ExperienceSection: React.FC = () => {
               {ui.experience.bioP1}
             </p>
 
-            {/* Metrics — icon, silver numeral, one-line label */}
-            <div className="exp-stagger-item grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3">
+            {/* Metrics — icon, silver numeral counting up on reveal */}
+            <div ref={metricsRef} className="exp-stagger-item grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3">
               {metrics.map((m: any, idx: number) => {
                 const meta = METRICS[idx % METRICS.length];
-                const Icon = meta.icon;
                 return (
-                  <div
-                    key={idx}
-                    className="tile p-5 md:p-6 flex flex-col justify-between min-h-[9rem] md:min-h-[10rem]"
-                  >
-                    <span className="chip w-8 h-8 text-paper-70">
-                      <Icon size={14} />
-                    </span>
-                    <div>
-                      <div className="text-4xl sm:text-5xl text-paper font-light tracking-tight leading-none">
-                        {m.value}
-                      </div>
-                      <div className="eyebrow mt-2.5">{m.unit}</div>
-                    </div>
-                  </div>
+                  <MetricTile key={idx} m={m} run={metricsInView} icon={meta.icon} />
                 );
               })}
             </div>
