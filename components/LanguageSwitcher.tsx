@@ -6,8 +6,8 @@ const LanguageSwitcher: React.FC<{ isMobile?: boolean }> = () => {
   const { language, setLanguage } = useLanguage();
 
   const options: { id: Language; label: string }[] = [
-    { id: 'ko', label: 'kr' },
-    { id: 'zh', label: 'cn' },
+    { id: 'ko', label: 'KR' },
+    { id: 'zh', label: 'CN' },
   ];
 
   return (

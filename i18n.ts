@@ -699,7 +699,7 @@ export const I18N_UI = {
   zh: {
     nav: {
       brand: '郑灿峰',
-      title: '平面设计师·摄影师',
+      title: 'Designer · Photographer',
       overview: '首页概览',
       experience: '个人经历',
       works: '精选项目',
@@ -716,7 +716,7 @@ export const I18N_UI = {
       roleBadge: '13年资深平面设计师 · 摄影师',
       headline1: '让目光停留，',
       headline2: '让心动发生。',
-      narrative1: '视觉设计 · 商业摄制 · 达芬奇调色 · 生成式 AI 工作流',
+      narrative1: '品牌视觉设计 · 商业拍摄 · 视频剪辑 · 自备设备独立出品 · 小红书/抖音中华圈营销 · AI 生成工作流',
       narrative2: '自备专业摄影器材与机动装备，独立完成中小型商业广告与短视频制作。',
       btnExplore: '浏览作品',
       btnContact: '联系我们',
@@ -781,22 +781,22 @@ export const I18N_UI = {
       pillars: [
         {
           kicker: 'END-TO-END',
-          title: '从企划到剪辑·输出的全流程独立完成',
+          title: '全流程独立制作',
           desc: '会拍的设计师——概念、拍摄、剪辑、平面由一人闭环交付。',
         },
         {
           kicker: 'SELF-EQUIPPED',
-          title: '自备设备的中小型独立制作',
+          title: '自备设备独立出品',
           desc: '无需租赁与外包等待，商业拍摄与短视频即刻开工。',
         },
         {
           kicker: 'CHINA SOCIAL',
-          title: '小红书·抖音优化的视觉营销',
+          title: '小红书·抖音本地化',
           desc: '新世界免税店、爱茉莉太平洋等中华圈品牌内容本地化运营。',
         },
         {
           kicker: 'AI × DATA',
-          title: 'AI 生成管线 × 数据验证',
+          title: 'AI 生成 × 数据验证',
           desc: 'ComfyUI·Midjourney 工作流同时提升制作效率与点击率。',
         },
       ],
@@ -881,7 +881,7 @@ export const I18N_UI = {
       roleBadge: '13-Year Senior Graphic Designer & Photographer',
       headline1: 'Hold the gaze,',
       headline2: 'move the heart.',
-      narrative1: 'Visual Direction · Commercial Cinema · DaVinci Color · AI Workflows',
+      narrative1: 'Brand Visual Design · Commercial Filming · Video Editing · Self-Equipped Production · Xiaohongshu/Douyin Marketing · AI Workflows',
       narrative2: 'Equipped with in-house cinema gear to autonomously deliver commercial campaigns.',
       btnExplore: 'Explore Works',
       btnContact: 'Contact',
@@ -946,22 +946,22 @@ export const I18N_UI = {
       pillars: [
         {
           kicker: 'END-TO-END',
-          title: 'Full-cycle delivery from planning to edit & print',
+          title: 'End-to-End Solo Production',
           desc: 'A designer who shoots — concept, filming, editing and graphics closed by one person.',
         },
         {
           kicker: 'SELF-EQUIPPED',
-          title: 'Independent production on owned gear',
+          title: 'Owned-Gear Independence',
           desc: 'No rentals, no outsourcing waits — commercial shoots start immediately.',
         },
         {
           kicker: 'CHINA SOCIAL',
-          title: 'Xiaohongshu & Douyin optimized visual marketing',
+          title: 'China SNS Localization',
           desc: 'Localization for Shinsegae, Amorepacific and other China-facing brands.',
         },
         {
           kicker: 'AI × DATA',
-          title: 'AI generation pipeline × data validation',
+          title: 'AI Pipeline × Data',
           desc: 'ComfyUI & Midjourney workflows that lift both efficiency and CTR.',
         },
       ],
@@ -1029,7 +1029,7 @@ export const I18N_UI = {
   ko: {
     nav: {
       brand: '정찬봉',
-      title: '시각 디자이너 · AI 디렉터 · 브랜드 설계',
+      title: 'Designer · Photographer',
       overview: '개요',
       experience: '이력 소개',
       works: '주요 작품',
@@ -1046,7 +1046,7 @@ export const I18N_UI = {
       roleBadge: '13년차 시각 디자이너 · AI 크리에이티브 디렉터',
       headline1: '시선을 머물게,',
       headline2: '마음을 움직이게.',
-      narrative1: '비주얼 디렉션 · 상업 영상 제작 · 다빈치 색보정 · 생성형 AI',
+      narrative1: '브랜드 비주얼 디자인 · 상업 촬영 · 영상 편집 · 자체 장비 독립 프로덕션 · 샤오홍슈/도우인 중화권 마케팅 · AI 생성 워크플로',
       narrative2: '자체 장비로 촬영부터 색보정까지, 하나의 흐름으로 완성합니다.',
       btnExplore: '작품 둘러보기',
       btnContact: '연락하기',
@@ -1111,22 +1111,22 @@ export const I18N_UI = {
       pillars: [
         {
           kicker: 'END-TO-END',
-          title: '기획부터 편집·출력까지 전 과정 단독 수행',
+          title: '전 과정 단독 프로덕션',
           desc: '직접 찍는 디자이너 — 콘셉트, 촬영, 편집, 그래픽을 한 사람이 완성합니다.',
         },
         {
           kicker: 'SELF-EQUIPPED',
-          title: '자체 장비 기반 중소규모 독립 프로덕션',
+          title: '자체 장비 독립 제작',
           desc: '렌탈·외주 대기 없이 상업 촬영과 숏폼 제작을 즉시 착수합니다.',
         },
         {
           kicker: 'CHINA SOCIAL',
-          title: '샤오홍슈·도우인 최적화 비주얼 마케팅',
+          title: '샤오홍슈·도우인 현지화',
           desc: '신세계면세점·아모레퍼시픽 등 중화권 브랜드 콘텐츠 현지화 운영.',
         },
         {
           kicker: 'AI × DATA',
-          title: 'AI 생성 파이프라인과 데이터 검증',
+          title: 'AI 생성 × 데이터 검증',
           desc: 'ComfyUI·Midjourney 워크플로로 제작 효율과 클릭률을 동시에 끌어올립니다.',
         },
       ],

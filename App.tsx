@@ -67,7 +67,7 @@ const MainApp: React.FC = () => {
 
       <main>
         {/* 1. Cover — full-bleed video, one headline, one action, partner strip */}
-        <HeroSection onExplore={() => scrollToSection('projects')} />
+        <HeroSection />
 
         {/* 1.5 Full client wall */}
         <BrandMarquee />

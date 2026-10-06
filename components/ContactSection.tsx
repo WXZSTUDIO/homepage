@@ -158,6 +158,26 @@ const ContactSection: React.FC = () => {
                 </div>
               </div>
 
+              {/* Xiaohongshu profile */}
+              <div className="py-5 border-b border-rule-soft">
+                <div className="eyebrow mb-2 flex items-center gap-2">
+                  <AtSign size={12} />
+                  {ui.contact?.xiaohongshuLink || 'Xiaohongshu'}
+                </div>
+                <a
+                  href="https://www.xiaohongshu.com/user/profile/5fd363ac000000000101cffc"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group inline-flex items-center gap-2 text-base text-paper link-rule"
+                >
+                  @정찬봉
+                  <ArrowUpRight
+                    size={13}
+                    className="text-muted group-hover:text-paper transition-colors"
+                  />
+                </a>
+              </div>
+
               {/* Portfolio download */}
               <div className="py-5">
                 <a

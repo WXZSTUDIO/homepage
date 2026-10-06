@@ -4,11 +4,7 @@ import { useLanguage } from '../LanguageContext';
 /* Full-bleed looping video — the only hero visual. */
 const HERO_VIDEO = 'hero-keyflip.mp4';
 
-interface HeroSectionProps {
-  onExplore: () => void;
-}
-
-const HeroSection: React.FC<HeroSectionProps> = ({ onExplore }) => {
+const HeroSection: React.FC = () => {
   const { ui } = useLanguage();
 
   // The sub reads as two quiet lines, split from the discipline string.
@@ -42,12 +38,6 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onExplore }) => {
           <span>{subLine1}</span>
           {subLine2 && <span>{subLine2}</span>}
         </p>
-
-        <div className="actions">
-          <button onClick={onExplore} className="ghost ghost-cta rise-cta">
-            {ui.hero.btnExplore}
-          </button>
-        </div>
 
       </div>
     </section>
