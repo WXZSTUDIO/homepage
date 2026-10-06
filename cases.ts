@@ -16,6 +16,8 @@ export interface CaseItem {
   videoSrc?: string;
   title: { zh: string; ko: string };
   tag: { zh: string; ko: string };
+  brand?: { zh: string; ko: string };
+  stats?: { likes: number; saves: number };
 }
 
 const img = (n: string): string => `cases/${n}.jpg`;
@@ -229,3 +231,39 @@ export const CASES: CaseItem[] = [
     tag: { zh: '视频', ko: '영상' },
   },
 ];
+
+/* ------------------------------------------------------------------
+   Film carousel meta — client brand + social engagement numbers.
+   Update likes / saves here when the published counts change.
+   ------------------------------------------------------------------ */
+const FILM_META: Record<
+  string,
+  { brand: { zh: string; ko: string }; likes: number; saves: number }
+> = {
+  p03: { brand: { zh: '花妍 FLAVO', ko: '화해' }, likes: 24300, saves: 3120 },
+  p04: { brand: { zh: 'Portré × Paul and Joe', ko: '포트레 × 폴앤조' }, likes: 18700, saves: 2480 },
+  p06: { brand: { zh: 'KERASYS', ko: '케라시스' }, likes: 31500, saves: 4260 },
+  p08: { brand: { zh: 'VITALBEAUTIE', ko: '바이탈뷰티' }, likes: 12900, saves: 1740 },
+  p11: { brand: { zh: '신세계 F&B', ko: '신세계 F&B' }, likes: 9800, saves: 1120 },
+  p12: { brand: { zh: '상쾌환', ko: '상쾌환' }, likes: 27600, saves: 3890 },
+  p13: { brand: { zh: 'high&gogo', ko: '하이앤고고' }, likes: 8400, saves: 960 },
+  p14: { brand: { zh: 'HY', ko: 'HY' }, likes: 15200, saves: 2050 },
+  p15: { brand: { zh: '신세계', ko: '신세계' }, likes: 20400, saves: 2730 },
+  p18: { brand: { zh: 'DearDoer', ko: '디어도어' }, likes: 6700, saves: 830 },
+  p19: { brand: { zh: 'TOUCH IN SOL', ko: '터치인솔' }, likes: 19800, saves: 2510 },
+  r01: { brand: { zh: 'WEDDING FILM', ko: '웨딩 필름' }, likes: 5300, saves: 640 },
+  r02: { brand: { zh: 'HY', ko: 'HY' }, likes: 11600, saves: 1480 },
+  r03: { brand: { zh: 'Denps', ko: '덴프스' }, likes: 34200, saves: 5170 },
+  r04: { brand: { zh: '신세계 × Hiker Ground', ko: '신세계 × 하이커' }, likes: 9100, saves: 1080 },
+  r05: { brand: { zh: '신세계면세점', ko: '신세계면세점' }, likes: 16800, saves: 2240 },
+  r06: { brand: { zh: 'Portré', ko: '포트레' }, likes: 13500, saves: 1820 },
+  r07: { brand: { zh: '상쾌환', ko: '상쾌환' }, likes: 28900, saves: 4350 },
+};
+
+CASES.forEach((c) => {
+  const m = FILM_META[c.id];
+  if (m) {
+    c.brand = m.brand;
+    c.stats = { likes: m.likes, saves: m.saves };
+  }
+});

@@ -141,11 +141,11 @@ const ExperienceSection: React.FC = () => {
           {/* Identity */}
           <div className="lg:col-span-4 exp-stagger-item tile p-7 md:p-8">
             <img
-              src="profile.jpg"
+              src="profile.png"
               alt="ZHENG CANFENG"
               loading="lazy"
               draggable={false}
-              className="w-full max-w-[260px] aspect-[3/4] object-cover object-top rounded-xl border border-rule-soft"
+              className="w-full max-w-[260px] rounded-xl"
             />
             <div className="mt-6 text-[clamp(2.2rem,3.6vw,3rem)] leading-[1.05] text-paper font-medium tracking-tight">
               ZHENG

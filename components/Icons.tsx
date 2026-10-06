@@ -253,6 +253,12 @@ export const Heart = make(
   <path d="M12 20.4S3.8 15.2 3.8 9.7A4.7 4.7 0 0 1 12 6.8a4.7 4.7 0 0 1 8.2 2.9c0 5.5-8.2 10.7-8.2 10.7Z" />
 );
 
+export const Bookmark = make(
+  <path d="M6.5 4.5h11a0 0 0 0 1 0 0v15l-5.5-3.8L6.5 19.5v-15a0 0 0 0 1 0 0Z" />
+);
+
+export const ChevronLeft = make(<path d="M14.5 6 8.5 12l6 6" />);
+
 export const User = make(
   <>
     <circle cx="12" cy="7.8" r="3.7" />

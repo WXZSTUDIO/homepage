@@ -31,7 +31,7 @@ export default {
         strip: '#8b8a8a',
         rule: 'rgba(250, 250, 250, 0.13)',
         'rule-soft': 'rgba(250, 250, 250, 0.07)',
-        accent: '#FFC900',
+        accent: '#FFD500',
         pill: '#ffffff',
       },
       fontFamily: {

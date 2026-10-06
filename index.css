@@ -137,7 +137,7 @@
     border-radius: 0;
   }
   .field:focus {
-    border-bottom-color: rgba(250, 250, 250, 0.5);
+    border-bottom-color: rgba(255, 213, 0, 0.6);
   }
   textarea.field {
     @apply leading-relaxed resize-none;
@@ -156,14 +156,49 @@
   /* --- Link with a rule that draws in on hover --- */
   .link-rule {
     @apply relative inline-block;
-  }
-  .link-rule::after {
+  }  .link-rule::after {
     content: '';
-    @apply absolute left-0 -bottom-0.5 h-px w-full origin-left scale-x-0 bg-paper transition-transform duration-500;
+    @apply absolute left-0 -bottom-0.5 h-px w-full origin-left scale-x-0 transition-transform duration-500;
+    background: #ffd500;
     transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
   }
   .link-rule:hover::after {
     @apply scale-x-100;
+  }
+
+  /* --- Film carousel --- */
+  .film-track {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .film-track::-webkit-scrollbar {
+    display: none;
+  }
+  .carousel-arrow {
+    @apply inline-flex items-center justify-center rounded-full cursor-pointer select-none;
+    width: 44px;
+    height: 44px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(250, 250, 250, 0.12);
+    color: #fafafa;
+    transition:
+      background-color 0.3s ease,
+      border-color 0.3s ease,
+      color 0.3s ease,
+      opacity 0.3s ease,
+      transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .carousel-arrow:hover:not(:disabled) {
+    background: rgba(255, 213, 0, 0.12);
+    border-color: rgba(255, 213, 0, 0.55);
+    color: #ffd500;
+  }
+  .carousel-arrow:active:not(:disabled) {
+    transform: scale(0.95);
+  }
+  .carousel-arrow:disabled {
+    opacity: 0.28;
+    cursor: default;
   }
 
   /* ============================================================
@@ -278,7 +313,7 @@
     color: #fafafa;
   }
   .links a.is-active {
-    color: #fafafa;
+    color: #ffd500;
   }
 
   .topbar-actions {
