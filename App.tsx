@@ -4,19 +4,18 @@ import Navbar from './components/Navbar';
 import OpeningAnimation from './components/OpeningAnimation';
 import HeroSection from './components/HeroSection';
 import ExperienceSection from './components/ExperienceSection';
-import ProjectsSection from './components/ProjectsSection';
+import CasesSection from './components/CasesSection';
 import StrengthsSection from './components/StrengthsSection';
 import ContactSection from './components/ContactSection';
 import BrandMarquee from './components/BrandMarquee';
-import Backdrop from './components/Backdrop';
 import SmoothScroll, { scrollToTarget } from './components/SmoothScroll';
 import { useMotionProfile } from './hooks/useMotionProfile';
 
 const MainApp: React.FC = () => {
   const [activeSection, setActiveSection] = useState('hero');
   const { heavy } = useMotionProfile();
-  
-  // Track whether opening intro animation has completed
+
+  // Opening intro runs once per session
   const [isIntroDone, setIsIntroDone] = useState<boolean>(() => {
     try {
       return sessionStorage.getItem('seen_opening_intro') === 'true';
@@ -32,7 +31,7 @@ const MainApp: React.FC = () => {
     setIsIntroDone(true);
   }, []);
 
-  // Track active section for navbar highlighting
+  // Active section tracking for the topbar
   useEffect(() => {
     const handleScroll = () => {
       const sections = ['hero', 'experience', 'projects', 'strengths', 'contact'];
@@ -58,42 +57,34 @@ const MainApp: React.FC = () => {
   const scrollToSection = (id: string) => scrollToTarget(id, -80);
 
   return (
-    <div className="min-h-screen text-paper selection:bg-paper selection:text-ink">
-      {/* Blurred colour field — everything else floats as glass on top */}
-      <Backdrop />
-      {/* Inertial scrolling — the substrate every scrub effect depends on */}
+    <div className="min-h-screen text-paper">
+      {/* Inertial scrolling — the substrate every entrance depends on */}
       <SmoothScroll enabled={heavy} />
-      {/* High-Impact Opening Shutter Wipe & Numerical Preloader */}
-      {/* Mounted ONLY until completed, so scroll state updates NEVER re-trigger it */}
-      {!isIntroDone && (
-        <OpeningAnimation onComplete={handleIntroComplete} />
-      )}
 
-      {/* Top Floating Glassmorphism Navbar with Language Switcher */}
+      {!isIntroDone && <OpeningAnimation onComplete={handleIntroComplete} />}
+
       <Navbar activeSection={activeSection} />
 
-      {/* Main Content Area */}
       <main>
-        {/* 1. Cover — one headline, two actions, four discipline tiles */}
+        {/* 1. Cover — full-bleed video, one headline, two actions, partner strip */}
         <HeroSection
           onExplore={() => scrollToSection('projects')}
           onContact={() => scrollToSection('contact')}
-          isIntroDone={isIntroDone}
         />
 
-        {/* 1.5 Client wordmark strip — the trust line right off the cover */}
+        {/* 1.5 Full client wall */}
         <BrandMarquee />
 
         {/* 2. Practice — metrics and career as hairline rows */}
         <ExperienceSection />
 
-        {/* 3. Work — a list; tapping a row opens its detail sheet */}
-        <ProjectsSection />
+        {/* 3. Featured cases — the published feed as a quiet grid */}
+        <CasesSection />
 
-        {/* 4. Capabilities — chapters and the kit, icon-led */}
+        {/* 4. Capabilities — chapters, kit and stack, icon-led */}
         <StrengthsSection />
 
-        {/* 5. Contact — channels and the inquiry form, both on glass */}
+        {/* 5. Contact — channels and the inquiry form */}
         <ContactSection />
       </main>
     </div>

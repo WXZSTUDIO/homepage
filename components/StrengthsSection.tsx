@@ -3,36 +3,34 @@ import { useLanguage } from '../LanguageContext';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {
-  Aperture, Palette, Sun, Orbit, MonitorPlay, Mic,
-  Cpu, Sparkles, Clapperboard, Scissors, Wand2, Image as ImageIcon,
-  PenTool, Figma, Boxes, Camera, Radio, Boxes as Pipeline,
-} from 'lucide-react';
+  Camera, Tripod, Gimbal, Mic,
+  Cpu, Sparkle, Clapper, Palette, Scissors, Wand,
+  Image, Pen, Diamond, Cube, Aperture, Layers,
+} from './Icons';
 
 gsap.registerPlugin(ScrollTrigger);
 
-/* Specs as icon plates. Keyword only — no prose. */
+/* Owned kit — four lines, nothing more: 相机 / 脚架 / 稳定器 / 麦克 */
 const GEAR_ITEMS = [
-  { icon: Aperture, name: 'Sony FX3 / A7S III', spec: '4K 120p', color: '#4F7CFF' },
-  { icon: Palette, name: 'DaVinci Resolve', spec: 'HDR', color: '#8B5CF6' },
-  { icon: Sun, name: 'Aputure & Nanlite', spec: 'Lighting', color: '#FF7A2F' },
-  { icon: Orbit, name: 'DJI Ronin RS3 Pro', spec: 'Gimbal', color: '#22D3EE' },
-  { icon: MonitorPlay, name: 'Atomos Ninja V+', spec: 'ProRes RAW', color: '#FF5FA2' },
-  { icon: Mic, name: 'Sennheiser & Rode', spec: 'Audio', color: '#55D98C' },
+  { icon: Camera, label: { zh: '相机', ko: '카메라' }, spec: 'Sony A7M4' },
+  { icon: Tripod, label: { zh: '脚架', ko: '삼각대' }, spec: 'Tripod' },
+  { icon: Gimbal, label: { zh: '稳定器', ko: '짐벌' }, spec: 'Stabilizer' },
+  { icon: Mic, label: { zh: '麦克', ko: '마이크' }, spec: 'Wireless Mic' },
 ];
 
 const TOOLS = [
-  { icon: Cpu, name: 'ComfyUI', color: '#8B5CF6' },
-  { icon: Sparkles, name: 'Midjourney', color: '#FF5FA2' },
-  { icon: Clapperboard, name: 'Runway', color: '#FF7A2F' },
-  { icon: Palette, name: 'DaVinci', color: '#4F7CFF' },
-  { icon: Scissors, name: 'Premiere', color: '#22D3EE' },
-  { icon: Wand2, name: 'After Effects', color: '#8B5CF6' },
-  { icon: ImageIcon, name: 'Photoshop', color: '#4F7CFF' },
-  { icon: PenTool, name: 'Illustrator', color: '#FF7A2F' },
-  { icon: Figma, name: 'Figma', color: '#FF5FA2' },
-  { icon: Boxes, name: 'Blender', color: '#FF7A2F' },
-  { icon: Camera, name: 'Lightroom', color: '#55D98C' },
-  { icon: Pipeline, name: 'Stable Diffusion', color: '#22D3EE' },
+  { icon: Cpu, name: 'ComfyUI' },
+  { icon: Sparkle, name: 'Midjourney' },
+  { icon: Clapper, name: 'Runway' },
+  { icon: Palette, name: 'DaVinci' },
+  { icon: Scissors, name: 'Premiere' },
+  { icon: Wand, name: 'After Effects' },
+  { icon: Image, name: 'Photoshop' },
+  { icon: Pen, name: 'Illustrator' },
+  { icon: Diamond, name: 'Figma' },
+  { icon: Cube, name: 'Blender' },
+  { icon: Aperture, name: 'Lightroom' },
+  { icon: Layers, name: 'Stable Diffusion' },
 ];
 
 const StrengthsSection: React.FC = () => {
@@ -75,26 +73,24 @@ const StrengthsSection: React.FC = () => {
     kicker: string;
     title: string;
     icon: React.ElementType;
-    color: string;
-  }> = ({ index, kicker, title, icon: Icon, color }) => (
-    <div className="strengths-card glass rounded-glass p-7 md:p-9 min-h-[15rem] md:min-h-[18rem] flex flex-col justify-between">
-      <div className="relative z-10 flex items-start justify-between">
-        <span
-          className="w-11 h-11 rounded-full flex items-center justify-center"
-          style={{ background: `${color}40` }}
-        >
-          <Icon size={18} strokeWidth={1.7} className="text-paper" aria-hidden="true" />
+  }> = ({ index, kicker, title, icon: Icon }) => (
+    <div className="strengths-card tile tile-hover p-7 md:p-9 min-h-[13rem] md:min-h-[15rem] flex flex-col justify-between">
+      <div className="flex items-start justify-between">
+        <span className="chip w-11 h-11 text-paper">
+          <Icon size={18} />
         </span>
         <span className="eyebrow">{index}</span>
       </div>
       <div>
-        <div className="relative z-10 eyebrow mb-3">{kicker}</div>
-        <h3 className="relative z-10 font-display text-2xl sm:text-3xl text-paper leading-tight max-w-sm">
+        <div className="eyebrow mb-3">{kicker}</div>
+        <h3 className="text-2xl sm:text-3xl text-paper leading-tight max-w-sm font-medium">
           {title}
         </h3>
       </div>
     </div>
   );
+
+  const lang = (language === 'ko' ? 'ko' : 'zh') as 'zh' | 'ko';
 
   return (
     <section
@@ -107,82 +103,79 @@ const StrengthsSection: React.FC = () => {
         <div className="mb-12">
           <div className="eyebrow mb-4">{ui.strengths.tag}</div>
           <div className="overflow-hidden py-1">
-            <h2 className="strengths-title-line text-[clamp(2.2rem,5.4vw,4.5rem)] leading-[1.02] block will-change-transform">
+            <h2 className="strengths-title-line section-line text-[clamp(2.2rem,5.4vw,4.5rem)] leading-[1.02]">
               {ui.strengths.title}
             </h2>
           </div>
         </div>
 
         {/* Two chapters */}
-        <div className="strengths-grid-trigger grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 mb-4">
+        <div className="strengths-grid-trigger grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 mb-8">
           <Chapter
             index="01"
             kicker="IN-HOUSE PRODUCTION"
             title={ui.strengths.gearTitle}
-            icon={Radio}
-            color="#4F7CFF"
+            icon={Clapper}
           />
           <Chapter
             index="02"
             kicker="AI PIPELINE"
             title={ui.strengths.skillTitle}
-            icon={Sparkles}
-            color="#FF5FA2"
+            icon={Sparkle}
           />
         </div>
 
-        {/* Specs — icon plates */}
+        {/* Kit + stack */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6">
           <div className="lg:col-span-7">
             <div className="eyebrow mb-4">Hardware</div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-              {GEAR_ITEMS.map((item) => (
-                <div
-                  key={item.name}
-                  className="glass-tile rounded-tile flex items-center gap-4 px-4 py-4"
-                >
-                  <span
-                    className="shrink-0 w-9 h-9 rounded-full flex items-center justify-center"
-                    style={{ background: `${item.color}40` }}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+              {GEAR_ITEMS.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <div
+                    key={item.spec}
+                    className="tile tile-hover flex flex-col items-start gap-4 px-4 py-5"
                   >
-                    <item.icon size={15} strokeWidth={1.7} className="text-paper" />
-                  </span>
-                  <div className="min-w-0">
-                    <div className="font-display text-base text-paper leading-none truncate">
-                      {item.name}
-                    </div>
-                    <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-faint mt-2">
-                      {item.spec}
+                    <span className="chip w-9 h-9 text-paper">
+                      <Icon size={16} />
+                    </span>
+                    <div className="min-w-0">
+                      <div className="text-paper text-base leading-none font-medium">
+                        {item.label[lang]}
+                      </div>
+                      <div className="eyebrow mt-2 text-[9px]">
+                        {item.spec}
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 
           <div className="lg:col-span-5">
             <div className="eyebrow mb-4">Stack</div>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
-              {TOOLS.map((tool) => (
-                <div
-                  key={tool.name}
-                  className="glass-tile rounded-tile flex flex-col items-start gap-3 px-4 py-4"
-                >
-                  <span
-                    className="w-2.5 h-2.5 rounded-full"
-                    style={{ background: tool.color }}
-                    aria-hidden="true"
-                  />
-                  <span className="font-mono text-[10px] tracking-[0.06em] text-paper-70 leading-tight">
-                    {tool.name}
-                  </span>
-                </div>
-              ))}
+              {TOOLS.map((tool) => {
+                const Icon = tool.icon;
+                return (
+                  <div
+                    key={tool.name}
+                    className="tile tile-hover flex flex-col items-start gap-3 px-4 py-4"
+                  >
+                    <Icon size={15} className="text-paper-70" />
+                    <span className="text-[11px] tracking-[0.04em] text-paper-70 leading-tight">
+                      {tool.name}
+                    </span>
+                  </div>
+                );
+              })}
             </div>
 
-            <div className="mt-4 glass rounded-glass px-6 py-5 flex items-baseline justify-between">
+            <div className="mt-4 tile px-6 py-5 flex items-baseline justify-between">
               <span className="eyebrow">Status</span>
-              <span className="font-display text-lg text-paper flex items-center gap-2.5">
+              <span className="text-lg text-paper flex items-center gap-2.5 font-medium">
                 <span
                   className="w-2 h-2 rounded-full animate-pulse"
                   style={{ background: '#55D98C' }}

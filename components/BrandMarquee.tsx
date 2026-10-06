@@ -1,25 +1,16 @@
 import React from 'react';
-import { useLanguage } from '../LanguageContext';
 
-/* Brand wall. Four official logo files (Shinsegae, Amorepacific, Samyang,
-   IOPE — SVG/PNG pulled from public sources) sit alongside typographic
-   wordmarks drawn after each brand's real lettering (the smaller brands have
-   no freely licensed logo files). Everything renders semi-transparent and
-   greyscale; hover restores the mark's true colour. */
+/* Full client wall — the below-fold companion to the hero strip.
+   Grey wordmarks and logos, drifting once; hover restores colour. */
 
 type BrandItem =
   | { kind: 'img'; src: string; alt: string; h: string }
   | { kind: 'mark'; node: React.ReactNode };
 
-const MARK = 'text-paper/40 hover:text-paper transition-colors duration-300';
+const MARK = 'text-strip hover:text-paper-70 transition-colors duration-300';
 
 const BRANDS: BrandItem[] = [
-  {
-    kind: 'img',
-    src: 'brands/shinsegae.svg',
-    alt: 'Shinsegae',
-    h: 'h-5 md:h-6',
-  },
+  { kind: 'img', src: 'brands/shinsegae.svg', alt: 'Shinsegae', h: 'h-5 md:h-6' },
   {
     kind: 'mark',
     node: (
@@ -28,12 +19,7 @@ const BRANDS: BrandItem[] = [
       </span>
     ),
   },
-  {
-    kind: 'img',
-    src: 'brands/amorepacific.svg',
-    alt: 'AMOREPACIFIC',
-    h: 'h-3.5 md:h-4',
-  },
+  { kind: 'img', src: 'brands/amorepacific.svg', alt: 'AMOREPACIFIC', h: 'h-3.5 md:h-4' },
   {
     kind: 'mark',
     node: (
@@ -42,24 +28,14 @@ const BRANDS: BrandItem[] = [
       </span>
     ),
   },
-  {
-    kind: 'img',
-    src: 'brands/iope.png',
-    alt: 'IOPE',
-    h: 'h-5 md:h-6',
-  },
-  {
-    kind: 'img',
-    src: 'brands/samyang.svg',
-    alt: 'Samyang Foods',
-    h: 'h-6 md:h-7',
-  },
+  { kind: 'img', src: 'brands/iope.png', alt: 'IOPE', h: 'h-5 md:h-6' },
+  { kind: 'img', src: 'brands/buldak.png', alt: 'Buldak (Samyang Foods)', h: 'h-4 md:h-5' },
   {
     kind: 'mark',
     node: (
       <span className={`font-sans font-semibold text-lg md:text-xl leading-none ${MARK}`}>
         王府井
-        <span className="ml-2 hidden sm:inline font-mono font-normal text-[9px] tracking-[0.3em] align-middle opacity-70">
+        <span className="ml-2 hidden sm:inline font-sans font-normal text-[9px] tracking-[0.3em] align-middle opacity-70">
           WANGFUJING
         </span>
       </span>
@@ -70,7 +46,7 @@ const BRANDS: BrandItem[] = [
     node: (
       <span className={`font-sans font-medium leading-none ${MARK} inline-flex flex-col items-start gap-1`}>
         <span className="text-lg md:text-xl tracking-[0.02em]">丽贝亚</span>
-        <span className="font-mono text-[8px] tracking-[0.42em] opacity-70">BEIJING LIBEYA</span>
+        <span className="font-sans text-[8px] tracking-[0.42em] opacity-70">BEIJING LIBEYA</span>
       </span>
     ),
   },
@@ -102,41 +78,31 @@ const BRANDS: BrandItem[] = [
     kind: 'mark',
     node: (
       <span className={`font-sans leading-none ${MARK} inline-flex items-baseline gap-1.5`}>
-        <span className="font-bold text-base md:text-lg tracking-[0.06em]">HARBIN</span>
-        <span className="font-light text-sm md:text-base tracking-[0.22em]">METRO MEDIA</span>
+        <span className="font-bold text-base md:text-lg tracking-[0.06em]">哈尔滨地铁报</span>
+        <span className="font-light text-[10px] md:text-xs tracking-[0.22em] opacity-70">HARBIN METRO</span>
       </span>
     ),
   },
 ];
 
 const BrandMarquee: React.FC = () => {
-  const { language } = useLanguage();
-
-  const label =
-    language === 'zh' ? '服务品牌' : language === 'ko' ? '클라이언트' : 'Brands served';
-
-  // Track content duplicated once; the keyframe translates exactly -50%,
-  // so the loop seam is invisible.
   const strip = [...BRANDS, ...BRANDS];
 
   return (
     <section
-      aria-label={label}
-      className="relative glass overflow-hidden select-none py-12 md:py-16"
+      aria-label="Brands served"
+      className="relative border-y border-rule-soft py-10 md:py-12 overflow-hidden select-none"
     >
-      <div className="max-w-1700 mx-auto px-6 md:px-12 mb-8 md:mb-10 flex items-center justify-between">
+      <div className="max-w-1700 mx-auto px-6 md:px-12 mb-7 flex items-center justify-between">
         <span className="eyebrow flex items-center gap-3">
-          <span className="w-1.5 h-1.5 rounded-full bg-paper inline-block" aria-hidden="true" />
-          {label}
+          <span className="w-1.5 h-1.5 rounded-full bg-strip inline-block" aria-hidden="true" />
+          2013 — 2026
         </span>
-        <span className="w-px h-4 bg-rule hidden sm:block" />
-        <span className="eyebrow hidden sm:block">2013 — 2026</span>
       </div>
 
       <div className="relative">
-        {/* Edge fades keep the strip from ending abruptly */}
-        <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-16 md:w-32 z-10 bg-gradient-to-r from-ink/80 to-transparent" />
-        <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-16 md:w-32 z-10 bg-gradient-to-l from-ink/80 to-transparent" />
+        <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-16 md:w-32 z-10 bg-gradient-to-r from-[#050505] to-transparent" />
+        <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-16 md:w-32 z-10 bg-gradient-to-l from-[#050505] to-transparent" />
 
         <div className="marquee-track flex w-max items-center gap-14 md:gap-20 px-6 md:px-12">
           {strip.map((brand, i) => (
@@ -147,7 +113,11 @@ const BrandMarquee: React.FC = () => {
                   alt={brand.alt}
                   loading="lazy"
                   draggable={false}
-                  className={`${brand.h} w-auto object-contain brightness-0 invert opacity-45 hover:opacity-100 transition-all duration-300`}
+                  className={`${brand.h} w-auto object-contain transition-all duration-300 ${
+                    brand.src.includes('buldak')
+                      ? 'opacity-45 hover:opacity-90'
+                      : 'brightness-0 invert opacity-40 hover:opacity-90'
+                  }`}
                 />
               ) : (
                 <span className="whitespace-nowrap">{brand.node}</span>

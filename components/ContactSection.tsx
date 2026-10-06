@@ -8,15 +8,15 @@ import {
   ArrowUpRight,
   ChevronDown,
   Mail,
-  MessageCircle,
+  Chat,
   Phone,
-  FileText,
+  Download,
   User,
   AtSign,
-  Building2,
-  LayoutGrid,
-  MessageSquare,
-} from 'lucide-react';
+  Building,
+  Diamond,
+  Message,
+} from './Icons';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -38,10 +38,9 @@ const ContactSection: React.FC = () => {
     const ctx = gsap.context(() => {
       gsap.fromTo(
         '.contact-title-line',
-        { yPercent: 110, skewY: 2, opacity: 0 },
+        { yPercent: 110, opacity: 0 },
         {
           yPercent: 0,
-          skewY: 0,
           opacity: 1,
           duration: 1.2,
           ease: 'expo.out',
@@ -77,11 +76,11 @@ const ContactSection: React.FC = () => {
   };
 
   const copiedText = ui.experience?.copied || 'Copied';
-  const naverDocText = ui.contact?.naverDocLink || ui.nav?.portfolioDoc || 'Naver Portfolio';
+  const naverDocText = ui.contact?.naverDocLink || ui.nav?.portfolioDoc || 'Portfolio';
   const phoneLabel = ui.contact?.phone || 'Phone / Direct';
-  const messageTitleText = ui.contact?.messageTitle || ui.contact?.formTitle || 'Project Inquiry Brief';
+  const messageTitleText = ui.contact?.messageTitle || ui.contact?.formTitle || 'Project Inquiry';
   const successTitleText =
-    ui.contact?.submittedTitle || ui.contact?.successTitle || 'Message Sent Successfully';
+    ui.contact?.submittedTitle || ui.contact?.successTitle || 'Message Sent';
   const successDescText =
     ui.contact?.submittedDesc ||
     ui.contact?.successDesc ||
@@ -97,51 +96,47 @@ const ContactSection: React.FC = () => {
       className="relative min-h-[90vh] flex flex-col justify-between pt-24 pb-10"
     >
       <div className="max-w-1700 mx-auto w-full px-6 md:px-12 my-auto">
-        {/* Colophon headline */}
+        {/* Closing headline */}
         <div className="mb-16 md:mb-24">
           <div className="eyebrow mb-4">{ui.contact.tag}</div>
-          <h2 className="font-display leading-[0.94] tracking-[-0.02em] max-w-5xl">
+          <h2 className="leading-[1.04] tracking-[-0.02em] max-w-5xl">
             <span className="block overflow-hidden py-[0.06em]">
-              <span className="contact-title-line block will-change-transform text-[clamp(2.6rem,7.6vw,6.6rem)] text-paper">
+              <span className="contact-title-line section-line text-[clamp(2.4rem,7vw,6rem)] text-paper">
                 {ui.contact.headline1}
               </span>
             </span>
             <span className="block overflow-hidden py-[0.06em]">
-              <span className="contact-title-line block will-change-transform italic text-[clamp(2.6rem,7.6vw,6.6rem)] text-paper-45">
+              <span className="contact-title-line section-line text-[clamp(2.4rem,7vw,6rem)] text-paper-45">
                 {ui.contact.headline2}
               </span>
             </span>
           </h2>
         </div>
 
-        {/* Direct channels + brief form */}
+        {/* Channels + form */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start pb-16 border-b border-rule">
-          <div className="lg:col-span-5 glass rounded-glass p-6 sm:p-8">
+          <div className="lg:col-span-5">
             <div className="eyebrow mb-6">{ui.contact.directChannels}</div>
 
             <div className="border-t border-rule">
               {/* Email */}
               <div className="py-5 border-b border-rule-soft">
                 <div className="eyebrow mb-2 flex items-center gap-2">
-                  <Mail size={12} strokeWidth={1.5} className="text-paper" />
+                  <Mail size={12} />
                   {ui.contact.officialEmail}
                 </div>
                 <div className="flex items-center justify-between gap-4">
                   <a
                     href="mailto:ro3eandcat@gmail.com"
-                    className="font-display text-lg sm:text-2xl text-paper link-rule break-all"
+                    className="text-lg sm:text-2xl text-paper link-rule break-all font-medium"
                   >
                     ro3eandcat@gmail.com
                   </a>
                   <button
                     onClick={handleCopyEmail}
-                    className="eyebrow text-muted hover:text-paper transition-colors inline-flex items-center gap-1 cursor-pointer shrink-0 p-2 -m-2"
+                    className="eyebrow hover:text-paper transition-colors inline-flex items-center gap-1 cursor-pointer shrink-0 p-2 -m-2"
                   >
-                    {copiedEmail ? (
-                      <Check size={11} className="text-paper" />
-                    ) : (
-                      <Copy size={11} />
-                    )}
+                    {copiedEmail ? <Check size={11} /> : <Copy size={11} />}
                     {copiedEmail ? copiedText : 'Copy'}
                   </button>
                 </div>
@@ -151,47 +146,43 @@ const ContactSection: React.FC = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 py-5 border-b border-rule-soft">
                 <div>
                   <div className="eyebrow mb-2 flex items-center gap-2">
-                    <MessageCircle size={12} strokeWidth={1.5} className="text-paper" />
+                    <Chat size={12} />
                     {ui.contact.wechat}
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="font-mono text-base text-paper">icf304</span>
+                    <span className="text-base text-paper">icf304</span>
                     <button
                       onClick={handleCopyWeChat}
                       className="text-faint hover:text-paper transition-colors cursor-pointer p-2 -m-2"
                       aria-label="Copy WeChat ID"
                     >
-                      {copiedWeChat ? (
-                        <Check size={11} className="text-paper" />
-                      ) : (
-                        <Copy size={11} />
-                      )}
+                      {copiedWeChat ? <Check size={11} /> : <Copy size={11} />}
                     </button>
                   </div>
                 </div>
                 <div>
                   <div className="eyebrow mb-2 flex items-center gap-2">
-                    <Phone size={12} strokeWidth={1.5} className="text-paper" />
+                    <Phone size={12} />
                     {phoneLabel}
                   </div>
                   <a
                     href="tel:+82108388388"
-                    className="inline-block font-mono text-base text-paper link-rule"
+                    className="inline-block text-base text-paper link-rule"
                   >
                     +82 010-****-8388
                   </a>
                 </div>
               </div>
 
-              {/* Naver document */}
+              {/* Portfolio download */}
               <div className="py-5">
                 <a
                   href="https://naver.me/5fdFDeXr"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group inline-flex items-center gap-3 font-display text-lg sm:text-xl text-paper hover:opacity-60 transition-opacity"
+                  className="group inline-flex items-center gap-3 text-lg sm:text-xl text-paper hover:opacity-60 transition-opacity font-medium"
                 >
-                  <FileText size={15} strokeWidth={1.4} className="text-paper" />
+                  <Download size={15} />
                   {naverDocText}
                   <ArrowUpRight
                     size={14}
@@ -200,23 +191,22 @@ const ContactSection: React.FC = () => {
                 </a>
               </div>
             </div>
-
           </div>
 
-          {/* Brief form */}
-          <div className="lg:col-span-7 glass rounded-glass p-6 sm:p-8">
+          {/* Inquiry form */}
+          <div className="lg:col-span-7">
             <div className="eyebrow mb-6">{messageTitleText}</div>
 
             {formSubmitted ? (
               <div className="border-t border-rule pt-8 space-y-3">
-                <div className="font-display text-3xl text-paper">{successTitleText}</div>
+                <div className="text-3xl text-paper font-medium">{successTitleText}</div>
                 <div className="text-sm text-muted">{successDescText}</div>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="border-t border-rule pt-8 space-y-7">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-7">
                   <div>
-                    <label className="eyebrow flex items-center gap-2 mb-3"><User size={11} strokeWidth={1.6} />{ui.contact.nameLabel}</label>
+                    <label className="eyebrow flex items-center gap-2 mb-1"><User size={11} />{ui.contact.nameLabel}</label>
                     <input
                       type="text"
                       required
@@ -227,7 +217,7 @@ const ContactSection: React.FC = () => {
                     />
                   </div>
                   <div>
-                    <label className="eyebrow flex items-center gap-2 mb-3"><AtSign size={11} strokeWidth={1.6} />{emailLabelText}</label>
+                    <label className="eyebrow flex items-center gap-2 mb-1"><AtSign size={11} />{emailLabelText}</label>
                     <input
                       type="email"
                       required
@@ -241,7 +231,7 @@ const ContactSection: React.FC = () => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-7">
                   <div>
-                    <label className="eyebrow flex items-center gap-2 mb-3"><Building2 size={11} strokeWidth={1.6} />{ui.contact.brandLabel}</label>
+                    <label className="eyebrow flex items-center gap-2 mb-1"><Building size={11} />{ui.contact.brandLabel}</label>
                     <input
                       type="text"
                       placeholder={ui.contact.brandPlaceholder}
@@ -251,7 +241,7 @@ const ContactSection: React.FC = () => {
                     />
                   </div>
                   <div>
-                    <label className="eyebrow flex items-center gap-2 mb-3"><LayoutGrid size={11} strokeWidth={1.6} />{ui.contact.typeLabel}</label>
+                    <label className="eyebrow flex items-center gap-2 mb-1"><Diamond size={11} />{ui.contact.typeLabel}</label>
                     <div className="relative">
                       <select
                         value={formData.budget}
@@ -270,23 +260,22 @@ const ContactSection: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="eyebrow flex items-center gap-2 mb-3"><MessageSquare size={11} strokeWidth={1.6} />{ui.contact.detailsLabel}</label>
+                  <label className="eyebrow flex items-center gap-2 mb-1"><Message size={11} />{ui.contact.detailsLabel}</label>
                   <textarea
                     rows={3}
                     required
                     placeholder={ui.contact.detailsPlaceholder}
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    className="field resize-none"
+                    className="field"
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="btn-pill px-7 py-3.5 cursor-pointer"
+                  className="pill px-7 py-3.5 text-[15px] cursor-pointer"
                 >
                   {ui.contact.submitBtn}
-                  <span>→</span>
                 </button>
               </form>
             )}

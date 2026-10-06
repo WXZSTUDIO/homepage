@@ -2,14 +2,14 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useLanguage } from '../LanguageContext';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Mail, Copy, Check, CalendarClock, Package, TrendingUp, Camera, MapPin } from 'lucide-react';
+import { Mail, Copy, Check, Calendar, Package, TrendingUp, Camera, Pin } from './Icons';
 
-/* Metric → icon + bloom colour. The label stays to one word. */
+/* Metric → icon. Silver numerals, one icon each, no colour noise. */
 const METRICS = [
-  { icon: CalendarClock, color: '#4F7CFF' },
-  { icon: Package, color: '#FF7A2F' },
-  { icon: TrendingUp, color: '#FF5FA2' },
-  { icon: Camera, color: '#55D98C' },
+  { icon: Calendar },
+  { icon: Package },
+  { icon: TrendingUp },
+  { icon: Camera },
 ];
 
 gsap.registerPlugin(ScrollTrigger);
@@ -56,12 +56,8 @@ const ExperienceSection: React.FC = () => {
     setTimeout(() => setCopiedEmail(false), 2000);
   };
 
-  const metrics = ui.experience?.metrics || [
-    { value: '13+', unit: 'Years' },
-    { value: '120+', unit: 'Deliveries' },
-    { value: '15M+', unit: 'Impressions' },
-    { value: '100%', unit: 'In-house' },
-  ];
+  const metrics =
+    ui.experience?.metrics || [];
 
   return (
     <section
@@ -74,28 +70,28 @@ const ExperienceSection: React.FC = () => {
         <div className="mb-12">
           <div className="eyebrow mb-4">{ui.experience.tag}</div>
           <div className="overflow-hidden py-1">
-            <h2 className="exp-title-line text-[clamp(2.2rem,5.4vw,4.5rem)] leading-[1.02] block will-change-transform">
+            <h2 className="exp-title-line section-line text-[clamp(2.2rem,5.4vw,4.5rem)] leading-[1.02]">
               {ui.experience.title}
             </h2>
           </div>
         </div>
 
         <div className="exp-content-trigger grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6 items-start">
-          {/* Identity panel */}
-          <div className="lg:col-span-4 exp-stagger-item glass rounded-glass p-7 md:p-8">
-            <div className="relative z-10 font-display text-[clamp(2.4rem,4vw,3.4rem)] leading-[1] text-paper">
+          {/* Identity */}
+          <div className="lg:col-span-4 exp-stagger-item tile p-7 md:p-8">
+            <div className="text-[clamp(2.2rem,3.6vw,3rem)] leading-[1.05] text-paper font-medium tracking-tight">
               ZHENG
               <br />
               CANFENG
             </div>
-            <div className="relative z-10 mt-3 text-sm text-paper-70">{ui.nav.title}</div>
+            <div className="mt-3 text-sm text-muted">{ui.nav.title}</div>
 
-            <div className="relative z-10 mt-8 pt-6 border-t border-rule space-y-3">
+            <div className="mt-8 pt-6 border-t border-rule space-y-3">
               <button
                 onClick={handleCopyEmail}
-                className="w-full flex items-center gap-2.5 text-sm text-paper-70 hover:text-paper transition-colors cursor-pointer"
+                className="w-full flex items-center gap-2.5 text-sm text-muted hover:text-paper transition-colors cursor-pointer"
               >
-                <Mail size={14} strokeWidth={1.5} />
+                <Mail size={14} />
                 <span className="truncate">ro3eandcat@gmail.com</span>
                 {copiedEmail ? (
                   <Check size={13} className="text-paper shrink-0" />
@@ -103,8 +99,8 @@ const ExperienceSection: React.FC = () => {
                   <Copy size={13} className="shrink-0" />
                 )}
               </button>
-              <div className="flex items-center gap-2.5 text-sm text-paper-70">
-                <MapPin size={14} strokeWidth={1.5} />
+              <div className="flex items-center gap-2.5 text-sm text-muted">
+                <Pin size={14} />
                 Seoul, KR
               </div>
             </div>
@@ -112,11 +108,11 @@ const ExperienceSection: React.FC = () => {
 
           {/* Bio + metrics + career */}
           <div className="lg:col-span-8 space-y-4 lg:space-y-6">
-            <p className="exp-stagger-item glass rounded-glass p-7 md:p-8 text-base sm:text-lg text-paper-70 leading-[1.7]">
-              <span className="relative z-10">{ui.experience.bioP1}</span>
+            <p className="exp-stagger-item tile p-7 md:p-8 text-base sm:text-lg text-paper-70 leading-[1.75]">
+              {ui.experience.bioP1}
             </p>
 
-            {/* Metrics — icon, coloured numeral, one-word label */}
+            {/* Metrics — icon, silver numeral, one-line label */}
             <div className="exp-stagger-item grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3">
               {metrics.map((m: any, idx: number) => {
                 const meta = METRICS[idx % METRICS.length];
@@ -124,18 +120,13 @@ const ExperienceSection: React.FC = () => {
                 return (
                   <div
                     key={idx}
-                    className="glass rounded-glass p-5 md:p-6 flex flex-col justify-between min-h-[9rem] md:min-h-[10.5rem]"
+                    className="tile p-5 md:p-6 flex flex-col justify-between min-h-[9rem] md:min-h-[10rem]"
                   >
-                    <div className="relative z-10 flex items-center justify-between">
-                      <span
-                        className="w-8 h-8 rounded-full flex items-center justify-center"
-                        style={{ background: `${meta.color}45` }}
-                      >
-                        <Icon size={14} strokeWidth={1.7} className="text-paper" />
-                      </span>
-                    </div>
+                    <span className="chip w-8 h-8 text-paper-70">
+                      <Icon size={14} />
+                    </span>
                     <div>
-                      <div className="folio text-4xl sm:text-5xl" style={{ color: meta.color }}>
+                      <div className="text-4xl sm:text-5xl text-paper font-light tracking-tight leading-none">
                         {m.value}
                       </div>
                       <div className="eyebrow mt-2.5">{m.unit}</div>
@@ -145,23 +136,23 @@ const ExperienceSection: React.FC = () => {
               })}
             </div>
 
-            {/* Career — glass rows */}
-            <div className="exp-stagger-item flex flex-col gap-2.5">
+            {/* Career — hairline rows */}
+            <div className="exp-stagger-item border-t border-rule">
               {careers.map((career: any, idx: number) => (
                 <div
                   key={career.id}
-                  className="glass-tile rounded-glass grid grid-cols-[2.5rem_1fr] sm:grid-cols-[3rem_1fr_auto] gap-x-4 gap-y-1 items-center px-5 sm:px-6 py-5"
+                  className="grid grid-cols-[2.5rem_1fr_auto] gap-x-4 items-center py-5 border-b border-rule-soft"
                 >
-                  <span className="font-mono text-[11px] tracking-[0.15em] text-faint">
+                  <span className="text-[11px] tracking-[0.15em] text-faint">
                     {String(idx + 1).padStart(2, '0')}
                   </span>
                   <div className="min-w-0">
-                    <h3 className="font-display text-lg sm:text-xl text-paper leading-tight">
+                    <h3 className="text-lg sm:text-xl text-paper leading-tight font-medium">
                       {career.company}
                     </h3>
-                    <div className="text-xs text-paper-45 mt-1">{career.role}</div>
+                    <div className="text-xs text-faint mt-1">{career.role}</div>
                   </div>
-                  <span className="tag-pill col-start-2 sm:col-start-auto justify-self-start sm:justify-self-end">
+                  <span className="text-[11px] tracking-[0.1em] text-muted whitespace-nowrap">
                     {career.period}
                   </span>
                 </div>

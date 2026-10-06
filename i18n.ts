@@ -1,17 +1,16 @@
 // Complete Multilingual Data & Localization System (ZH / EN / KO)
 
-export type Language = 'zh' | 'en' | 'ko';
+export type Language = 'zh' | 'ko';
 
 export const getInitialLanguage = (): Language => {
-  if (typeof window === 'undefined') return 'zh';
-  const saved = localStorage.getItem('app_lang') as Language;
-  if (saved && ['zh', 'en', 'ko'].includes(saved)) {
-    return saved;
+  if (typeof window === 'undefined') return 'ko';
+  try {
+    const saved = localStorage.getItem('app_lang') as Language;
+    if (saved === 'zh' || saved === 'ko') return saved;
+  } catch (e) {
+    // private mode
   }
-  const browserLang = (navigator.language || (navigator as any).userLanguage || '').toLowerCase();
-  if (browserLang.startsWith('ko')) return 'ko';
-  if (browserLang.startsWith('zh')) return 'zh';
-  return 'en';
+  return 'ko';
 };
 
 export interface LocalizedProject {
@@ -74,9 +73,9 @@ export const I18N_PROJECTS: LocalizedProject[] = [
       ko: '신세계면세점의 중화권 타깃 숏폼 영상 시리즈 기획·연출·촬영. 세련된 서울의 도시 야경과 프리미엄 뷰티 제품을 결합하여 높은 조회수와 전환을 견인.'
     },
     deliverables: {
-      zh: ['短视频全案策划与分镜大纲', '现场双机位拍摄与电影级布光', '达芬奇色彩科学调色与特效合成', '抖音与TikTok高点击率封面设计'],
+      zh: ['短视频全案策划与分镜大纲', '现场双机位拍摄与电影级构图', '达芬奇色彩科学调色与特效合成', '抖音与TikTok高点击率封面设计'],
       en: ['Creative Concept & Scriptwriting', 'On-Site Cinematography & Lighting', 'DaVinci Resolve HDR Color Grading', 'Social Thumbnail Optimization'],
-      ko: ['영상 기획 및 숏폼 대본 작성', '현장 촬영 디렉팅 & 조명 세팅', '다빈치 리졸브 색보정 & 모션 그래픽', '도우인/틱톡 썸네일 최적화']
+      ko: ['영상 기획 및 숏폼 대본 작성', '현장 촬영 디렉팅 & 카메라 세팅', '다빈치 리졸브 색보정 & 모션 그래픽', '도우인/틱톡 썸네일 최적화']
     },
     videoSrc: 'https://wxzstudio.github.io/videos/portfolio-shinsegae.mp4',
     tags: {
@@ -367,7 +366,7 @@ export const I18N_CAREER: LocalizedCareer[] = [
     },
     highlights: {
       zh: [
-        '主导中国短视频平台（抖音 / TikTok）内容策划与实拍导演，涵盖剧本撰写、灯光镜头设计与后期达芬奇调色',
+        '主导中国短视频平台（抖音 / TikTok）内容策划与实拍导演，涵盖剧本撰写、镜头设计与后期达芬奇调色',
         '负责新世界免税店及一线美妆品牌的针对中韩跨境营销视频制作，精准提升完播率、播放量与商业转化',
         '全权把控小红书（Xiaohongshu）视觉营销，打造高CTR爆款封面、信息流图文及电商产品详情页',
         '统筹爱茉莉太平洋旗下 HERA（赫妍）、IOPE（艾诺碧）、VITAL BEAUTIE 等品牌的社交媒体视觉资产规范',
@@ -539,7 +538,7 @@ export const I18N_STRENGTHS: LocalizedStrength[] = [
     keyPoints: {
       zh: [
         '独立撰写分镜脚本与短视频3秒抓人开篇',
-        '精通专业影视灯光布光与现场运镜调度',
+        '精通专业现场摄制与运镜调度',
         '基于达芬奇色彩科学进行高质感调色处理',
         '线上数字化多尺寸分发与线下特种印刷监理'
       ],
@@ -551,7 +550,7 @@ export const I18N_STRENGTHS: LocalizedStrength[] = [
       ],
       ko: [
         '스토리보드 및 숏폼 대본 직접 작성',
-        '전문 조명 세팅 및 현장 연출 디렉팅',
+        '전문 카메라 세팅 및 현장 연출 디렉팅',
         '다빈치 리졸브 기반 시네마틱 색보정',
         '디지털 배포 및 오프라인 대형 인쇄 감리 대응'
       ]
@@ -571,21 +570,21 @@ export const I18N_STRENGTHS: LocalizedStrength[] = [
       ko: '자체 전문 장비 기반 단독 프로덕션'
     },
     subtitle: {
-      zh: '电影级全画幅机身 · 顶级定焦群 · 影视级RGB灯光 · 无线音频',
+      zh: 'Sony A7M4 全画幅 · 三脚架 · 稳定器 · 无线麦克',
       en: 'Cinema Full-Frame Bodies · Prime Lens Set · Studio Lighting · Wireless Audio',
-      ko: '시네마/풀프레임 바디 · 단렌즈군 · 무선조명 · 음향 장비 완비'
+      ko: 'Sony A7M4 풀프레임 · 삼각대 · 짐벌 · 무선 마이크'
     },
     desc: {
-      zh: '不依赖外部设备租赁或繁琐外包，自备全画幅影视拍摄系统与专业灯光音响，可敏捷、独立地承接中小型商业广告、美妆护肤静物特写与快节奏社媒短视频，为品牌节省50%以上的时间与财务成本。',
+      zh: '不依赖外部设备租赁或繁琐外包，自备 Sony A7M4 全画幅拍摄系统与机动装备，敏捷、独立地承接中小型商业广告、美妆护肤静物特写与快节奏社媒短视频，为品牌节省50%以上的时间与财务成本。',
       en: 'Armed with an owned arsenal of full-frame cinema cameras, prime optics, and studio lighting, allowing rapid-response commercial shoots without rental lead time.',
-      ko: '외부 렌탈이나 외주 제작사에 의존하지 않고, 자체 보유한 전문 촬영 및 조명 장비를 통해 중소규모 상업 촬영, 제품 뷰티 컷, 숏폼 콘텐츠를 언제든 민첩하게 독립 실행합니다.'
+      ko: '외부 렌탈이나 외주 제작사에 의존하지 않고, 자체 보유한 Sony A7M4 풀프레임 시스템과 기동 장비를 통해 중소규모 상업 촬영, 제품 뷰티 컷, 숏폼 콘텐츠를 언제든 민첩하게 독립 실행합니다.'
     },
     keyPoints: {
       zh: [
-        '全画幅影视机身及高解析定焦/大光圈变焦镜头组',
-        'COB钨丝色温与全彩RGB常亮影视灯光系统',
-        '专业无线领夹麦克风与现场声学实时监听',
-        '模块化机动装备箱，随时响应韩国本土及跨国取景'
+        'Sony A7M4 全画幅机身与高解析镜头组',
+        '专业三脚架与稳定器系统',
+        '无线麦克风与现场收音监听',
+        '机动装备箱，随时响应本土及跨国取景'
       ],
       en: [
         'Full-frame cinema bodies & high-resolution prime optics',
@@ -594,10 +593,10 @@ export const I18N_STRENGTHS: LocalizedStrength[] = [
         'Modular mobile flight kit ready for on-location deployment'
       ],
       ko: [
-        '풀프레임 카메라 및 전문 단/줌 렌즈 라인업',
-        '소프트박스/COB 텅스텐 & RGB 지속광 조명 시스템',
-        '무선 핀마이크 및 현장 사운드 모니터링',
-        '이동형 프로덕션 키트로 전국/해외 로케이션 즉시 대응'
+        'Sony A7M4 풀프레임 바디와 고해상 렌즈',
+        '전문 삼각대 및 짐벌 시스템',
+        '무선 마이크 및 현장 사운드 모니터링',
+        '기동성 장비로 국내외 로케이션 즉시 대응'
       ]
     },
     tags: {
@@ -706,7 +705,7 @@ export const I18N_UI = {
       works: '精选项目',
       capabilities: '核心优势',
       contact: '联系合作',
-      portfolioDoc: 'Naver 作品集文档',
+      portfolioDoc: '作品集下载',
       getInTouch: '预约合作',
       menu: '导航菜单',
     },
@@ -718,7 +717,7 @@ export const I18N_UI = {
       headline1: '以克制视觉',
       headline2: '重塑品牌造物。',
       narrative1: '视觉设计 · 商业摄制 · 达芬奇调色 · 生成式 AI 工作流',
-      narrative2: '自备专业影视器材与灯光系统，独立完成中小型商业广告与短视频制作。',
+      narrative2: '自备专业摄影器材与机动装备，独立完成中小型商业广告与短视频制作。',
       btnExplore: '浏览精选作品',
       btnContact: '预约合作',
       statExp: '13年+ 从业资历',
@@ -734,7 +733,7 @@ export const I18N_UI = {
       tierBadge: '13年资深总监',
       quote: '“为了绝不妥协内容品质，我将策划、摄影摄像、达芬奇调色到AI生成全链条内化为单兵作战体系。”',
       bioP1: '设计专业出身，扎实奠定视觉思维底蕴。自2021年起作为多家国际知名品牌的核心创意伙伴，以自有专业影视器材独立完成策划大纲、拍摄、调色至交付的全流程。',
-      bioP2: '凭借自有专业摄影器材与影视灯光矩阵，打破传统外包长周期痛点，敏捷执行中小型商业广告与爆款短视频。',
+      bioP2: '凭借自有专业摄影器材与机动装备，打破传统外包长周期痛点，敏捷执行中小型商业广告与爆款短视频。',
       bioP3: '在品牌出海与中韩跨境社媒中，提供具备高点击率的视觉策略。',
       metrics: [
         { value: '13+', unit: '年 从业资历', sub: '2013-2026 深耕视觉设计与影像' },
@@ -759,7 +758,7 @@ export const I18N_UI = {
       },
       bio: '设计专业出身，扎实奠定视觉思维底蕴。自2021年起作为多家知名品牌的核心创意伙伴，构建起涵盖策划大纲、实地拍摄、后期剪辑调色、平面设计到线下印刷交付的全流程内生化制作体系。',
       careerHistory: '职业履历与商业实绩 (共13年)',
-      naverPortfolio: 'Naver 作品集与官方认证文档',
+      naverPortfolio: '作品集下载',
     },
     projects: {
       tag: '精选商业案例',
@@ -771,14 +770,14 @@ export const I18N_UI = {
       year: '交付年份',
       deliverables: '交付范围与成果',
       close: '关闭',
-      verified: '官方认证档案',
+      verified: '作品集下载',
     },
     strengths: {
       tag: '核心优势与能力',
       title: '设备自备 · 独立交付。',
-      subtitle: '无需外包等待，以导演级布光与AI生成速度直接解决商业诉求。',
+      subtitle: '无需外包等待，以一线摄制经验与AI生成速度直接解决商业诉求。',
       gearTitle: '商业影视摄制与色彩科学',
-      gearSubtitle: '全画幅电影机 · 达芬奇色彩科学 · 专业影视灯光矩阵',
+      gearSubtitle: '全画幅相机 · 达芬奇色彩科学 · 机动装备箱',
       gearReady: '随时出勤部署',
       skillTitle: '生成式 AI 商业设计与节点工作流',
       skillSubtitle: 'ComfyUI 定制节点 · Midjourney 高精出图 · 概念周期压缩70%',
@@ -806,7 +805,7 @@ export const I18N_UI = {
       wechat: '微信号 (WeChat)',
       location: '工作常驻地',
       locationText: '首尔特别市 广津区 紫阳洞',
-      naverDocLink: 'Naver 作品集与官方认证文档',
+      naverDocLink: '作品集下载',
       xiaohongshuLink: '小红书 (Xiaohongshu) 官方创作者主页',
       formTitle: '快捷商务咨询',
       response24h: '24小时内正式回函',
@@ -988,7 +987,7 @@ export const I18N_UI = {
       works: '주요 작품',
       capabilities: '핵심 역량',
       contact: '문의하기',
-      portfolioDoc: '네이버 포트폴리오 문서',
+      portfolioDoc: '포트폴리오 다운로드',
       getInTouch: '협업 문의',
       menu: '네비게이션',
     },
@@ -1016,7 +1015,7 @@ export const I18N_UI = {
       tierBadge: '13년차 총괄',
       quote: '“콘텐츠의 완성도를 타협하지 않기 위해 기획부터 촬영, 편집, 그래픽, AI 워크플로우까지 전 공정을 내재화했습니다.”',
       bioP1: '디자인을 전공하며 시각적 사고의 기초를 다졌고, 2021년부터 국내외 유수 브랜드의 파트너로 일하며 자체 장비를 통해 기획부터 촬영, 편집, 색보정까지 전 공정을 내재화했습니다.',
-      bioP2: '자체 보유한 전문 촬영 및 조명 장비를 기반으로 외주 리드 타임과 제작 비용을 획기적으로 절감합니다.',
+      bioP2: '자체 보유한 전문 촬영 장비를 기반으로 외주 리드 타임과 제작 비용을 획기적으로 절감합니다.',
       bioP3: '중화권 시장 및 글로벌 마케팅에서 높은 효율의 비주얼 전략을 제공합니다.',
       metrics: [
         { value: '13+', unit: '년 실무 경력', sub: '2013-2026 시각 디자인 및 영상 분야' },
@@ -1041,7 +1040,7 @@ export const I18N_UI = {
       },
       bio: '디자인을 전공하며 시각적 사고의 기초를 다졌고, 기획부터 촬영, 편집, 그래픽, AI 워크플로우까지 전 공정을 내재화하여 타협 없는 완성도를 창출합니다.',
       careerHistory: '경력 사항 및 실무 성과 (총 13년)',
-      naverPortfolio: '네이버 포트폴리오 및 공인 문서',
+      naverPortfolio: '포트폴리오 다운로드',
     },
     projects: {
       tag: '주요 포트폴리오',
@@ -1053,14 +1052,14 @@ export const I18N_UI = {
       year: '수행 연도',
       deliverables: '수행 범위 및 성과물',
       close: '닫기',
-      verified: '공식 아카이브 검증',
+      verified: '포트폴리오 다운로드',
     },
     strengths: {
       tag: '핵심 역량 및 강점',
       title: '자체 장비 · 독립 완수.',
       subtitle: '외주 렌탈 대기 없이, 영상 연출력과 AI 속도로 비즈니스 문제를 해결합니다.',
       gearTitle: '상업 영상 연출 및 색보정 시스템',
-      gearSubtitle: '풀프레임 시네마 라인 · 다빈치 리졸브 색보정 덱 · 자체 조명',
+      gearSubtitle: '풀프레임 카메라 · 다빈치 리졸브 · 기동성 장비',
       gearReady: '즉시 출동 가능',
       skillTitle: '생성형 AI 워크플로우 및 노드 구축',
       skillSubtitle: 'ComfyUI 커스텀 파이프라인 · 미드저니 상업 제작 · 콘셉트 주기 단축',
@@ -1088,7 +1087,7 @@ export const I18N_UI = {
       wechat: '위챗 (WeChat ID)',
       location: '활동 지역',
       locationText: '서울특별시 광진구 자양동',
-      naverDocLink: '네이버 포트폴리오 및 공인 문서',
+      naverDocLink: '포트폴리오 다운로드',
       xiaohongshuLink: '샤오홍슈 (小红书) 공식 크리에이터 홈',
       formTitle: '프로젝트 의뢰 양식',
       response24h: '24시간 이내 공식 회신',
