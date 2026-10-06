@@ -4,16 +4,15 @@ import { CASES, CaseItem } from '../cases';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Close, Heart } from './Icons';
-import { BrandMark } from './Navbar';
 import { useScrollLock } from '../hooks/useScrollLock';
 
 gsap.registerPlugin(ScrollTrigger);
 
 /* Featured cases split into two archives:
    graphic works (native aspect, never cropped) and films
-   (dark stage tiles carrying the studio brand mark). */
+   (covered by a still frame pulled from the film itself). */
 
-/* Image tiles keep their native aspect ratio — no crop. */
+/* Tiles keep native aspect — no crop; motion lives in the lightbox. */
 const CaseImage: React.FC<{ item: CaseItem }> = ({ item }) => (
   <img
     src={item.src}
@@ -22,22 +21,6 @@ const CaseImage: React.FC<{ item: CaseItem }> = ({ item }) => (
     draggable={false}
     className="w-full h-auto"
   />
-);
-
-/* Video tiles: quiet dark stage with the studio mark + play chip. */
-const CaseVideoCover: React.FC<{ item: CaseItem }> = ({ item }) => (
-  <div className="relative aspect-[3/4] w-full flex items-center justify-center overflow-hidden">
-    <div
-      className="absolute inset-0"
-      style={{
-        background:
-          'radial-gradient(ellipse 62% 46% at 50% 42%, rgba(255,255,255,0.075), transparent 72%)',
-      }}
-      aria-hidden="true"
-    />
-    <BrandMark className="w-[24%] opacity-90" />
-    <span className="sr-only">{item.title.zh}</span>
-  </div>
 );
 
 const CasesSection: React.FC = () => {
@@ -98,11 +81,7 @@ const CasesSection: React.FC = () => {
       aria-label={item.title[language as 'zh' | 'ko']}
     >
       <div className="relative overflow-hidden rounded-xl bg-white/[0.03] border border-rule-soft">
-        {item.type === 'video' ? (
-          <CaseVideoCover item={item} />
-        ) : (
-          <CaseImage item={item} />
-        )}
+        <CaseImage item={item} />
         {item.videoSrc && (
           <span className="absolute top-3 right-3 chip w-8 h-8 text-paper/80">
             <svg viewBox="0 0 24 24" width="11" height="11" fill="currentColor" aria-hidden="true">

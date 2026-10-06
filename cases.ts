@@ -20,6 +20,7 @@ export interface CaseItem {
 
 const img = (n: string): string => `cases/${n}.jpg`;
 const vid = (n: string): string => `cases/${n}.mp4`;
+const frame = (n: string): string => `cases/${n}_frame.jpg`;
 
 export const CASES: CaseItem[] = [
   /* ---- 01 · Agency Campaigns ------------------------------------ */
@@ -40,7 +41,7 @@ export const CASES: CaseItem[] = [
   {
     id: 'p03',
     type: 'video',
-    src: img('p03'),
+    src: frame('v01'),
     videoSrc: vid('v01'),
     title: { zh: '花妍 FLAVO 系列 · Beauty Festa', ko: '화해 플라보 시리즈 · 뷰티 페스타' },
     tag: { zh: '视频', ko: '영상' },
@@ -48,7 +49,7 @@ export const CASES: CaseItem[] = [
   {
     id: 'p04',
     type: 'video',
-    src: img('p04'),
+    src: frame('v02'),
     videoSrc: vid('v02'),
     title: { zh: 'Portré × Paul and Joe', ko: '포트레 × 폴앤조 크림초' },
     tag: { zh: '视频', ko: '영상' },
@@ -63,7 +64,7 @@ export const CASES: CaseItem[] = [
   {
     id: 'p06',
     type: 'video',
-    src: img('p06'),
+    src: frame('v03'),
     videoSrc: vid('v03'),
     title: { zh: 'KERASYS Royal Propolis 洗护', ko: '케라시스 로열 프로폴리스' },
     tag: { zh: '视频', ko: '영상' },
@@ -78,7 +79,7 @@ export const CASES: CaseItem[] = [
   {
     id: 'p08',
     type: 'video',
-    src: img('p08'),
+    src: frame('v04'),
     videoSrc: vid('v04'),
     title: { zh: 'VITALBEAUTIE 内可美 内容系列', ko: '바이탈뷰티 콘텐츠 시리즈' },
     tag: { zh: '视频', ko: '영상' },
@@ -100,7 +101,7 @@ export const CASES: CaseItem[] = [
   {
     id: 'p11',
     type: 'video',
-    src: img('p11'),
+    src: frame('v05'),
     videoSrc: vid('v05'),
     title: { zh: '新世界 F&B · 仁川机场系列', ko: '신세계 F&B · 인천공항 시리즈' },
     tag: { zh: '视频', ko: '영상' },
@@ -108,7 +109,7 @@ export const CASES: CaseItem[] = [
   {
     id: 'p12',
     type: 'video',
-    src: img('p12'),
+    src: frame('v06'),
     videoSrc: vid('v06'),
     title: { zh: '醒可安 상쾌환 摇摇乐系列', ko: '상쾌환 각티입 시리즈' },
     tag: { zh: '视频', ko: '영상' },
@@ -116,7 +117,7 @@ export const CASES: CaseItem[] = [
   {
     id: 'p13',
     type: 'video',
-    src: img('p13'),
+    src: frame('v07'),
     videoSrc: vid('v07'),
     title: { zh: 'high&gogo 幼儿奶粉系列', ko: '하이앤고고 키즈분유 시리즈' },
     tag: { zh: '视频', ko: '영상' },
@@ -124,7 +125,7 @@ export const CASES: CaseItem[] = [
   {
     id: 'p14',
     type: 'video',
-    src: img('p14'),
+    src: frame('v08'),
     videoSrc: vid('v08'),
     title: { zh: 'HY · 李敏镐见面会展位设计', ko: 'HY · 프로젝트 윌 팬미팅 부스' },
     tag: { zh: '空间', ko: '공간' },
@@ -132,7 +133,7 @@ export const CASES: CaseItem[] = [
   {
     id: 'p15',
     type: 'video',
-    src: img('p15'),
+    src: frame('v09'),
     videoSrc: vid('v09'),
     title: { zh: '新世界 · 品牌联名影片', ko: '신세계 · 브랜드 콜라보 영상' },
     tag: { zh: '视频', ko: '영상' },
@@ -156,7 +157,7 @@ export const CASES: CaseItem[] = [
   {
     id: 'p18',
     type: 'video',
-    src: img('p18'),
+    src: frame('v10'),
     videoSrc: vid('v10'),
     title: { zh: 'DearDoer · 快闪店现场', ko: '디어도어 · 팝업스토어 현장' },
     tag: { zh: '空间', ko: '공간' },
@@ -166,7 +167,7 @@ export const CASES: CaseItem[] = [
   {
     id: 'p19',
     type: 'video',
-    src: img('p19'),
+    src: frame('v11'),
     videoSrc: vid('v11'),
     title: { zh: 'TOUCH IN SOL × 首尔时装周', ko: '터치인솔 × 서울패션위크' },
     tag: { zh: '视频', ko: '영상' },
@@ -174,7 +175,7 @@ export const CASES: CaseItem[] = [
   {
     id: 'r07',
     type: 'video',
-    src: img('p12'),
+    src: frame('r07'),
     videoSrc: vid('r07'),
     title: { zh: '醒可安 · 彩虹鸡尾酒（7月）', ko: '상쾌환 · 레인보우 칵테일' },
     tag: { zh: '视频', ko: '영상' },
@@ -182,7 +183,7 @@ export const CASES: CaseItem[] = [
   {
     id: 'r06',
     type: 'video',
-    src: img('p04'),
+    src: frame('r06'),
     videoSrc: vid('r06'),
     title: { zh: 'Portré · 纯净版成片', ko: '포트레 · 클린버전' },
     tag: { zh: '视频', ko: '영상' },
@@ -190,7 +191,7 @@ export const CASES: CaseItem[] = [
   {
     id: 'r01',
     type: 'video',
-    src: img('r01_poster'),
+    src: frame('r01'),
     videoSrc: vid('r01'),
     title: { zh: '婚礼影像', ko: '웨딩 필름' },
     tag: { zh: '视频', ko: '영상' },
@@ -198,7 +199,7 @@ export const CASES: CaseItem[] = [
   {
     id: 'r02',
     type: 'video',
-    src: img('r02_poster'),
+    src: frame('r02'),
     videoSrc: vid('r02'),
     title: { zh: 'HY · 新品上市影片', ko: 'HY · 신제품 출시 영상' },
     tag: { zh: '视频', ko: '영상' },
@@ -206,7 +207,7 @@ export const CASES: CaseItem[] = [
   {
     id: 'r03',
     type: 'video',
-    src: img('r03_poster'),
+    src: frame('r03'),
     videoSrc: vid('r03'),
     title: { zh: 'Denps · TikTok 系列', ko: '덴프스 · 틱톡 영상' },
     tag: { zh: '视频', ko: '영상' },
@@ -214,7 +215,7 @@ export const CASES: CaseItem[] = [
   {
     id: 'r04',
     type: 'video',
-    src: img('r04_poster'),
+    src: frame('r04'),
     videoSrc: vid('r04'),
     title: { zh: '新世界 × Hiker Ground', ko: '신세계 × 하이커 그라운드' },
     tag: { zh: '视频', ko: '영상' },
@@ -222,7 +223,7 @@ export const CASES: CaseItem[] = [
   {
     id: 'r05',
     type: 'video',
-    src: img('r05_poster'),
+    src: frame('r05'),
     videoSrc: vid('r05'),
     title: { zh: '新世界免税店 · Seoul Moon', ko: '신세계면세점 · 서울달' },
     tag: { zh: '视频', ko: '영상' },

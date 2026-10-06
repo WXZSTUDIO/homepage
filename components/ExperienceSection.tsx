@@ -140,7 +140,14 @@ const ExperienceSection: React.FC = () => {
         <div className="exp-content-trigger grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6 items-start">
           {/* Identity */}
           <div className="lg:col-span-4 exp-stagger-item tile p-7 md:p-8">
-            <div className="text-[clamp(2.2rem,3.6vw,3rem)] leading-[1.05] text-paper font-medium tracking-tight">
+            <img
+              src="profile.jpg"
+              alt="ZHENG CANFENG"
+              loading="lazy"
+              draggable={false}
+              className="w-24 h-24 rounded-full object-cover object-top border border-rule-soft"
+            />
+            <div className="mt-6 text-[clamp(2.2rem,3.6vw,3rem)] leading-[1.05] text-paper font-medium tracking-tight">
               ZHENG
               <br />
               CANFENG

@@ -125,17 +125,17 @@ const StrengthsSection: React.FC = () => {
           />
         </div>
 
-        {/* Kit + stack */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6">
-          <div className="lg:col-span-7">
+        {/* Kit + stack — both columns stretch to the same height */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6 items-stretch">
+          <div className="lg:col-span-7 flex flex-col">
             <div className="eyebrow mb-4">Hardware</div>
-            <div className="grid grid-cols-2 gap-2.5">
+            <div className="grid grid-cols-2 gap-2.5 flex-1 auto-rows-fr">
               {GEAR_ITEMS.map((item) => {
                 const Icon = item.icon;
                 return (
                   <div
                     key={item.spec}
-                    className="tile tile-hover flex flex-col items-start gap-4 px-5 py-6"
+                    className="tile tile-hover h-full flex flex-col items-start gap-4 px-5 py-6"
                   >
                     <span className="chip w-10 h-10 text-paper">
                       <Icon size={17} />
@@ -154,15 +154,15 @@ const StrengthsSection: React.FC = () => {
             </div>
           </div>
 
-          <div className="lg:col-span-5">
+          <div className="lg:col-span-5 flex flex-col">
             <div className="eyebrow mb-4">Stack</div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 flex-1 auto-rows-fr">
               {TOOLS.map((tool) => {
                 const Icon = tool.icon;
                 return (
                   <div
                     key={tool.name}
-                    className="tile tile-hover flex flex-col items-start gap-3 px-4 py-4"
+                    className="tile tile-hover h-full flex flex-col items-start justify-between gap-3 px-4 py-4"
                   >
                     <Icon size={15} className="text-paper-70" />
                     <span className="text-[11px] tracking-[0.04em] text-paper-70 leading-tight">

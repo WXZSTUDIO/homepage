@@ -126,14 +126,9 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
             ))}
           </nav>
 
-          {/* Right cluster: language + pill */}
+          {/* Right cluster: language switcher only */}
           <div className="topbar-actions rise">
-            <div className="hidden xl:block">
-              <LanguageSwitcher />
-            </div>
-            <button onClick={() => scrollTo('contact')} className="pill pill-nav">
-              <span>{ui.nav.getInTouch}</span>
-            </button>
+            <LanguageSwitcher />
           </div>
 
           {/* Portrait: burger only */}
