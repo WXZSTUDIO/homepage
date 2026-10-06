@@ -74,7 +74,7 @@ const MainApp: React.FC = () => {
 
       {/* Main Content Area */}
       <main>
-        {/* 1. Full-screen Hero Section with Video Background & Kinetic Title Reveal */}
+        {/* 1. Cover — one headline, two actions, four discipline tiles */}
         <HeroSection
           onExplore={() => scrollToSection('projects')}
           onContact={() => scrollToSection('contact')}
@@ -84,16 +84,16 @@ const MainApp: React.FC = () => {
         {/* 1.5 Client wordmark strip — the trust line right off the cover */}
         <BrandMarquee />
 
-        {/* 2. Personal Profile & Experience (Portrait, Bio, Contacts, Metrics, Career Timeline) */}
+        {/* 2. Practice — metrics and career as hairline rows */}
         <ExperienceSection />
 
-        {/* 3. Curated Selected Projects (Expansive Cards Grid with Lightbox) */}
+        {/* 3. Work — a list; tapping a row opens its detail sheet */}
         <ProjectsSection />
 
-        {/* 4. Core Capabilities & Advantages (4 Pillars + Equipment Arsenal) */}
+        {/* 4. Capabilities — chapters and the kit, icon-led */}
         <StrengthsSection />
 
-        {/* 5. Full-Viewport Finale: Contact Module (Direct Channels + Inquiry Form) */}
+        {/* 5. Contact — channels and the inquiry form, both on glass */}
         <ContactSection />
       </main>
     </div>

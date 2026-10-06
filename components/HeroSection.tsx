@@ -87,6 +87,12 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   const countOf = (key: string) =>
     projects.filter((p: any) => p.category === key).length;
 
+  // Discipline names follow the active language; the literal is the fallback.
+  const labelsByCategory: Record<string, string> = {};
+  projects.forEach((p: any) => {
+    if (!labelsByCategory[p.category]) labelsByCategory[p.category] = p.categoryLabel;
+  });
+
   return (
     <section ref={heroRef} id="hero" className="relative w-full min-h-viewport">
       <div className="relative w-full min-h-viewport flex flex-col">
@@ -151,7 +157,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                     <span className="folio text-2xl">{countOf(d.key)}</span>
                   </div>
                   <div className="relative z-10 font-display text-base md:text-lg text-paper leading-tight mt-4">
-                    {d.label}
+                    {labelsByCategory[d.key] || d.label}
                   </div>
                 </div>
               );

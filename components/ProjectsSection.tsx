@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { springSheet, fade } from '../motion';
 import { useLanguage } from '../LanguageContext';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -51,12 +52,18 @@ const ProjectsSection: React.FC = () => {
   const closePanel = useCallback(() => setSelectedProject(null), []);
   useScrollLock(!!selectedProject, closePanel);
 
+  // Filter labels come out of the data, so they follow the active language.
+  const labelsByCategory: Record<string, string> = {};
+  projects.forEach((p: ProjectItem) => {
+    if (!labelsByCategory[p.category]) labelsByCategory[p.category] = p.categoryLabel;
+  });
+
   const filters = [
     { key: 'all', label: ui.projects.all },
-    { key: 'brand', label: 'Brand & VI' },
-    { key: 'video', label: 'Video & Motion' },
-    { key: 'ai', label: 'AI Synthesis' },
-    { key: 'package', label: 'Packaging & Editorial' },
+    { key: 'brand', label: labelsByCategory.brand || 'Brand & VI' },
+    { key: 'video', label: labelsByCategory.video || 'Video & Motion' },
+    { key: 'ai', label: labelsByCategory.ai || 'AI Synthesis' },
+    { key: 'package', label: labelsByCategory.package || 'Packaging & Editorial' },
   ];
 
   const filteredProjects: ProjectItem[] =
@@ -122,13 +129,14 @@ const ProjectsSection: React.FC = () => {
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-50 overflow-y-auto overscroll-contain bg-ink/70 backdrop-blur-md"
             onClick={closePanel}
+            transition={fade(0.24)}
           >
             <div className="min-h-full w-full flex items-center justify-center p-4 pb-safe sm:p-8 md:p-12">
               <motion.div
-                initial={{ y: 24, opacity: 0 }}
+                initial={{ y: 28, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                exit={{ y: 24, opacity: 0 }}
-                transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                exit={{ y: 28, opacity: 0 }}
+                transition={springSheet}
                 className="relative max-w-3xl w-full glass-strong rounded-glass p-6 sm:p-10"
                 onClick={(e) => e.stopPropagation()}
               >

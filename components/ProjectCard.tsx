@@ -40,7 +40,7 @@ export const ProjectRow: React.FC<{
   return (
     <button
       onClick={() => onOpen(project)}
-      className="group relative w-full text-left glass-tile rounded-glass grid grid-cols-[2.5rem_1fr_auto] sm:grid-cols-[3.5rem_1rem_1fr_auto] items-center gap-x-3 sm:gap-x-5 gap-y-1 px-4 sm:px-6 py-5 cursor-pointer"
+      className="press group relative w-full text-left glass-tile rounded-glass grid grid-cols-[2.5rem_1fr_auto] sm:grid-cols-[3.5rem_1rem_1fr_auto] items-center gap-x-3 sm:gap-x-5 gap-y-1 px-4 sm:px-6 py-5 cursor-pointer"
       aria-label={project.title}
     >
       {/* Featured rows carry a colour rail */}

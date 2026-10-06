@@ -35,6 +35,14 @@
     color: #08080b;
   }
 
+  /* Keyboard focus rings — a glass surface still needs a hard edge
+     for anyone tabbing through, otherwise focus is invisible. */
+  :focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.75);
+    outline-offset: 3px;
+    border-radius: inherit;
+  }
+
   ::-webkit-scrollbar {
     width: 4px;
     height: 4px;
@@ -155,6 +163,11 @@
     opacity: 0.86;
     transform: translateY(-1px);
   }
+  /* Press feedback: the control acknowledges the finger immediately. */
+  .btn-pill:active,
+  .btn-pill-ghost:active {
+    transform: scale(0.97);
+  }
 
   /* --- Glass pill button (secondary) --- */
   .btn-pill-ghost {
@@ -243,6 +256,11 @@
     padding-bottom: env(safe-area-inset-bottom, 0px);
   }
 
+  /* Press acknowledgement for tappable rows and tiles. */
+  .press:active {
+    transform: scale(0.985);
+  }
+
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
@@ -304,6 +322,92 @@
   .marquee-track {
     flex-wrap: wrap;
     width: auto;
+  }
+}
+
+/* --- Material fallbacks ---------------------------------------------------
+   Glass only exists where backdrop-filter exists. Without it — older
+   Firefox, some Linux builds — the pane must still read as a pane, so it
+   collapses to a solid tinted surface instead of a nearly invisible film. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass,
+  .glass-strong,
+  .glass-tile,
+  .btn-pill-ghost,
+  .field {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  .glass {
+    background: rgba(26, 26, 33, 0.88);
+  }
+  .glass-strong {
+    background: rgba(20, 20, 27, 0.94);
+  }
+  .glass-tile {
+    background: rgba(30, 30, 38, 0.72);
+  }
+  .btn-pill-ghost {
+    background: rgba(40, 40, 50, 0.85);
+  }
+  .field {
+    background: rgba(30, 30, 38, 0.9);
+  }
+  .glass::before {
+    display: none;
+  }
+}
+
+/* --- Reduce Transparency (iOS / macOS accessibility) ----------------------
+   Users who switch this on are telling us the blur is unreadable. Honour
+   it: heavier fill, crisper hairline, sheen off. */
+@media (prefers-reduced-transparency: reduce) {
+  .glass,
+  .glass-strong,
+  .glass-tile,
+  .btn-pill,
+  .btn-pill-ghost,
+  .tag-pill,
+  .field {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  .glass {
+    background: #15151b;
+    border-color: rgba(255, 255, 255, 0.24);
+  }
+  .glass-strong {
+    background: #101016;
+    border-color: rgba(255, 255, 255, 0.28);
+  }
+  .glass-tile {
+    background: #1a1a21;
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+  .tag-pill {
+    background: #1f1f27;
+    border-color: rgba(255, 255, 255, 0.26);
+  }
+  .field {
+    background: #1a1a21;
+    border-color: rgba(255, 255, 255, 0.26);
+  }
+  .glass::before {
+    display: none;
+  }
+}
+
+/* --- Increase Contrast ------------------------------------------------- */
+@media (prefers-contrast: more) {
+  .glass,
+  .glass-strong,
+  .glass-tile {
+    background: #101016;
+    border-color: rgba(255, 255, 255, 0.42);
+  }
+  .eyebrow,
+  .tag-pill {
+    color: #ffffff;
   }
 }
 
