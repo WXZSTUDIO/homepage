@@ -65,6 +65,7 @@ const SeoulClock: React.FC<{ label: string }> = ({ label }) => {
       new Intl.DateTimeFormat('ko-KR', {
         hour: '2-digit',
         minute: '2-digit',
+        second: '2-digit',
         hour12: false,
         timeZone: 'Asia/Seoul',
       }),
@@ -72,7 +73,7 @@ const SeoulClock: React.FC<{ label: string }> = ({ label }) => {
   );
   const [now, setNow] = useState(() => fmt.format(new Date()));
   useEffect(() => {
-    const id = setInterval(() => setNow(fmt.format(new Date())), 15000);
+    const id = setInterval(() => setNow(fmt.format(new Date())), 1000);
     return () => clearInterval(id);
   }, [fmt]);
   return (

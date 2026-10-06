@@ -6,10 +6,9 @@ const HERO_VIDEO = 'hero-keyflip.mp4';
 
 interface HeroSectionProps {
   onExplore: () => void;
-  onContact: () => void;
 }
 
-const HeroSection: React.FC<HeroSectionProps> = ({ onExplore, onContact }) => {
+const HeroSection: React.FC<HeroSectionProps> = ({ onExplore }) => {
   const { ui } = useLanguage();
 
   // The sub reads as two quiet lines, split from the discipline string.
@@ -45,9 +44,6 @@ const HeroSection: React.FC<HeroSectionProps> = ({ onExplore, onContact }) => {
         </p>
 
         <div className="actions">
-          <button onClick={onContact} className="pill pill-cta rise-cta">
-            <span>{ui.hero.btnContact}</span>
-          </button>
           <button onClick={onExplore} className="ghost ghost-cta rise-cta">
             {ui.hero.btnExplore}
           </button>

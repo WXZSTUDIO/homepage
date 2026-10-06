@@ -73,8 +73,9 @@
   h2,
   h3 {
     font-family: theme('fontFamily.display');
-    font-weight: 500;
-    letter-spacing: -0.02em;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.08;
   }
 }
 
@@ -182,6 +183,13 @@
     overflow: hidden;
     pointer-events: none;
   }
+  /* Legibility scrim under the video — copy always reads */
+  .plate::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(5, 5, 5, 0.38);
+  }
   .plate-video {
     position: absolute;
     left: 50%;
@@ -228,15 +236,16 @@
     max-width: 1520px;
     margin-inline: auto;
     padding-inline: 32px;
+    padding-block: calc(19 * var(--u));
     display: flex;
-    align-items: center;
+    align-items: baseline;
     justify-content: space-between;
     gap: 32px;
-    height: calc(78 * var(--u));
   }
 
   .brand-text {
     font-size: calc(19 * var(--u));
+    line-height: 1;
     letter-spacing: 0.04em;
     font-weight: 300;
     color: #b6b5b5;
@@ -249,9 +258,10 @@
 
   .links {
     display: flex;
-    align-items: center;
+    align-items: baseline;
     gap: calc(20 * var(--u));
     font-size: calc(15.5 * var(--u));
+    line-height: 1;
     letter-spacing: 0.02em;
     color: #b6b5b5;
   }
@@ -292,11 +302,11 @@
   .headline {
     position: absolute;
     left: calc(75.5 * var(--u));
-    top: calc(230.5 * var(--u));
+    top: calc(305 * var(--u));
     font-size: calc(71.6 * var(--h));
     line-height: calc(80.5 * var(--h));
-    font-weight: 400;
-    letter-spacing: calc(0.3 * var(--h));
+    font-weight: 600;
+    letter-spacing: calc(-1.4 * var(--h));
     color: #fafafa;
     white-space: nowrap;
   }
@@ -307,7 +317,7 @@
   .sub {
     position: absolute;
     left: calc(75.5 * var(--u));
-    top: calc(230.5 * var(--u) + 189 * var(--h));
+    top: calc(305 * var(--u) + 189 * var(--h));
     font-size: calc(20.7 * var(--h));
     line-height: calc(23.5 * var(--h));
     font-weight: 400;
@@ -319,19 +329,10 @@
     display: block;
   }
 
-  .pill-cta {
-    position: absolute;
-    left: calc(74.9 * var(--u));
-    top: calc(230.5 * var(--u) + 264.5 * var(--h));
-    width: calc(175.6 * var(--h));
-    height: calc(50 * var(--h));
-    font-size: calc(20.6 * var(--h));
-  }
-
   .ghost-cta {
     position: absolute;
-    left: calc(74.9 * var(--u) + 220.6 * var(--h));
-    top: calc(230.5 * var(--u) + 279.5 * var(--h));
+    left: calc(74.9 * var(--u));
+    top: calc(305 * var(--u) + 279.5 * var(--h));
     font-size: calc(20.6 * var(--h));
     letter-spacing: calc(0.12 * var(--h));
   }
@@ -630,12 +631,6 @@
   .actions .pill-cta,
   .actions .ghost-cta {
     position: static;
-  }
-  .actions .pill-cta {
-    width: auto;
-    height: auto;
-    padding: 13px 26px;
-    font-size: 15px;
   }
   .actions .ghost-cta {
     font-size: 15px;

@@ -83,11 +83,16 @@ const CasesSection: React.FC = () => {
       <div className="relative overflow-hidden rounded-xl bg-white/[0.03] border border-rule-soft">
         <CaseImage item={item} />
         {item.videoSrc && (
-          <span className="absolute top-3 right-3 chip w-8 h-8 text-paper/80">
-            <svg viewBox="0 0 24 24" width="11" height="11" fill="currentColor" aria-hidden="true">
-              <path d="M9 5.8v12.4a.6.6 0 0 0 .92.5l9.3-6.2a.6.6 0 0 0 0-1l-9.3-6.2a.6.6 0 0 0-.92.5Z" />
-            </svg>
-          </span>
+          <>
+            <span className="pointer-events-none absolute inset-0 bg-black/30 group-hover:bg-black/15 transition-colors duration-300" />
+            <span className="pointer-events-none absolute inset-0 flex items-center justify-center">
+              <span className="w-11 h-11 md:w-12 md:h-12 rounded-full bg-black/45 border border-white/25 backdrop-blur-sm flex items-center justify-center text-paper/90 group-hover:scale-105 transition-transform duration-300">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true">
+                  <path d="M9 5.8v12.4a.6.6 0 0 0 .92.5l9.3-6.2a.6.6 0 0 0 0-1l-9.3-6.2a.6.6 0 0 0-.92.5Z" />
+                </svg>
+              </span>
+            </span>
+          </>
         )}
         <span className="pointer-events-none absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
       </div>

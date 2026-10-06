@@ -145,7 +145,7 @@ const ExperienceSection: React.FC = () => {
               alt="ZHENG CANFENG"
               loading="lazy"
               draggable={false}
-              className="w-24 h-24 rounded-full object-cover object-top border border-rule-soft"
+              className="w-full max-w-[260px] aspect-[3/4] object-cover object-top rounded-xl border border-rule-soft"
             />
             <div className="mt-6 text-[clamp(2.2rem,3.6vw,3rem)] leading-[1.05] text-paper font-medium tracking-tight">
               ZHENG

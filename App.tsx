@@ -66,11 +66,8 @@ const MainApp: React.FC = () => {
       <Navbar activeSection={activeSection} />
 
       <main>
-        {/* 1. Cover — full-bleed video, one headline, two actions, partner strip */}
-        <HeroSection
-          onExplore={() => scrollToSection('projects')}
-          onContact={() => scrollToSection('contact')}
-        />
+        {/* 1. Cover — full-bleed video, one headline, one action, partner strip */}
+        <HeroSection onExplore={() => scrollToSection('projects')} />
 
         {/* 1.5 Full client wall */}
         <BrandMarquee />

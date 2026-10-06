@@ -36,9 +36,9 @@ export default {
       },
       fontFamily: {
         sans: [
-          '"Manrope"',
-          '"Pretendard Variable"',
-          'Pretendard',
+          '"Montserrat"',
+          '"Spoqa Han Sans Neo"',
+          '"Spoqa Han Sans"',
           '-apple-system',
           'BlinkMacSystemFont',
           'system-ui',
@@ -48,9 +48,9 @@ export default {
           'sans-serif',
         ],
         display: [
-          '"Manrope"',
-          '"Pretendard Variable"',
-          'Pretendard',
+          '"Montserrat"',
+          '"Spoqa Han Sans Neo"',
+          '"Spoqa Han Sans"',
           '-apple-system',
           'BlinkMacSystemFont',
           'system-ui',
