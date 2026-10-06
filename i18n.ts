@@ -23,7 +23,6 @@ export interface LocalizedProject {
   year: string;
   description: { zh: string; en: string; ko: string };
   deliverables: { zh: string[]; en: string[]; ko: string[] };
-  src: string;
   videoSrc?: string;
   tags: { zh: string[]; en: string[]; ko: string[] };
   featured?: boolean;
@@ -79,7 +78,6 @@ export const I18N_PROJECTS: LocalizedProject[] = [
       en: ['Creative Concept & Scriptwriting', 'On-Site Cinematography & Lighting', 'DaVinci Resolve HDR Color Grading', 'Social Thumbnail Optimization'],
       ko: ['영상 기획 및 숏폼 대본 작성', '현장 촬영 디렉팅 & 조명 세팅', '다빈치 리졸브 색보정 & 모션 그래픽', '도우인/틱톡 썸네일 최적화']
     },
-    src: 'images/shinsegae-luxury-visual.jpg',
     videoSrc: 'https://wxzstudio.github.io/videos/portfolio-shinsegae.mp4',
     tags: {
       zh: ['商业广告', '短视频', '免税美妆', '抖音营销'],
@@ -117,7 +115,6 @@ export const I18N_PROJECTS: LocalizedProject[] = [
       en: ['High-CTR Xiaohongshu Feed Covers', 'Launch Detail Pages Layout', 'Official Visual Asset Guidelines', 'Cross-Border Graphic Components'],
       ko: ['샤오홍슈 피드 썸네일 디자인 (CTR 특화)', '신제품 런칭 상세페이지 레이아웃', '브랜드 톤앤매너 비주얼 에셋 가이드', '소셜 인터랙티브 비주얼']
     },
-    src: 'images/iope-campaign-visual.jpg',
     tags: {
       zh: ['高端美妆', '社交物料', '点击率提升', '小红书'],
       en: ['K-Beauty', 'Social Assets', 'CTR Boost', 'Xiaohongshu'],
@@ -154,7 +151,6 @@ export const I18N_PROJECTS: LocalizedProject[] = [
       en: ['Custom ComfyUI Node Pipelines', 'Midjourney Commercial Prompt Library', 'Futuristic 3D Spatial Renders', 'High-Res Multi-Pass Compositing'],
       ko: ['ComfyUI 커스텀 파이프라인 구축', 'Midjourney 프롬프트 튜닝', '초현실 미래주의 3D 조형 시각화', '고해상도 커머셜 에셋 합성']
     },
-    src: 'images/ai-generative-sculpture.jpg',
     tags: {
       zh: ['AI生产力', 'ComfyUI', 'Midjourney', '未来概念'],
       en: ['AI Workflow', 'ComfyUI', 'Midjourney', 'Future Concept'],
@@ -191,7 +187,6 @@ export const I18N_PROJECTS: LocalizedProject[] = [
       en: ['Brand Identity Guidelines Manual', 'Cosmetic Packaging & Box Structural Design', 'Paper Selection & Print Production Supervision', 'Launch Still-Life Art Direction'],
       ko: ['브랜드 BI/VI 가이드라인 수립', '화장품 용기 및 패키지 박스 설계', '오프라인 인쇄 감리 및 지질 선정', '런칭 캠페인 화보 기획']
     },
-    src: 'images/skincare-brand-identity.jpg',
     tags: {
       zh: ['品牌设计', '包装设计', '视觉识别', '美妆护肤'],
       en: ['Branding', 'Package Design', 'VI System', 'Cosmetics'],
@@ -228,7 +223,6 @@ export const I18N_PROJECTS: LocalizedProject[] = [
       en: ['Solo Multi-Angle High-Speed Capture', 'Artist Stage Close-Up Direction', 'Gimbal Stabilization Choreography', 'Fast-Paced Social Montage Editing'],
       ko: ['현장 1인 다캠 촬영 운용', 'K-POP 아이돌 포커스 직캠', '슬로우모션 및 짐벌 워크', '숏폼 전용 다이내믹 컷편집']
     },
-    src: 'images/fan-meet-poster-visual.jpg',
     videoSrc: 'https://wxzstudio.github.io/videos/portfolio-seoul-fashion.mp4',
     tags: {
       zh: ['时装周秀场', '明星直拍', '电影感机位', '活动记录'],
@@ -266,7 +260,6 @@ export const I18N_PROJECTS: LocalizedProject[] = [
       en: ['China Market Packaging Layout Renewal', 'E-Commerce Product Detail Pages', 'Commercial Model Casting & Studio Shoot', 'Cross-Border Localization Strategy'],
       ko: ['수출용 패키지 레이아웃 리뉴얼', '중화권 타깃 상세페이지 기획/제작', '외국인 모델 섭외 및 스튜디오 촬영', '커머스 썸네일 비주얼']
     },
-    src: 'images/summer-drinks-packaging.jpg',
     tags: {
       zh: ['包装升级', '出海本土化', '快消品', '电商视觉'],
       en: ['Packaging', 'Localization', 'FMCG', 'E-Commerce'],
@@ -303,7 +296,6 @@ export const I18N_PROJECTS: LocalizedProject[] = [
       en: ['Conference Key Visual System', 'Booth Spatial Flow & VMD Layout', 'Large-Format Print Production Oversight', 'Digital Signage Welcome Motion'],
       ko: ['컨퍼런스 메인 키비주얼 설계', '전시 부스 동선 및 그래픽 월 VMD', '오프라인 리플렛 및 홍보물 출력 감리', '디지털 사이니지 모션 배너']
     },
-    src: 'images/tech-summit-keyvisual.jpg',
     tags: {
       zh: ['主视觉设计', '空间美陈', '展会展陈', '会议全案'],
       en: ['Key Visual', 'Spatial Design', 'Exhibition VMD', 'Conference'],
@@ -340,7 +332,6 @@ export const I18N_PROJECTS: LocalizedProject[] = [
       en: ['Limited Edition Concept Direction', 'Nocturnal Studio Lighting Execution', 'High-Fidelity Motion Posters', 'Exclusive Social Campaign Assets'],
       ko: ['시즌 한정판 비주얼 콘셉트', '다크 럭셔리 포토그래피 디렉팅', '디지털 사이니지 모션 포스터', '소셜 프로모션 키트 구성']
     },
-    src: 'images/holiday-special-campaign.jpg',
     tags: {
       zh: ['奢华暗调', '节日限定', '商业大片', '视觉特辑'],
       en: ['Luxury Mood', 'Campaign Visual', 'Holiday Edition', 'Editorial'],

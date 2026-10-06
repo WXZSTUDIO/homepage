@@ -1,10 +1,9 @@
 import React from 'react';
-import { Play } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 
 export interface ProjectItem {
   id: string;
   title: string;
-  src: string;
   client: string;
   year: string;
   category: string;
@@ -15,60 +14,75 @@ export interface ProjectItem {
   deliverables?: string[];
 }
 
-/** The image plate — shared by the editorial grid and the stacked deck. */
-export const ProjectPlate: React.FC<{
+/* Category → Lexington brand colour. */
+export const CATEGORY_COLOR: Record<string, string> = {
+  brand: 'bg-c-pink',
+  video: 'bg-c-orange',
+  ai: 'bg-c-green',
+  package: 'bg-c-blue',
+};
+
+export const CATEGORY_HEX: Record<string, string> = {
+  brand: '#FF7AC3',
+  video: '#FF5A1F',
+  ai: '#55D98C',
+  package: '#4F7CFF',
+};
+
+/** A Lexington list row: number · colour chip · serif title · meta · tags · arrow. */
+export const ProjectRow: React.FC<{
   project: ProjectItem;
-  aspect?: string;
-  priority?: boolean;
-}> = ({ project, aspect = 'aspect-[16/10]', priority = false }) => (
-  <div className={`frame ${aspect} w-full`}>
-    <img
-      src={project.src}
-      alt={project.title}
-      loading={priority ? 'eager' : 'lazy'}
-      decoding="async"
-      className="w-full h-full object-cover transition-transform duration-[900ms] ease-editorial group-hover:scale-[1.04] will-change-transform"
-    />
-    {project.videoSrc && (
-      <div className="absolute top-4 right-4 w-9 h-9 rounded-full bg-ink/85 backdrop-blur-sm flex items-center justify-center text-paper opacity-80 group-hover:opacity-100 transition-opacity">
-        <Play size={12} fill="currentColor" />
-      </div>
-    )}
-    <span className="pointer-events-none absolute inset-0 rounded-card ring-1 ring-inset ring-transparent group-hover:ring-paper/20 transition-all duration-500" />
-  </div>
-);
+  index: number;
+  onOpen: (project: ProjectItem) => void;
+}> = ({ project, index, onOpen }) => {
+  const hex = CATEGORY_HEX[project.category] || '#0A0A0A';
 
-/** Folio number + category line. */
-export const ProjectFolio: React.FC<{
-  folio: string;
-  featured?: boolean;
-  categoryLabel: string;
-}> = ({ folio, featured, categoryLabel }) => (
-  <div className="flex items-baseline justify-between gap-4 pb-2 mb-4">
-    <span
-      className={`font-mono text-[11px] tracking-[0.2em] ${
-        featured ? 'text-paper' : 'text-faint'
-      }`}
+  return (
+    <button
+      onClick={() => onOpen(project)}
+      className="group relative w-full text-left grid grid-cols-[2.5rem_1fr_auto] sm:grid-cols-[3.5rem_1rem_1fr_auto] items-center gap-x-3 sm:gap-x-5 gap-y-1 border-b border-rule px-2 sm:px-4 py-5 transition-colors duration-300 cursor-pointer hover:bg-ink-soft"
+      aria-label={project.title}
     >
-      {folio}
-      {featured && (
-        <span className="tag-pill ml-3 align-middle">★ Featured</span>
+      {/* Featured rows carry a colour rail, the reference's highlighted row */}
+      {project.featured && (
+        <span
+          className="absolute left-0 top-0 bottom-0 w-[3px]"
+          style={{ backgroundColor: hex }}
+          aria-hidden="true"
+        />
       )}
-    </span>
-    <span className="eyebrow text-right">{categoryLabel}</span>
-  </div>
-);
 
-/** Title + client/year caption. */
-export const ProjectCaption: React.FC<{ project: ProjectItem }> = ({
-  project,
-}) => (
-  <div className="mt-4 flex items-start justify-between gap-6 pt-3">
-    <h3 className="font-display text-xl sm:text-2xl text-paper leading-tight">
-      {project.title}
-    </h3>
-    <div className="eyebrow text-right shrink-0 pt-1.5">
-      {project.client} · {project.year}
-    </div>
-  </div>
-);
+      <span className="font-mono text-[11px] tracking-[0.15em] text-faint">
+        {String(index + 1).padStart(2, '0')}
+      </span>
+
+      <span
+        className={`hidden sm:block w-2.5 h-2.5 ${CATEGORY_COLOR[project.category] || 'bg-paper'}`}
+        aria-hidden="true"
+      />
+
+      <span className="min-w-0">
+        <span className="block font-display text-xl sm:text-2xl text-paper leading-tight truncate">
+          {project.title}
+        </span>
+        <span className="block eyebrow mt-1 normal-case tracking-[0.08em]">
+          {project.client} · {project.categoryLabel}
+          {project.featured && <span className="ml-2">★</span>}
+        </span>
+      </span>
+
+      <span className="flex items-center gap-3 sm:gap-5 shrink-0">
+        <span className="tag-pill hidden md:inline-flex">{project.year}</span>
+        <span
+          className="w-8 h-8 rounded-full border border-rule flex items-center justify-center text-paper transition-all duration-300 group-hover:bg-paper group-hover:text-ink group-hover:border-paper"
+          aria-hidden="true"
+        >
+          <ArrowUpRight
+            size={13}
+            className="transition-transform duration-300 group-hover:translate-x-[1px] group-hover:-translate-y-[1px]"
+          />
+        </span>
+      </span>
+    </button>
+  );
+};

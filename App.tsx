@@ -57,7 +57,7 @@ const MainApp: React.FC = () => {
   const scrollToSection = (id: string) => scrollToTarget(id, -80);
 
   return (
-    <div className="min-h-screen bg-ink text-paper selection:bg-accent selection:text-ink">
+    <div className="min-h-screen bg-ink text-paper selection:bg-paper selection:text-ink">
       {/* Inertial scrolling — the substrate every scrub effect depends on */}
       <SmoothScroll enabled={heavy} />
       {/* High-Impact Opening Shutter Wipe & Numerical Preloader */}

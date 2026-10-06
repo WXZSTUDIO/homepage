@@ -48,7 +48,6 @@ export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     year: item.year,
     description: item.description[language],
     deliverables: item.deliverables[language],
-    src: item.src,
     videoSrc: item.videoSrc,
     tags: item.tags[language],
     featured: item.featured,

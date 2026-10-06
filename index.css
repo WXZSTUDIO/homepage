@@ -3,10 +3,11 @@
 @tailwind utilities;
 
 /* ============================================================
-   AUVI-STYLE LIGHT SYSTEM
-   Warm light-grey surfaces, near-black foreground, black pill
-   buttons, soft rounded cards, hairline rules. Historical
-   token names kept — values inverted (see tailwind.config.js).
+   LEXINGTON-STYLE SYSTEM
+   White pages, near-black type, serif display with italic
+   accents, four bright brand colours, hairline list rows,
+   halftone dither textures. Historical token names kept —
+   values set in tailwind.config.js.
    ============================================================ */
 
 @layer base {
@@ -14,15 +15,14 @@
     scroll-behavior: smooth;
     color-scheme: light;
     -webkit-text-size-adjust: 100%;
-    /* Kill the grey flash on tap; pointer feedback is designed per control. */
     -webkit-tap-highlight-color: transparent;
   }
 
   body {
     margin: 0;
     padding: 0;
-    background-color: #f0efec;
-    color: #161614;
+    background-color: #ffffff;
+    color: #0a0a0a;
     overflow-x: hidden;
     overscroll-behavior-y: none;
     font-family: theme('fontFamily.sans');
@@ -32,36 +32,35 @@
   }
 
   ::selection {
-    background-color: #161614;
-    color: #ffc900;
+    background-color: #0a0a0a;
+    color: #ffffff;
   }
 
-  /* Hairline scrollbar */
   ::-webkit-scrollbar {
     width: 3px;
     height: 3px;
   }
   ::-webkit-scrollbar-track {
-    background: #f0efec;
+    background: #ffffff;
   }
   ::-webkit-scrollbar-thumb {
-    background: rgba(22, 22, 20, 0.22);
+    background: rgba(10, 10, 10, 0.22);
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(22, 22, 20, 0.4);
+    background: rgba(10, 10, 10, 0.4);
   }
 
   h1,
   h2,
   h3 {
     font-family: theme('fontFamily.display');
-    font-weight: 500;
-    letter-spacing: -0.025em;
+    font-weight: 400;
+    letter-spacing: -0.015em;
   }
 }
 
 @layer components {
-  /* --- Meta label: the mono voice --- */
+  /* --- Meta label --- */
   .eyebrow {
     @apply font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-muted;
   }
@@ -70,83 +69,80 @@
     @apply border-t border-rule;
   }
 
-  /* --- Vertical (rotated) spine label --- */
   .spine {
     writing-mode: vertical-rl;
     text-orientation: mixed;
   }
 
-  /* --- Oversized stat numeral --- */
+  /* --- Oversized stat numeral (colour applied per-metric) --- */
   .folio {
-    @apply font-display leading-none text-paper;
+    @apply font-display leading-none;
     font-variant-numeric: lining-nums;
     letter-spacing: -0.03em;
   }
 
-  /* --- Drop-cap for editorial lead paragraphs --- */
+  /* --- Drop-cap lead paragraph --- */
   .dropcap::first-letter {
     @apply font-display float-left mr-3 leading-[0.82];
     font-size: 4.2em;
-    color: #161614;
+    color: #0a0a0a;
   }
 
-  /* --- Solid black pill button (primary) --- */
+  /* --- Solid black pill button --- */
   .btn-pill {
     @apply inline-flex items-center gap-2 rounded-full bg-paper px-5 py-2.5
            font-mono text-[10px] uppercase tracking-[0.18em] text-ink
            transition-all duration-300 cursor-pointer
-           hover:bg-ink-deep hover:text-paper;
+           hover:opacity-75;
   }
 
-  /* --- Outlined pill button (secondary) --- */
+  /* --- Outlined pill button --- */
   .btn-pill-ghost {
-    @apply inline-flex items-center gap-2 rounded-full border border-rule
+    @apply inline-flex items-center gap-2 rounded-full border border-paper/25
            px-5 py-2.5 font-mono text-[10px] uppercase tracking-[0.18em] text-paper
            transition-colors duration-300 cursor-pointer
-           hover:border-paper hover:bg-paper hover:text-ink;
+           hover:border-paper;
   }
 
-  /* --- Small outlined tag, the AUVI meta chip --- */
+  /* --- Outlined tag chip --- */
   .tag-pill {
-    @apply inline-flex items-center rounded-full border border-rule
+    @apply inline-flex items-center rounded-full border border-paper/25
            px-2.5 py-0.5 font-mono text-[9px] uppercase tracking-[0.14em] text-muted;
   }
 
-  /* --- Soft grey card --- */
+  /* --- Light surface block --- */
   .card-soft {
-    @apply rounded-card bg-ink-card;
+    @apply bg-ink-card;
   }
 
-  /* --- Section head with the leading dot: “• Bestsellers” --- */
+  /* --- Section head with the leading dot --- */
   .dot-title {
-    @apply relative inline-block font-display font-medium text-paper;
+    @apply relative inline-block font-display text-paper;
   }
   .dot-title::before {
     content: '';
-    @apply mr-[0.35em] inline-block h-[0.32em] w-[0.32em] rounded-full bg-paper align-middle;
+    @apply mr-[0.35em] inline-block h-[0.3em] w-[0.3em] rounded-full bg-paper align-middle;
   }
 
-  /* --- Underline-only form fields ---
-     16px minimum on touch sizes: anything smaller makes iOS Safari zoom the
-     whole viewport the moment the field takes focus. */
+  /* --- Form fields: flat, hairline, square-shouldered --- */
   .field {
-    @apply w-full rounded-full bg-ink-deep/60 px-5 py-3 text-[16px] sm:text-sm text-paper
-           placeholder:text-faint border border-transparent outline-none
-           transition-colors duration-300 focus:border-paper/40;
+    @apply w-full bg-transparent px-0 py-3 text-[16px] sm:text-sm text-paper
+           placeholder:text-faint border-b border-rule outline-none
+           transition-colors duration-300 focus:border-paper;
+    border-radius: 0;
   }
   textarea.field {
-    @apply leading-relaxed rounded-2xl;
+    @apply leading-relaxed;
   }
   select.field {
-    @apply appearance-none cursor-pointer pr-10;
+    @apply appearance-none cursor-pointer pr-6;
   }
   select.field option {
-    background-color: #f0efec;
-    color: #161614;
+    background-color: #ffffff;
+    color: #0a0a0a;
   }
-  /* appearance-none strips the native arrow, so draw the arm back in */
   .field-arrow {
-    @apply pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-faint;
+    @apply pointer-events-none absolute right-0 bottom-3.5 text-faint;
   }
 
   /* --- Link with a rule that draws in on hover --- */
@@ -162,15 +158,13 @@
     @apply scale-x-100;
   }
 
-  /* --- Rounded media plate --- */
+  /* --- Media / colour plate: square-shouldered --- */
   .frame {
-    @apply relative overflow-hidden rounded-card bg-ink-card;
+    @apply relative overflow-hidden bg-ink-card;
   }
 }
 
 @layer utilities {
-  /* Viewport units with a fallback chain: browsers that don't know svh still
-     get vh, and everything gets one that accounts for the mobile URL bar. */
   .min-h-viewport {
     min-height: 100vh;
     min-height: 100svh;
@@ -181,7 +175,6 @@
     height: 100svh;
   }
 
-  /* Notch / home-indicator clearance for anything pinned to an edge */
   .pb-safe {
     padding-bottom: env(safe-area-inset-bottom, 0px);
   }
@@ -194,21 +187,31 @@
     scrollbar-width: none;
   }
 
-  /* Faint grain over the warm grey, keeps large surfaces from looking flat */
-  .grain::before {
+  /* Halftone dither: two scales of dots multiplied over a colour block,
+     the bitmap texture the reference uses in place of photography. */
+  .dither {
+    position: relative;
+  }
+  .dither::after {
     content: '';
     position: absolute;
     inset: 0;
     pointer-events: none;
-    opacity: 0.028;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-image:
+      radial-gradient(circle, rgba(0, 0, 0, 0.5) 1px, transparent 1.35px),
+      radial-gradient(circle, rgba(0, 0, 0, 0.28) 0.7px, transparent 1px);
+    background-size:
+      5px 5px,
+      9px 9px;
+    background-position:
+      0 0,
+      2px 3px;
+    mix-blend-mode: multiply;
   }
 }
 
 /* ============================================================
    LENIS SMOOTH SCROLL
-   Required host styles — Lenis drives window scroll itself, so the
-   native smooth behaviour has to step aside while it is active.
    ============================================================ */
 html.lenis,
 html.lenis body {
@@ -227,7 +230,6 @@ html.lenis body {
   overflow: hidden;
 }
 
-/* Depth layers are transform-only; hint the compositor once, not per-frame. */
 .depth {
   will-change: transform;
 }
@@ -254,7 +256,6 @@ html.lenis body {
   }
 }
 
-/* Respect reduced-motion: kill transforms, keep opacity fades */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
