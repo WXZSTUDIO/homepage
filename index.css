@@ -488,11 +488,11 @@
   @keyframes riseNav {
     from {
       opacity: 0;
-      transform: translate(-50%, calc(-50% + 14 * var(--u)));
+      transform: translateY(calc(14 * var(--u)));
     }
     to {
       opacity: 1;
-      transform: translate(-50%, -50%);
+      transform: translateY(0);
     }
   }
 
