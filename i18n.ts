@@ -776,8 +776,30 @@ export const I18N_UI = {
     },
     strengths: {
       tag: '核心优势与能力',
-      title: '设备自备 · 独立交付。',
+      title: '从企划到 AI，一人完成闭环。',
       subtitle: '无需外包等待，以一线摄制经验与AI生成速度直接解决商业诉求。',
+      pillars: [
+        {
+          kicker: 'END-TO-END',
+          title: '从企划到剪辑·输出的全流程独立完成',
+          desc: '会拍的设计师——概念、拍摄、剪辑、平面由一人闭环交付。',
+        },
+        {
+          kicker: 'SELF-EQUIPPED',
+          title: '自备设备的中小型独立制作',
+          desc: '无需租赁与外包等待，商业拍摄与短视频即刻开工。',
+        },
+        {
+          kicker: 'CHINA SOCIAL',
+          title: '小红书·抖音优化的视觉营销',
+          desc: '新世界免税店、爱茉莉太平洋等中华圈品牌内容本地化运营。',
+        },
+        {
+          kicker: 'AI × DATA',
+          title: 'AI 生成管线 × 数据验证',
+          desc: 'ComfyUI·Midjourney 工作流同时提升制作效率与点击率。',
+        },
+      ],
       gearTitle: '商业影视摄制与色彩科学',
       gearSubtitle: '全画幅相机 · 达芬奇色彩科学 · 机动装备箱',
       gearReady: '随时出勤部署',
@@ -919,8 +941,30 @@ export const I18N_UI = {
     },
     strengths: {
       tag: 'Core Capabilities',
-      title: 'In-House Gear & Velocity.',
+      title: 'From Planning to AI, End-to-End.',
       subtitle: 'Zero rental delays. Solving tangible business objectives with cinematic craft and AI.',
+      pillars: [
+        {
+          kicker: 'END-TO-END',
+          title: 'Full-cycle delivery from planning to edit & print',
+          desc: 'A designer who shoots — concept, filming, editing and graphics closed by one person.',
+        },
+        {
+          kicker: 'SELF-EQUIPPED',
+          title: 'Independent production on owned gear',
+          desc: 'No rentals, no outsourcing waits — commercial shoots start immediately.',
+        },
+        {
+          kicker: 'CHINA SOCIAL',
+          title: 'Xiaohongshu & Douyin optimized visual marketing',
+          desc: 'Localization for Shinsegae, Amorepacific and other China-facing brands.',
+        },
+        {
+          kicker: 'AI × DATA',
+          title: 'AI generation pipeline × data validation',
+          desc: 'ComfyUI & Midjourney workflows that lift both efficiency and CTR.',
+        },
+      ],
       gearTitle: 'Commercial Cinema & Color Grading',
       gearSubtitle: 'Full-frame cinema line, DaVinci Resolve color science & studio lighting',
       gearReady: 'Deployment Ready',
@@ -1062,8 +1106,30 @@ export const I18N_UI = {
     },
     strengths: {
       tag: '핵심 역량 및 강점',
-      title: '자체 장비로 완성하는 독립 제작.',
+      title: '기획부터 AI까지, 혼자 완성합니다.',
       subtitle: '렌탈 대기 없이, 기획부터 납품까지 한 번에 해결합니다.',
+      pillars: [
+        {
+          kicker: 'END-TO-END',
+          title: '기획부터 편집·출력까지 전 과정 단독 수행',
+          desc: '직접 찍는 디자이너 — 콘셉트, 촬영, 편집, 그래픽을 한 사람이 완성합니다.',
+        },
+        {
+          kicker: 'SELF-EQUIPPED',
+          title: '자체 장비 기반 중소규모 독립 프로덕션',
+          desc: '렌탈·외주 대기 없이 상업 촬영과 숏폼 제작을 즉시 착수합니다.',
+        },
+        {
+          kicker: 'CHINA SOCIAL',
+          title: '샤오홍슈·도우인 최적화 비주얼 마케팅',
+          desc: '신세계면세점·아모레퍼시픽 등 중화권 브랜드 콘텐츠 현지화 운영.',
+        },
+        {
+          kicker: 'AI × DATA',
+          title: 'AI 생성 파이프라인과 데이터 검증',
+          desc: 'ComfyUI·Midjourney 워크플로로 제작 효율과 클릭률을 동시에 끌어올립니다.',
+        },
+      ],
       gearTitle: '상업 영상 연출 및 색보정 시스템',
       gearSubtitle: '풀프레임 카메라 · 다빈치 리졸브 · 기동성 장비',
       gearReady: '즉시 출동 가능',
