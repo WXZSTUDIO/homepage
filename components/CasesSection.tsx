@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useLanguage } from '../LanguageContext';
-import { CASES, CaseItem } from '../cases';
+import { CASES, TVC_FEATURE, CaseItem } from '../cases';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Close, Heart, Bookmark, ChevronLeft, ChevronRight } from './Icons';
@@ -23,6 +23,69 @@ const CaseImage: React.FC<{ item: CaseItem }> = ({ item }) => (
     className="w-full h-auto"
   />
 );
+
+/* Pinned TVC media — autoplays muted (gated on viewport proximity),
+   click opens the film large in the lightbox. */
+const TvcMedia: React.FC<{ onOpen: (item: CaseItem) => void }> = ({ onOpen }) => {
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const [near, setNear] = useState(false);
+
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+    const ob = new IntersectionObserver(([e]) => setNear(e.isIntersecting), {
+      rootMargin: '40% 0px',
+    });
+    ob.observe(el);
+    return () => ob.disconnect();
+  }, []);
+
+  return (
+    <div
+      ref={wrapRef}
+      className="relative aspect-video overflow-hidden rounded-xl border border-rule-soft bg-black"
+    >
+      <button
+        onClick={() => onOpen(TVC_FEATURE)}
+        className="group absolute inset-0 block w-full cursor-pointer"
+        aria-label={TVC_FEATURE.title.zh}
+      >
+        <img
+          src={TVC_FEATURE.src}
+          alt={TVC_FEATURE.title.zh}
+          loading="lazy"
+          draggable={false}
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        {near && TVC_FEATURE.videoSrc && (
+          <video
+            src={TVC_FEATURE.videoSrc}
+            poster={TVC_FEATURE.src}
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        )}
+        <span className="pointer-events-none absolute inset-0 bg-black/20 group-hover:bg-black/5 transition-colors duration-300" />
+        <span className="pointer-events-none absolute inset-0 flex items-center justify-center">
+          <span className="w-12 h-12 rounded-full bg-black/45 border border-white/25 backdrop-blur-sm flex items-center justify-center text-paper/90 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-all duration-300 group-hover:scale-105">
+            <svg
+              viewBox="0 0 24 24"
+              width="14"
+              height="14"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path d="M9 5.8v12.4a.6.6 0 0 0 .92.5l9.3-6.2a.6.6 0 0 0 0-1l-9.3-6.2a.6.6 0 0 0-.92.5Z" />
+            </svg>
+          </span>
+        </span>
+      </button>
+    </div>
+  );
+};
 
 /* ------------------------------------------------------------------ */
 /* Film carousel                                                       */
@@ -134,19 +197,21 @@ const FilmPreview: React.FC<{
             />
           )}
           <span className="pointer-events-none absolute inset-0 bg-black/25 group-hover:bg-black/10 transition-colors duration-300" />
-          <span className="pointer-events-none absolute inset-0 flex items-center justify-center">
-            <span className="w-12 h-12 rounded-full bg-black/45 border border-white/25 backdrop-blur-sm flex items-center justify-center text-paper/90 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-all duration-300 group-hover:scale-105">
-              <svg
-                viewBox="0 0 24 24"
-                width="14"
-                height="14"
-                fill="currentColor"
-                aria-hidden="true"
-              >
-                <path d="M9 5.8v12.4a.6.6 0 0 0 .92.5l9.3-6.2a.6.6 0 0 0 0-1l-9.3-6.2a.6.6 0 0 0-.92.5Z" />
-              </svg>
+          {item.videoSrc && (
+            <span className="pointer-events-none absolute inset-0 flex items-center justify-center">
+              <span className="w-12 h-12 rounded-full bg-black/45 border border-white/25 backdrop-blur-sm flex items-center justify-center text-paper/90 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-all duration-300 group-hover:scale-105">
+                <svg
+                  viewBox="0 0 24 24"
+                  width="14"
+                  height="14"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path d="M9 5.8v12.4a.6.6 0 0 0 .92.5l9.3-6.2a.6.6 0 0 0 0-1l-9.3-6.2a.6.6 0 0 0-.92.5Z" />
+                </svg>
+              </span>
             </span>
-          </span>
+          )}
         </div>
 
         {/* Meta — brand left, engagement right */}
@@ -213,7 +278,7 @@ const FilmCarousel: React.FC<{
     <div>
       <div
         ref={trackRef}
-        className="film-track -mx-6 px-6 md:-mx-12 md:px-12 flex gap-4 overflow-x-auto snap-x snap-mandatory pb-2"
+        className="film-track flex gap-4 overflow-x-auto snap-x snap-mandatory pb-2"
       >
         {items.map((it) => (
           <FilmPreview key={it.id} item={it} lang={lang} paused={paused} onOpen={onOpen} />
@@ -340,7 +405,8 @@ const CasesSection: React.FC = () => {
         {/* TVC — pinned featured brand film */}
         <div className="eyebrow mb-4 mt-16">{ui.projects.groupTvc}</div>
         <div className="tvc-feature">
-          <div className="eyebrow text-[10px] text-faint">
+          <TvcMedia onOpen={setSelected} />
+          <div className="eyebrow text-[10px] text-faint mt-7">
             {ui.projects.tvcRole}
           </div>
           <h3 className="tvc-title">

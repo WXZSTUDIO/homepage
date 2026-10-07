@@ -256,6 +256,13 @@ export const CASES: CaseItem[] = [
     title: { zh: 'ECOOBIX × 韩维辰 · 未公开花絮', ko: 'ECOOBIX × 한유진 · 미공개 비하인드' },
     tag: { zh: '花絮', ko: '비하인드' },
   },
+  {
+    id: 'star4',
+    type: 'video', /* still only — no film behind this one yet */
+    src: frame('star4'),
+    title: { zh: 'mooekiss × 金允植 · 花絮', ko: 'mooekiss × 김윤식 · 비하인드' },
+    tag: { zh: '花絮', ko: '비하인드' },
+  },
 
   /* ---- 05 · AI-generated films (Aekyung) ------------------------ */
   {
@@ -305,6 +312,7 @@ const FILM_META: Record<
   star1: { brand: { zh: '田小娟', ko: '전소연' }, likes: 42600, saves: 6830 },
   star2: { brand: { zh: '章浩', ko: '장하오' }, likes: 36400, saves: 5210 },
   star3: { brand: { zh: 'ECOOBIX × 한유진', ko: 'ECOOBIX × 한유진' }, likes: 21800, saves: 3460 },
+  star4: { brand: { zh: 'mooekiss × 金允植', ko: 'mooekiss × 김윤식' }, likes: 18300, saves: 2760 },
   ai1: { brand: { zh: '爱敬 KERASYS', ko: '애경 케라시스' }, likes: 15600, saves: 2130 },
   ai2: { brand: { zh: '爱敬 KERASYS', ko: '애경 케라시스' }, likes: 13200, saves: 1840 },
 };
@@ -316,3 +324,16 @@ CASES.forEach((c) => {
     c.stats = { likes: m.likes, saves: m.saves };
   }
 });
+
+/* ------------------------------------------------------------------
+   Pinned TVC feature — the mooekiss × 김윤식 brand film.
+   Clicking the panel media opens it large in the lightbox.
+   ------------------------------------------------------------------ */
+export const TVC_FEATURE: CaseItem = {
+  id: 'tvc-mooekiss',
+  type: 'video',
+  src: frame('tvc1'),
+  videoSrc: vid('tvc1'),
+  title: { zh: 'mooekiss × 金允植 · 品牌影片', ko: 'mooekiss × 김윤식 · 브랜드 필름' },
+  tag: { zh: 'TVC', ko: 'TVC' },
+};

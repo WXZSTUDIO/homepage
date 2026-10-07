@@ -603,10 +603,11 @@
     --h: var(--m);
   }
 
-  /* The stage becomes a normal flow column */
+  /* The stage becomes a normal flow column — content-driven height,
+     so no dead black space is left below the slogan. */
   .stage {
     height: auto;
-    min-height: 100svh;
+    min-height: 0;
     display: flex;
     flex-direction: column;
     padding-top: env(safe-area-inset-top, 0px);

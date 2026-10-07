@@ -4,7 +4,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {
   Camera, Tripod, Gimbal, Mic,
-  Cpu, Sparkle, Clapper, Wand,
+  Cpu, Sparkle, Clapper,
   Aperture, Message,
 } from './Icons';
 
@@ -18,7 +18,7 @@ gsap.registerPlugin(ScrollTrigger);
 const Logo: React.FC<{ name?: string; size?: number }> = ({ name, size = 17 }) =>
   name ? (
     <img
-      src={`logos/${name}.svg`}
+      src={`logos/${name}${name.endsWith('.png') ? '' : '.svg'}`}
       alt=""
       loading="lazy"
       draggable={false}
@@ -54,7 +54,9 @@ const GEAR_ITEMS = [
 ];
 
 type Tool = {
+  /* name shown in ko/en; nameZh overrides in the zh interface */
   name: string;
+  nameZh?: string;
   logo?: string;
   adobe?: string;
   icon?: React.ElementType;
@@ -63,7 +65,7 @@ type Tool = {
 const TOOLS: Tool[] = [
   { name: 'ChatGPT', logo: 'openai' },
   { name: 'Midjourney', icon: Sparkle },
-  { name: '即梦', icon: Wand },
+  { name: 'Jimeng', nameZh: '即梦', logo: 'jimeng.png' },
   { name: 'DaVinci Resolve', logo: 'davinciresolve' },
   { name: 'Premiere Pro', adobe: 'Pr' },
   { name: 'After Effects', adobe: 'Ae' },
@@ -71,7 +73,7 @@ const TOOLS: Tool[] = [
   { name: 'Illustrator', adobe: 'Ai' },
   { name: 'Figma', logo: 'figma' },
   { name: 'Blender', logo: 'blender' },
-  { name: '剪映', icon: Clapper },
+  { name: 'CapCut', nameZh: '剪映', logo: 'capcut.png' },
   { name: 'Stable Diffusion', icon: Cpu },
 ];
 
@@ -213,7 +215,7 @@ const StrengthsSection: React.FC = () => {
                     Fallback && <Fallback size={15} className="text-paper-70" />
                   )}
                   <span className="text-[11px] tracking-[0.04em] text-paper-70 leading-tight">
-                    {tool.name}
+                    {language === 'zh' && tool.nameZh ? tool.nameZh : tool.name}
                   </span>
                 </div>
                 );
