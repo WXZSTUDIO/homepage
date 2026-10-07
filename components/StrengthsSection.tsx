@@ -61,9 +61,9 @@ type Tool = {
 };
 
 const TOOLS: Tool[] = [
-  { name: 'ComfyUI', icon: Cpu },
+  { name: 'ChatGPT', logo: 'openai' },
   { name: 'Midjourney', icon: Sparkle },
-  { name: 'Runway', icon: Clapper },
+  { name: '即梦', icon: Wand },
   { name: 'DaVinci Resolve', logo: 'davinciresolve' },
   { name: 'Premiere Pro', adobe: 'Pr' },
   { name: 'After Effects', adobe: 'Ae' },
@@ -71,8 +71,8 @@ const TOOLS: Tool[] = [
   { name: 'Illustrator', adobe: 'Ai' },
   { name: 'Figma', logo: 'figma' },
   { name: 'Blender', logo: 'blender' },
-  { name: 'Lightroom', adobe: 'Lr' },
-  { name: 'Stable Diffusion', icon: Wand },
+  { name: '剪映', icon: Clapper },
+  { name: 'Stable Diffusion', icon: Cpu },
 ];
 
 const PILLAR_ICONS = [Clapper, Aperture, Message, Sparkle];

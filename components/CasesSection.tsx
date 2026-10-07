@@ -289,7 +289,10 @@ const CasesSection: React.FC = () => {
   }, [selected, close]);
 
   const visualCases = CASES.filter((c) => c.type === 'img');
-  const filmCases = CASES.filter((c) => c.type === 'video');
+  const starCases = CASES.filter((c) => c.id.startsWith('star'));
+  const filmCases = CASES.filter(
+    (c) => c.type === 'video' && !c.id.startsWith('star')
+  );
 
   const renderCard = (item: CaseItem) => (
     <button
@@ -333,6 +336,27 @@ const CasesSection: React.FC = () => {
         <div className="cases-grid columns-2 md:columns-3 xl:columns-4 gap-3 md:gap-4">
           {visualCases.map(renderCard)}
         </div>
+
+        {/* TVC — pinned featured brand film */}
+        <div className="eyebrow mb-4 mt-16">{ui.projects.groupTvc}</div>
+        <div className="tvc-feature">
+          <div className="eyebrow text-[10px] text-faint">
+            {ui.projects.tvcRole}
+          </div>
+          <h3 className="tvc-title">
+            mooekiss × {language === 'zh' ? '金允植' : '김윤식'}
+          </h3>
+          <p className="tvc-intro">{ui.projects.tvcIntro}</p>
+        </div>
+
+        {/* Celebrity side films — same live-preview carousel */}
+        <div className="eyebrow mb-4 mt-16">{ui.projects.groupStar}</div>
+        <FilmCarousel
+          items={starCases}
+          lang={language as 'zh' | 'ko'}
+          paused={!!selected}
+          onOpen={setSelected}
+        />
 
         {/* Films — Apple-style carousel with live previews */}
         <div className="eyebrow mb-4 mt-16">{ui.projects.groupFilm}</div>

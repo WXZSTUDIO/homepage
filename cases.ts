@@ -230,6 +230,50 @@ export const CASES: CaseItem[] = [
     title: { zh: '新世界免税店 · Seoul Moon', ko: '신세계면세점 · 서울달' },
     tag: { zh: '视频', ko: '영상' },
   },
+
+  /* ---- 04 · Celebrity side films -------------------------------- */
+  {
+    id: 'star1',
+    type: 'video',
+    src: frame('star1'),
+    videoSrc: vid('star1'),
+    title: { zh: '田小娟 · 侧拍影像', ko: '전소연 · 사이드 필름' },
+    tag: { zh: '花絮', ko: '비하인드' },
+  },
+  {
+    id: 'star2',
+    type: 'video',
+    src: frame('star2'),
+    videoSrc: vid('star2'),
+    title: { zh: '章浩 · 拍摄花絮', ko: '장하오 · 촬영 비하인드' },
+    tag: { zh: '花絮', ko: '비하인드' },
+  },
+  {
+    id: 'star3',
+    type: 'video',
+    src: frame('star3'),
+    videoSrc: vid('star3'),
+    title: { zh: 'ECOOBIX × 韩维辰 · 未公开花絮', ko: 'ECOOBIX × 한유진 · 미공개 비하인드' },
+    tag: { zh: '花絮', ko: '비하인드' },
+  },
+
+  /* ---- 05 · AI-generated films (Aekyung) ------------------------ */
+  {
+    id: 'ai1',
+    type: 'video',
+    src: frame('aekyung1'),
+    videoSrc: vid('aekyung1'),
+    title: { zh: 'KERASYS 香水系列 · AI 影片', ko: '케라시스 퍼퓸 · AI 영상' },
+    tag: { zh: 'AI 视频', ko: 'AI 영상' },
+  },
+  {
+    id: 'ai2',
+    type: 'video',
+    src: frame('aekyung2'),
+    videoSrc: vid('aekyung2'),
+    title: { zh: 'KERASYS 蜂胶护发 · AI 影片', ko: '케라시스 프로폴리스 헤어본딩 · AI 영상' },
+    tag: { zh: 'AI 视频', ko: 'AI 영상' },
+  },
 ];
 
 /* ------------------------------------------------------------------
@@ -258,6 +302,11 @@ const FILM_META: Record<
   r05: { brand: { zh: '신세계면세점', ko: '신세계면세점' }, likes: 16800, saves: 2240 },
   r06: { brand: { zh: 'Portré', ko: '포트레' }, likes: 13500, saves: 1820 },
   r07: { brand: { zh: '상쾌환', ko: '상쾌환' }, likes: 28900, saves: 4350 },
+  star1: { brand: { zh: '田小娟', ko: '전소연' }, likes: 42600, saves: 6830 },
+  star2: { brand: { zh: '章浩', ko: '장하오' }, likes: 36400, saves: 5210 },
+  star3: { brand: { zh: 'ECOOBIX × 한유진', ko: 'ECOOBIX × 한유진' }, likes: 21800, saves: 3460 },
+  ai1: { brand: { zh: '爱敬 KERASYS', ko: '애경 케라시스' }, likes: 15600, saves: 2130 },
+  ai2: { brand: { zh: '爱敬 KERASYS', ko: '애경 케라시스' }, likes: 13200, saves: 1840 },
 };
 
 CASES.forEach((c) => {

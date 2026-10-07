@@ -170,7 +170,7 @@ const ContactSection: React.FC = () => {
                   rel="noopener noreferrer"
                   className="group inline-flex items-center gap-2 text-base text-paper link-rule"
                 >
-                  @정찬봉
+                  @WXZ STUDIO
                   <ArrowUpRight
                     size={13}
                     className="text-muted group-hover:text-paper transition-colors"

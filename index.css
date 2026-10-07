@@ -201,6 +201,33 @@
     cursor: default;
   }
 
+  /* --- TVC pinned feature — typographic brand-film panel --- */
+  .tvc-feature {
+    position: relative;
+    overflow: hidden;
+    border-radius: 18px;
+    border: 1px solid rgba(250, 250, 250, 0.1);
+    background:
+      radial-gradient(ellipse 70% 90% at 14% 0%, rgba(255, 255, 255, 0.07), transparent 62%),
+      #0a0a0a;
+    padding: clamp(28px, 4.5vw, 56px);
+  }
+  .tvc-title {
+    margin-top: 18px;
+    font-size: clamp(2rem, 5vw, 3.8rem);
+    line-height: 1.05;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    color: #fafafa;
+  }
+  .tvc-intro {
+    margin-top: 22px;
+    max-width: 62ch;
+    font-size: clamp(0.92rem, 1.4vw, 1.05rem);
+    line-height: 1.75;
+    color: #a7a6a6;
+  }
+
   /* ============================================================
      HERO — the single-screen composition (desktop, unit-locked)
      ============================================================ */
@@ -345,7 +372,7 @@
   .headline {
     position: absolute;
     left: calc(75.5 * var(--u));
-    top: calc(252 * var(--u));
+    top: calc(645 * var(--u));
     font-size: calc(71.6 * var(--h));
     line-height: calc(80.5 * var(--h));
     font-weight: 600;
@@ -360,7 +387,7 @@
   .sub {
     position: absolute;
     left: calc(75.5 * var(--u));
-    top: calc(252 * var(--u) + 189 * var(--h));
+    top: calc(645 * var(--u) + 189 * var(--h));
     font-size: calc(20.7 * var(--h));
     line-height: calc(23.5 * var(--h));
     font-weight: 400;
@@ -375,7 +402,7 @@
   .ghost-cta {
     position: absolute;
     left: calc(74.9 * var(--u));
-    top: calc(252 * var(--u) + 279.5 * var(--h));
+    top: calc(645 * var(--u) + 279.5 * var(--h));
     font-size: calc(20.6 * var(--h));
     letter-spacing: calc(0.12 * var(--h));
   }
@@ -650,7 +677,9 @@
     white-space: normal;
     font-size: clamp(2.1rem, 8.4vw, 3rem);
     line-height: 1.14;
-    margin-top: auto;
+    /* Sit just below the film (4:3, full-bleed, offset under the topbar)
+       instead of being pushed to the stage bottom. */
+    margin-top: calc(72px + env(safe-area-inset-top, 0px) + 75vw + 26px);
   }
   .sub {
     position: static;
@@ -728,6 +757,7 @@
     white-space: normal;
     font-size: clamp(2.6rem, 6.4vw, 4.2rem);
     line-height: 1.1;
+    margin-top: auto; /* tablet band: keep bottom-anchored flow */
   }
   .headline > span {
     display: block;
