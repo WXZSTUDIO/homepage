@@ -263,6 +263,17 @@ export const CASES: CaseItem[] = [
     title: { zh: 'mooekiss × 金允植 · 花絮', ko: 'mooekiss × 김윤식 · 비하인드' },
     tag: { zh: '花絮', ko: '비하인드' },
   },
+  {
+    id: 'star5',
+    type: 'video',
+    src: frame('star5'),
+    videoSrc: vid('star5'),
+    title: {
+      zh: 'MAKE UP FOR EVER × Joshua · 品牌大使影片',
+      ko: 'MAKE UP FOR EVER × JOSHUA · 브랜드 앰버서더 필름',
+    },
+    tag: { zh: '花絮', ko: '비하인드' },
+  },
 
   /* ---- 05 · AI-generated films (Aekyung) ------------------------ */
   {
@@ -313,6 +324,7 @@ const FILM_META: Record<
   star2: { brand: { zh: '章浩', ko: '장하오' }, likes: 36400, saves: 5210 },
   star3: { brand: { zh: 'ECOOBIX × 한유진', ko: 'ECOOBIX × 한유진' }, likes: 21800, saves: 3460 },
   star4: { brand: { zh: 'mooekiss × 金允植', ko: 'mooekiss × 김윤식' }, likes: 18300, saves: 2760 },
+  star5: { brand: { zh: 'MAKE UP FOR EVER × Joshua', ko: 'MAKE UP FOR EVER × JOSHUA' }, likes: 25400, saves: 3980 },
   ai1: { brand: { zh: '爱敬 KERASYS', ko: '애경 케라시스' }, likes: 15600, saves: 2130 },
   ai2: { brand: { zh: '爱敬 KERASYS', ko: '애경 케라시스' }, likes: 13200, saves: 1840 },
 };

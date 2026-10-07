@@ -24,21 +24,84 @@ const CaseImage: React.FC<{ item: CaseItem }> = ({ item }) => (
   />
 );
 
-/* Pinned TVC media — autoplays muted (gated on viewport proximity),
-   click opens the film large in the lightbox. */
-const TvcMedia: React.FC<{ onOpen: (item: CaseItem) => void }> = ({ onOpen }) => {
+/* One film card. The <video> only mounts when the card approaches the
+   viewport (60% rootMargin), so a first visit never loads all films.
+   While mounted it plays muted ~4.5s segments from random offsets. */
+
+/* Watch a wrapper; report when it approaches the viewport. */
+const useNearViewport = (rootMargin: string) => {
   const wrapRef = useRef<HTMLDivElement>(null);
   const [near, setNear] = useState(false);
-
   useEffect(() => {
     const el = wrapRef.current;
     if (!el) return;
     const ob = new IntersectionObserver(([e]) => setNear(e.isIntersecting), {
-      rootMargin: '40% 0px',
+      rootMargin,
     });
     ob.observe(el);
     return () => ob.disconnect();
-  }, []);
+  }, [rootMargin]);
+  return { wrapRef, near };
+};
+
+/* Live-preview engine — while `active`, plays muted ~4.5s segments
+   from random offsets. Shared by every autoplaying film surface. */
+const useLiveSegments = (
+  videoRef: React.RefObject<HTMLVideoElement | null>,
+  active: boolean
+) => {
+  const segRef = useRef(0);
+  const [playing, setPlaying] = useState(false);
+
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v || !active) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const pick = () => {
+      const d = v.duration;
+      if (!isFinite(d) || d <= 0) return;
+      segRef.current = Math.random() * Math.max(0.1, d - SEGMENT_LEN - 0.3);
+      try {
+        v.currentTime = segRef.current;
+      } catch {
+        /* seeking before data — ignored */
+      }
+    };
+    const start = () => {
+      pick();
+      v.play()
+        .then(() => setPlaying(true))
+        .catch(() => setPlaying(false));
+    };
+    const onTime = () => {
+      if (v.currentTime - segRef.current > SEGMENT_LEN) pick();
+    };
+
+    v.addEventListener('loadedmetadata', start);
+    v.addEventListener('timeupdate', onTime);
+    if (v.readyState >= 1) start();
+
+    return () => {
+      v.removeEventListener('loadedmetadata', start);
+      v.removeEventListener('timeupdate', onTime);
+      v.pause();
+      setPlaying(false);
+    };
+  }, [videoRef, active]);
+
+  return { playing, segRef };
+};
+
+/* Pinned TVC media — autoplays muted (gated on viewport proximity),
+   click opens the film large in the lightbox. */
+const TvcMedia: React.FC<{
+  paused: boolean;
+  onOpen: (item: CaseItem) => void;
+}> = ({ paused, onOpen }) => {
+  const { wrapRef, near } = useNearViewport('40% 0px');
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const { playing } = useLiveSegments(videoRef, near && !paused);
 
   return (
     <div
@@ -59,13 +122,16 @@ const TvcMedia: React.FC<{ onOpen: (item: CaseItem) => void }> = ({ onOpen }) =>
         />
         {near && TVC_FEATURE.videoSrc && (
           <video
+            ref={videoRef}
             src={TVC_FEATURE.videoSrc}
             poster={TVC_FEATURE.src}
             muted
             loop
             playsInline
             preload="metadata"
-            className="absolute inset-0 w-full h-full object-cover"
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
+              playing ? 'opacity-100' : 'opacity-0'
+            }`}
           />
         )}
         <span className="pointer-events-none absolute inset-0 bg-black/20 group-hover:bg-black/5 transition-colors duration-300" />
@@ -111,58 +177,9 @@ const FilmPreview: React.FC<{
   paused: boolean;
   onOpen: (item: CaseItem) => void;
 }> = ({ item, lang, paused, onOpen }) => {
-  const wrapRef = useRef<HTMLDivElement>(null);
+  const { wrapRef, near } = useNearViewport('60% 0px');
   const videoRef = useRef<HTMLVideoElement>(null);
-  const segRef = useRef(0);
-  const [near, setNear] = useState(false);
-  const [playing, setPlaying] = useState(false);
-
-  useEffect(() => {
-    const el = wrapRef.current;
-    if (!el) return;
-    const ob = new IntersectionObserver(([e]) => setNear(e.isIntersecting), {
-      rootMargin: '60% 0px',
-    });
-    ob.observe(el);
-    return () => ob.disconnect();
-  }, []);
-
-  useEffect(() => {
-    const v = videoRef.current;
-    if (!v || !near || paused) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    const pick = () => {
-      const d = v.duration;
-      if (!isFinite(d) || d <= 0) return;
-      segRef.current = Math.random() * Math.max(0.1, d - SEGMENT_LEN - 0.3);
-      try {
-        v.currentTime = segRef.current;
-      } catch {
-        /* seeking before data — ignored */
-      }
-    };
-    const start = () => {
-      pick();
-      v.play()
-        .then(() => setPlaying(true))
-        .catch(() => setPlaying(false));
-    };
-    const onTime = () => {
-      if (v.currentTime - segRef.current > SEGMENT_LEN) pick();
-    };
-
-    v.addEventListener('loadedmetadata', start);
-    v.addEventListener('timeupdate', onTime);
-    if (v.readyState >= 1) start();
-
-    return () => {
-      v.removeEventListener('loadedmetadata', start);
-      v.removeEventListener('timeupdate', onTime);
-      v.pause();
-      setPlaying(false);
-    };
-  }, [near, paused]);
+  const { playing } = useLiveSegments(videoRef, near && !paused);
 
   return (
     <div
@@ -405,7 +422,7 @@ const CasesSection: React.FC = () => {
         {/* TVC — pinned featured brand film */}
         <div className="eyebrow mb-4 mt-16">{ui.projects.groupTvc}</div>
         <div className="tvc-feature">
-          <TvcMedia onOpen={setSelected} />
+          <TvcMedia paused={!!selected} onOpen={setSelected} />
           <div className="eyebrow text-[10px] text-faint mt-7">
             {ui.projects.tvcRole}
           </div>

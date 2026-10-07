@@ -259,7 +259,9 @@
     width: calc(1492 * var(--u));
     height: calc(1054 * var(--u));
     transform: translateX(calc(-50% - 0.5 * var(--u)));
-    object-fit: cover;
+    /* contain, not cover: the film is 4:3 and must never be cropped on
+       desktop — the side fades in .plate::after absorb the narrower box */
+    object-fit: contain;
     pointer-events: none;
   }
   /* The two measured fades: bottom seat + side letterbox */
