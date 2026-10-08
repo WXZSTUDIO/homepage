@@ -371,9 +371,12 @@
   }
 
   /* --- Copy block --- */
+  /* Left edge matches the section container used below the fold
+     (max-w-1700 mx-auto + px-12), so the slogan and every following
+     section share one vertical alignment line. */
   .headline {
     position: absolute;
-    left: calc(75.5 * var(--u));
+    left: max(48px, calc((100% - 1700px) / 2 + 48px));
     top: calc(645 * var(--u));
     font-size: calc(71.6 * var(--h));
     line-height: calc(80.5 * var(--h));
@@ -388,7 +391,7 @@
 
   .sub {
     position: absolute;
-    left: calc(75.5 * var(--u));
+    left: max(48px, calc((100% - 1700px) / 2 + 48px));
     top: calc(645 * var(--u) + 189 * var(--h));
     font-size: calc(20.7 * var(--h));
     line-height: calc(23.5 * var(--h));
@@ -403,7 +406,7 @@
 
   .ghost-cta {
     position: absolute;
-    left: calc(74.9 * var(--u));
+    left: max(48px, calc((100% - 1700px) / 2 + 48px));
     top: calc(645 * var(--u) + 279.5 * var(--h));
     font-size: calc(20.6 * var(--h));
     letter-spacing: calc(0.12 * var(--h));
