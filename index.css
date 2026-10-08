@@ -301,6 +301,26 @@
   .topbar {
     @apply fixed top-0 left-0 right-0 z-50;
   }
+  /* Scroll scrim — content sliding under the fixed bar fades out
+     instead of colliding with the wordmark (state: .is-scrolled). */
+  .topbar::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 150%;
+    background: linear-gradient(
+      to bottom,
+      rgba(5, 5, 5, 0.92),
+      rgba(5, 5, 5, 0.55) 60%,
+      rgba(5, 5, 5, 0)
+    );
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+  }
+  .topbar.is-scrolled::before {
+    opacity: 1;
+  }
   .topbar-inner {
     position: relative;
     max-width: 1520px;
@@ -771,6 +791,25 @@
   .logos-row {
     display: flex !important;
     justify-content: space-between;
+  }
+}
+
+/* Short landscape viewports — phones rotated sideways, small laptop
+   windows. Height is scarce: drop the width term from the type scale
+   and lift the copy block so slogan, sub and the partner strip never
+   collide (or slide under the fixed topbar). */
+@media (min-aspect-ratio: 11/10) and (max-height: 620px) {
+  :root {
+    --h: var(--u);
+  }
+  .headline {
+    top: calc(560 * var(--u));
+  }
+  .sub {
+    top: calc(560 * var(--u) + 165 * var(--h));
+  }
+  .ghost-cta {
+    top: calc(560 * var(--u) + 250 * var(--h));
   }
 }
 

@@ -83,10 +83,8 @@ const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
   return (
     <div className={isOpen ? 'is-open' : ''}>
       <header
-        className={`topbar transition-[background-color,backdrop-filter] duration-500 ${
-          isScrolled
-            ? 'bg-[#050505]/82 backdrop-blur-md'
-            : 'bg-transparent'
+        className={`topbar transition-[backdrop-filter] duration-500 ${
+          isScrolled ? 'is-scrolled backdrop-blur-md' : ''
         }`}
       >
         <div className="topbar-inner">

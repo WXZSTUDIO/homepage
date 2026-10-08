@@ -168,9 +168,14 @@ const ContactSection: React.FC = () => {
                   href="https://www.xiaohongshu.com/user/profile/5fd363ac000000000101cffc"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group inline-flex items-center gap-2 text-base text-paper link-rule"
+                  className="group inline-flex items-center gap-2 link-rule"
                 >
-                  @WXZ STUDIO
+                  <img
+                    src="logos/wxz-white.png"
+                    alt="STUDIO (WXZ)"
+                    className="h-[18px] w-auto"
+                    draggable={false}
+                  />
                   <ArrowUpRight
                     size={13}
                     className="text-muted group-hover:text-paper transition-colors"
