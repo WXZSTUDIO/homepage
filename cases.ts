@@ -237,7 +237,7 @@ export const CASES: CaseItem[] = [
     type: 'video',
     src: frame('star1'),
     videoSrc: vid('star1'),
-    title: { zh: '田小娟 · 侧拍影像', ko: '전소연 · 사이드 필름' },
+    title: { zh: 'CHIC × 田小娟 · 侧拍影像', ko: 'CHIC × 전소연 · 사이드 필름' },
     tag: { zh: '花絮', ko: '비하인드' },
   },
   {
@@ -245,7 +245,7 @@ export const CASES: CaseItem[] = [
     type: 'video',
     src: frame('star2'),
     videoSrc: vid('star2'),
-    title: { zh: '章浩 · 拍摄花絮', ko: '장하오 · 촬영 비하인드' },
+    title: { zh: "L'OFFICIEL × 章昊 · 拍摄花絮", ko: "L'OFFICIEL × 장하오 · 촬영 비하인드" },
     tag: { zh: '花絮', ko: '비하인드' },
   },
   {
@@ -320,8 +320,8 @@ const FILM_META: Record<
   r05: { brand: { zh: '신세계면세점', ko: '신세계면세점' }, likes: 16800, saves: 2240 },
   r06: { brand: { zh: 'Portré', ko: '포트레' }, likes: 13500, saves: 1820 },
   r07: { brand: { zh: '상쾌환', ko: '상쾌환' }, likes: 28900, saves: 4350 },
-  star1: { brand: { zh: '田小娟', ko: '전소연' }, likes: 42600, saves: 6830 },
-  star2: { brand: { zh: '章浩', ko: '장하오' }, likes: 36400, saves: 5210 },
+  star1: { brand: { zh: 'CHIC × 田小娟', ko: 'CHIC × 전소연' }, likes: 42600, saves: 6830 },
+  star2: { brand: { zh: "L'OFFICIEL × 章昊", ko: "L'OFFICIEL × 장하오" }, likes: 36400, saves: 5210 },
   star3: { brand: { zh: 'ECOOBIX × 한유진', ko: 'ECOOBIX × 한유진' }, likes: 21800, saves: 3460 },
   star4: { brand: { zh: 'mooekiss × 金允植', ko: 'mooekiss × 김윤식' }, likes: 18300, saves: 2760 },
   star5: { brand: { zh: 'MAKE UP FOR EVER × Joshua', ko: 'MAKE UP FOR EVER × JOSHUA' }, likes: 25400, saves: 3980 },
