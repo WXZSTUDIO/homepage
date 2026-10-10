@@ -17,6 +17,18 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      # 内容源配置。全部可选 —— 未设置时前台自动使用仓库内的本地兜底数据。
+      VITE_SANITY_PROJECT_ID: ${{ vars.VITE_SANITY_PROJECT_ID }}
+      VITE_SANITY_DATASET: ${{ vars.VITE_SANITY_DATASET }}
+      VITE_SANITY_API_VERSION: ${{ vars.VITE_SANITY_API_VERSION }}
+      VITE_SANITY_USE_CDN: ${{ vars.VITE_SANITY_USE_CDN }}
+      VITE_SANITY_REVALIDATE_SEC: ${{ vars.VITE_SANITY_REVALIDATE_SEC }}
+      VITE_SANITY_TIMEOUT_MS: ${{ vars.VITE_SANITY_TIMEOUT_MS }}
+      VITE_SANITY_STUDIO_BASE_PATH: ${{ vars.VITE_SANITY_STUDIO_BASE_PATH }}
+      VITE_SITE_URL: ${{ vars.VITE_SITE_URL }}
+      # 只读 Viewer 令牌（私有数据集 / 草稿预览）。写入令牌绝不能出现在这里。
+      VITE_SANITY_READ_TOKEN: ${{ secrets.VITE_SANITY_READ_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -30,8 +42,21 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Build site
         run: npm run build
+
+      - name: Install Studio dependencies
+        run: npm install --no-audit --no-fund
+        working-directory: studio
+        continue-on-error: true
+
+      - name: Build Studio (CMS 后台)
+        run: npm run build
+        working-directory: studio
+        continue-on-error: true
 
       - name: Configure Pages
         uses: actions/configure-pages@v5

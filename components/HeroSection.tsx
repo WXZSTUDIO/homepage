@@ -1,14 +1,19 @@
 import React from 'react';
-import { useLanguage } from '../LanguageContext';
+import { useSiteContent } from '../ContentContext';
 
-/* Full-bleed looping video — the only hero visual. */
-const HERO_VIDEO = 'hero-keyflip.mp4';
+/* Local default — replaced by SiteSettings.hero.video when the CMS is
+   configured. Keeping it here means the hero never goes empty. */
+const HERO_VIDEO_FALLBACK = 'hero-keyflip.mp4';
 
 const HeroSection: React.FC = () => {
-  const { ui } = useLanguage();
+  const { settings, t } = useSiteContent();
+
+  const headline1 = t(settings.hero.headline1);
+  const headline2 = t(settings.hero.headline2);
+  const videoSrc = settings.hero.video?.url || HERO_VIDEO_FALLBACK;
 
   // The sub reads as two quiet lines, split from the discipline string.
-  const parts = (ui.hero.narrative1 || '').split('·').map((s: string) => s.trim());
+  const parts = (t(settings.hero.narrative) || '').split('·').map((s: string) => s.trim());
   const subLine1 = parts.slice(0, 3).join('  ·  ');
   const subLine2 = parts.slice(3).join('  ·  ');
 
@@ -17,21 +22,21 @@ const HeroSection: React.FC = () => {
       <div className="plate">
         <video
           className="plate-video"
-          autoPlay
-          muted
-          loop
+          autoPlay={settings.hero.video?.autoplay !== false}
+          muted={settings.hero.video?.muted !== false}
+          loop={settings.hero.video?.loop !== false}
           playsInline
           preload="auto"
           aria-hidden="true"
         >
-          <source src={HERO_VIDEO} type="video/mp4" />
+          <source src={videoSrc} type="video/mp4" />
         </video>
       </div>
 
       <div className="hero-flow">
         <h1 className="headline rise-headline">
-          <span>{ui.hero.headline1}</span>
-          <span>{ui.hero.headline2}</span>
+          <span>{headline1}</span>
+          <span>{headline2}</span>
         </h1>
 
         <p className="sub rise-sub">

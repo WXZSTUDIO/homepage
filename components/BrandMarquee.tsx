@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLanguage } from '../LanguageContext';
+import { useResume } from '../ContentContext';
 
 /* Full client wall — the below-fold companion to the hero strip.
    Real marks, extracted to white alpha; drifting once.
@@ -83,9 +84,29 @@ const SeoulClock: React.FC<{ label: string }> = ({ label }) => {
   );
 };
 
+/* CMS-driven marks (resume.clients) win; the local wall stays as the
+   fallback so the strip is never empty. */
+const buildStrip = (
+  clients: { id: string; name: string; logo?: string; image?: { url: string } }[],
+  fallback: BrandItem[]
+): BrandItem[] => {
+  const fromCms = clients
+    .filter((c) => c.logo || c.image?.url)
+    .map<BrandItem>((c) => ({
+      kind: 'img',
+      src: c.image?.url || c.logo || '',
+      alt: c.name,
+      h: 'h-5 md:h-6',
+      white: true,
+    }));
+  return fromCms.length ? fromCms : fallback;
+};
+
 const BrandMarquee: React.FC = () => {
   const { ui } = useLanguage();
-  const strip = [...BRANDS, ...BRANDS];
+  const { clients } = useResume();
+  const base = buildStrip(clients, BRANDS);
+  const strip = [...base, ...base];
 
   return (
     <section

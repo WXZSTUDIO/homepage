@@ -25,5 +25,15 @@
     },
     "allowImportingTsExtensions": true,
     "noEmit": true
-  }
+  },
+  "include": [
+    "*.ts",
+    "*.tsx",
+    "components/**/*.ts",
+    "components/**/*.tsx",
+    "data/**/*.ts",
+    "lib/**/*.ts",
+    "hooks/**/*.ts"
+  ],
+  "exclude": ["studio", "node_modules", "dist"]
 }

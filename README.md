@@ -106,7 +106,60 @@ Pushes to `main` trigger `.github/workflows/deploy.yml`, which builds and publis
 
 ---
 
-## 6. Performance & Animation Discipline (性能与动效法则)
+## 6. Content Management — Sanity CMS (内容管理后台)
+
+Site content is maintained in a **Sanity** backend without touching code. The frontend reads it at runtime and always falls back to the bundled dataset, so the page can never go blank.
+
+### 6.1 Architecture (架构)
+
+```
+data/types.ts        规范数据形状（组件只认这里）
+data/local.ts        本地兜底数据（原 cases.ts / i18n.ts 抽取而来）
+data/content.ts      统一接口：getProjects / getProjectBySlug / getResume / getSiteSettings
+lib/sanity.ts        Sanity client（只读、published 视角、超时兜底）
+lib/queries.ts       全部 GROQ 集中管理
+lib/mappers.ts       Sanity 载荷 → 规范类型
+hooks/useContent.ts  拉取 + 重新验证（加载时 / 窗口聚焦 / 可选轮询）
+ContentContext.tsx   组件唯一的数据入口（useSiteContent / useResume / useSettings）
+studio/              Sanity Studio 后台（构建产物部署到 /homepage/studio/）
+scripts/seed-sanity.mjs  把本地内容一次性导入 Sanity
+```
+
+组件**只调用统一接口**，不直接依赖 Sanity SDK；页面视觉、动画、移动端布局零改动。
+
+### 6.2 Setup (接入步骤)
+
+1. 在 [sanity.io](https://www.sanity.io) 创建项目与 `production` 数据集。
+2. 复制 `.env.example` 为 `.env`，填入 `VITE_SANITY_PROJECT_ID`。
+3. 在 sanity.io/manage → API → CORS 中添加来源：
+   - `https://wxzstudio.github.io`
+   - `http://localhost:4173`（本地预览）
+4. 后台入口：`https://wxzstudio.github.io/homepage/studio/`（首次需用 Sanity 账号登录）。
+5. GitHub 仓库 → Settings → Secrets and variables → Actions，把 `VITE_SANITY_PROJECT_ID` 等加到 **Variables**（只读 Viewer Token 加到 **Secrets**）。
+
+### 6.3 Content migration (内容迁移)
+
+```bash
+set SANITY_PROJECT_ID=…          # 或 export
+set SANITY_WRITE_TOKEN=…         # Editor 令牌，只在本地用，绝不提交
+npm run seed:sanity              # 文字字段
+npm run seed:sanity -- --with-media   # 连 public/ 下的图片视频一起上传
+```
+
+未导入全部内容前，可设 `VITE_SANITY_MERGE_LOCAL=true` 让本地数据与 CMS 并排显示（同 slug 以 CMS 为准）。
+
+### 6.4 Update strategy (更新策略)
+
+GitHub Pages 是纯静态托管，无法持有实时监听（那需要写权限 Token，绝不能进浏览器）。因此采用**运行时拉取**：进入页面即取最新已发布内容；窗口重新聚焦时自动重取；可用 `VITE_SANITY_REVALIDATE_SEC` 设定轮询间隔。生产环境的升级路径是 Sanity Webhook → GitHub Actions 重建，无需改动任何组件。
+
+- 草稿：仅存于 Studio，前台永远读 `published` 视角。
+- 草稿预览：Studio 的「预览草稿」按钮会带 `?preview=1` 打开前台，需配置**只读 Viewer Token**；未配置时该模式自动关闭。
+- 未配置 / 超时 / 网络失败 / 某板块为空 → 自动回落本地数据，页面不空白、不报错、组件结构不变。
+- 开发环境左下角显示数据来源徽标（local / sanity / mixed）；生产环境不输出任何敏感错误信息。
+
+---
+
+## 7. Performance & Animation Discipline (性能与动效法则)
 
 - **Compositor-Only Transforms**: All GSAP and CSS animations animate strictly `transform` (`translateY`, `scale`, `skewY`) and `opacity` to maintain silky 60fps/120fps performance without triggering browser layout thrashing.
 - **Will-Change Governance**: Applied selectively to animated masks to enable GPU acceleration without inflating memory overhead.
@@ -115,4 +168,4 @@ Pushes to `main` trigger `.github/workflows/deploy.yml`, which builds and publis
 
 ---
 
-© 2026 ZHENG CANFENG (정찬봉). All Rights Reserved.
+

@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>正在跳转…</title>
+    <meta name="robots" content="noindex" />
+    <script>
+      /* GitHub Pages 是静态托管，深层路径（后台内部路由）刷新会落到 404。
+         这里按路径分流：后台回到后台首页，其余回到站点首页。 */
+      (function () {
+        var p = window.location.pathname || '';
+        var base = p.indexOf('/homepage/') === 0 ? '/homepage/' : '/';
+        if (p.indexOf('/studio') !== -1) {
+          window.location.replace(base + 'studio/');
+        } else {
+          window.location.replace(p.indexOf('/homepage/') === 0 ? '/homepage/' : '/');
+        }
+      })();
+    </script>
+  </head>
+  <body style="background:#050505;color:#f5f5f5;font-family:system-ui,-apple-system,sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0">
+    <p style="opacity:.7;font-size:14px">正在跳转…</p>
+  </body>
+</html>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { LanguageProvider } from './LanguageContext';
+import { LanguageProvider, useLanguage } from './LanguageContext';
+import { ContentProvider, useSiteContent } from './ContentContext';
 import Navbar from './components/Navbar';
 import OpeningAnimation from './components/OpeningAnimation';
 import HeroSection from './components/HeroSection';
@@ -8,6 +9,7 @@ import CasesSection from './components/CasesSection';
 import StrengthsSection from './components/StrengthsSection';
 import ContactSection from './components/ContactSection';
 import BrandMarquee from './components/BrandMarquee';
+import BackgroundMusic from './components/BackgroundMusic';
 import SmoothScroll, { scrollToTarget } from './components/SmoothScroll';
 import { useMotionProfile } from './hooks/useMotionProfile';
 
@@ -84,14 +86,43 @@ const MainApp: React.FC = () => {
         {/* 5. Contact — channels and the inquiry form */}
         <ContactSection />
       </main>
+
+      {/* Background music — opt-in, remembers the visitor's choice */}
+      <BackgroundMusic />
+
+      {/* Dev-only badge: which source the page is rendering from */}
+      <ContentSourceBadge />
     </div>
+  );
+};
+
+/* Shows "local / sanity / mixed" in development only — never in prod. */
+const ContentSourceBadge: React.FC = () => {
+  const { source, loading, error } = useSiteContent();
+  if (!import.meta.env.DEV) return null;
+  if (source === 'local' && !loading && !error) return null;
+  return (
+    <div className="fixed bottom-4 left-4 z-50 chip h-8 px-3 text-[10px] tracking-[0.08em] text-paper-70">
+      content: {source}
+      {loading ? ' · loading' : ''}
+      {error ? ' · error' : ''}
+    </div>
+  );
+};
+
+const AppShell: React.FC = () => {
+  const { language } = useLanguage();
+  return (
+    <ContentProvider lang={language}>
+      <MainApp />
+    </ContentProvider>
   );
 };
 
 const App: React.FC = () => {
   return (
     <LanguageProvider>
-      <MainApp />
+      <AppShell />
     </LanguageProvider>
   );
 };

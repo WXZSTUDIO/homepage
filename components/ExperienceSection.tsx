@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLanguage } from '../LanguageContext';
+import { useResume, useSiteContent } from '../ContentContext';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Mail, Copy, Check, Calendar, Package, TrendingUp, Camera, Pin } from './Icons';
@@ -38,7 +39,12 @@ const useCountUp = (target: number, run: boolean, duration = 1600) => {
   return n;
 };
 
-const MetricTile: React.FC<{ m: any; run: boolean; icon: any }> = ({ m, run, icon: Icon }) => {
+const MetricTile: React.FC<{ m: any; run: boolean; icon: any; unit: string }> = ({
+  m,
+  run,
+  icon: Icon,
+  unit,
+}) => {
   const n = useCountUp(Number(m.value) || 0, run);
   const suffix = m.suffix ?? '';
   return (
@@ -51,14 +57,16 @@ const MetricTile: React.FC<{ m: any; run: boolean; icon: any }> = ({ m, run, ico
           {n.toLocaleString()}
           {suffix}
         </div>
-        <div className="eyebrow mt-2.5">{m.unit}</div>
+        <div className="eyebrow mt-2.5">{unit}</div>
       </div>
     </div>
   );
 };
 
 const ExperienceSection: React.FC = () => {
-  const { ui, careers, language } = useLanguage();
+  const { ui, language } = useLanguage();
+  const { t } = useSiteContent();
+  const { profile, metrics, experiences } = useResume();
   const sectionRef = useRef<HTMLElement>(null);
   const metricsRef = useRef<HTMLDivElement>(null);
   const [metricsInView, setMetricsInView] = useState(false);
@@ -111,14 +119,21 @@ const ExperienceSection: React.FC = () => {
     return () => ctx.revert();
   }, [language]);
 
+  const email = profile.email || 'ro3eandcat@gmail.com';
+  const avatar = profile.avatar?.url || 'profile.png';
+  const displayName = profile.name || 'ZHENG CANFENG';
+  const nameLines = displayName.split(/\s+/).filter(Boolean);
+  const location = t(profile.location) || 'Seoul, KR';
+
   const handleCopyEmail = () => {
-    navigator.clipboard.writeText('ro3eandcat@gmail.com');
+    navigator.clipboard.writeText(email);
     setCopiedEmail(true);
     setTimeout(() => setCopiedEmail(false), 2000);
   };
 
-  const metrics =
-    ui.experience?.metrics || [];
+  const careerRows = experiences.length
+    ? experiences
+    : [];
 
   return (
     <section
@@ -141,18 +156,21 @@ const ExperienceSection: React.FC = () => {
           {/* Identity */}
           <div className="lg:col-span-4 exp-stagger-item tile p-7 md:p-8">
             <img
-              src="profile.png"
-              alt="ZHENG CANFENG"
+              src={avatar}
+              alt={displayName}
               loading="lazy"
               draggable={false}
               className="w-full max-w-[260px] rounded-xl"
             />
             <div className="mt-6 text-[clamp(2.2rem,3.6vw,3rem)] leading-[1.05] text-paper font-medium tracking-tight">
-              ZHENG
-              <br />
-              CANFENG
+              {nameLines.map((line, i) => (
+                <React.Fragment key={i}>
+                  {i > 0 && <br />}
+                  {line}
+                </React.Fragment>
+              ))}
             </div>
-            <div className="mt-3 text-sm text-muted">{ui.nav.title}</div>
+            <div className="mt-3 text-sm text-muted">{t(profile.role) || ui.nav.title}</div>
 
             <div className="mt-8 pt-6 border-t border-rule space-y-3">
               <button
@@ -160,7 +178,7 @@ const ExperienceSection: React.FC = () => {
                 className="w-full flex items-center gap-2.5 text-sm text-muted hover:text-paper transition-colors cursor-pointer"
               >
                 <Mail size={14} />
-                <span className="truncate">ro3eandcat@gmail.com</span>
+                <span className="truncate">{email}</span>
                 {copiedEmail ? (
                   <Check size={13} className="text-paper shrink-0" />
                 ) : (
@@ -169,7 +187,7 @@ const ExperienceSection: React.FC = () => {
               </button>
               <div className="flex items-center gap-2.5 text-sm text-muted">
                 <Pin size={14} />
-                Seoul, KR
+                {location}
               </div>
             </div>
           </div>
@@ -177,7 +195,7 @@ const ExperienceSection: React.FC = () => {
           {/* Bio + metrics + career */}
           <div className="lg:col-span-8 space-y-4 lg:space-y-6">
             <p className="exp-stagger-item tile p-7 md:p-8 text-base sm:text-lg text-paper-70 leading-[1.75]">
-              {ui.experience.bioP1}
+              {t(profile.bio) || ui.experience.bioP1}
             </p>
 
             {/* Metrics — icon, silver numeral counting up on reveal */}
@@ -185,16 +203,22 @@ const ExperienceSection: React.FC = () => {
               {metrics.map((m: any, idx: number) => {
                 const meta = METRICS[idx % METRICS.length];
                 return (
-                  <MetricTile key={idx} m={m} run={metricsInView} icon={meta.icon} />
+                  <MetricTile
+                    key={m.id ?? idx}
+                    m={m}
+                    run={metricsInView}
+                    icon={meta.icon}
+                    unit={t(m.unit)}
+                  />
                 );
               })}
             </div>
 
             {/* Career — hairline rows */}
             <div className="exp-stagger-item border-t border-rule">
-              {careers.map((career: any, idx: number) => (
+              {careerRows.map((career: any, idx: number) => (
                 <div
-                  key={career.id}
+                  key={career.id ?? idx}
                   className="grid grid-cols-[2.5rem_1fr_auto] gap-x-4 items-center py-5 border-b border-rule-soft"
                 >
                   <span className="text-[11px] tracking-[0.15em] text-faint">
@@ -202,9 +226,9 @@ const ExperienceSection: React.FC = () => {
                   </span>
                   <div className="min-w-0">
                     <h3 className="text-lg sm:text-xl text-paper leading-tight font-medium">
-                      {career.company}
+                      {t(career.company)}
                     </h3>
-                    <div className="text-xs text-faint mt-1">{career.role}</div>
+                    <div className="text-xs text-faint mt-1">{t(career.role)}</div>
                   </div>
                   <span className="text-[11px] tracking-[0.1em] text-muted whitespace-nowrap">
                     {career.period}

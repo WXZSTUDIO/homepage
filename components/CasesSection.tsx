@@ -1,6 +1,10 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useLanguage } from '../LanguageContext';
-import { CASES, TVC_FEATURE, CaseItem } from '../cases';
+import { useSiteContent } from '../ContentContext';
+import { projectToCaseItem } from '../data/adapt';
+import { getProjectBySlug } from '../data/content';
+import type { CaseItem } from '../cases';
+import type { Project } from '../data/types';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Close, Heart, Bookmark, ChevronLeft, ChevronRight } from './Icons';
@@ -96,9 +100,10 @@ const useLiveSegments = (
 /* Pinned TVC media — autoplays muted (gated on viewport proximity),
    click opens the film large in the lightbox. */
 const TvcMedia: React.FC<{
+  item: CaseItem;
   paused: boolean;
   onOpen: (item: CaseItem) => void;
-}> = ({ paused, onOpen }) => {
+}> = ({ item, paused, onOpen }) => {
   const { wrapRef, near } = useNearViewport('40% 0px');
   const videoRef = useRef<HTMLVideoElement>(null);
   const { playing } = useLiveSegments(videoRef, near && !paused);
@@ -109,22 +114,22 @@ const TvcMedia: React.FC<{
       className="relative aspect-video overflow-hidden rounded-xl border border-rule-soft bg-black"
     >
       <button
-        onClick={() => onOpen(TVC_FEATURE)}
+        onClick={() => onOpen(item)}
         className="group absolute inset-0 block w-full cursor-pointer"
-        aria-label={TVC_FEATURE.title.zh}
+        aria-label={item.title.zh}
       >
         <img
-          src={TVC_FEATURE.src}
-          alt={TVC_FEATURE.title.zh}
+          src={item.src}
+          alt={item.title.zh}
           loading="lazy"
           draggable={false}
           className="absolute inset-0 w-full h-full object-cover"
         />
-        {near && TVC_FEATURE.videoSrc && (
+        {near && item.videoSrc && (
           <video
             ref={videoRef}
-            src={TVC_FEATURE.videoSrc}
-            poster={TVC_FEATURE.src}
+            src={item.videoSrc}
+            poster={item.src}
             muted
             loop
             playsInline
@@ -324,10 +329,120 @@ const FilmCarousel: React.FC<{
   );
 };
 
+/* Detail blocks — the ordered media modules edited in the CMS.
+   Falls back to the cover so a project without blocks still renders. */
+const DetailBlocks: React.FC<{ project?: Project; lang: 'zh' | 'ko' }> = ({ project, lang }) => {
+  const blocks = project?.media?.length
+    ? project.media
+    : project
+    ? [
+        project.coverType === 'video'
+          ? ({ _key: 'cover', type: 'video', video: project.coverVideo } as const)
+          : ({ _key: 'cover', type: 'image', image: project.coverImage } as const),
+      ]
+    : [];
+
+  return (
+    <div className="space-y-6">
+      {blocks.map((b: any) => {
+        if (b.type === 'image' && b.image?.url) {
+          return (
+            <img
+              key={b._key}
+              src={b.image.url}
+              alt={b.image.alt || ''}
+              className="w-full h-auto rounded-xl bg-black"
+              loading="lazy"
+            />
+          );
+        }
+        if (b.type === 'gallery' && b.items?.length) {
+          return (
+            <div key={b._key} className="grid grid-cols-2 gap-3">
+              {b.items.map((im: any, i: number) => (
+                <img
+                  key={`${b._key}-${i}`}
+                  src={im.url}
+                  alt={im.alt || ''}
+                  className="w-full h-auto rounded-lg bg-black"
+                  loading="lazy"
+                />
+              ))}
+            </div>
+          );
+        }
+        if (b.type === 'video' && b.video?.url) {
+          return (
+            <video
+              key={b._key}
+              src={b.video.url}
+              poster={b.video.poster}
+              controls
+              playsInline
+              muted={b.video.muted !== false}
+              loop={!!b.video.loop}
+              className="w-full h-auto rounded-xl bg-black"
+            />
+          );
+        }
+        if (b.type === 'richText') {
+          const title = b.title?.[lang] ?? '';
+          const body = b.body?.[lang] ?? '';
+          const bullets = (b.bullets || []).map((x: any) => x?.[lang]).filter(Boolean);
+          if (!title && !body && !bullets.length) return null;
+          return (
+            <div key={b._key} className="space-y-3">
+              {title && <h4 className="text-paper text-lg font-medium">{title}</h4>}
+              {body && <p className="text-paper-70 text-sm leading-relaxed whitespace-pre-line">{body}</p>}
+              {bullets.length > 0 && (
+                <ul className="space-y-1.5">
+                  {bullets.map((x: string, i: number) => (
+                    <li key={i} className="text-paper-70 text-sm flex gap-2">
+                      <span className="text-faint">—</span>
+                      <span>{x}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          );
+        }
+        return null;
+      })}
+    </div>
+  );
+};
+
+/* Deep link: #/works/<slug> — refresh-safe on a static host. */
+const readSlugFromHash = (): string | null => {
+  const m = /#\/works\/([\w-]+)/.exec(window.location.hash || '');
+  return m ? decodeURIComponent(m[1]) : null;
+};
+
 const CasesSection: React.FC = () => {
   const { ui, language } = useLanguage();
+  const { projects, t } = useSiteContent();
+  const lang = language as 'zh' | 'ko';
   const sectionRef = useRef<HTMLElement>(null);
-  const [selected, setSelected] = useState<CaseItem | null>(null);
+
+  const items = React.useMemo(
+    () => projects.map((p) => ({ project: p, item: projectToCaseItem(p, lang) })),
+    [projects, lang]
+  );
+
+  const [slug, setSlug] = useState<string | null>(() => readSlugFromHash());
+  const [deepProject, setDeepProject] = useState<Project | null>(null);
+
+  const selected = React.useMemo(() => {
+    const local = items.find((x) => x.item.id === slug);
+    if (local) return local;
+    if (deepProject && (deepProject.slug || deepProject.id) === slug) {
+      return { project: deepProject, item: projectToCaseItem(deepProject, lang) };
+    }
+    return null;
+  }, [items, slug, deepProject, lang]);
+
+  const selectedItem = selected?.item ?? null;
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -358,28 +473,68 @@ const CasesSection: React.FC = () => {
     return () => ctx.revert();
   }, [language]);
 
-  const close = useCallback(() => setSelected(null), []);
-  useScrollLock(!!selected, close);
+  /* Keep the URL in sync so a refresh / shared link re-opens the piece. */
+  const open = useCallback((item: CaseItem) => {
+    setSlug(item.id);
+    try {
+      history.pushState(null, '', `#/works/${encodeURIComponent(item.id)}`);
+    } catch {
+      /* history unavailable — the modal still works */
+    }
+  }, []);
+
+  const close = useCallback(() => {
+    setSlug(null);
+    setDeepProject(null);
+    try {
+      history.pushState(null, '', '#works');
+    } catch {
+      /* noop */
+    }
+  }, []);
+
+  useScrollLock(!!selectedItem, close);
 
   useEffect(() => {
-    if (!selected) return;
+    if (!selectedItem) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') close();
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [selected, close]);
+  }, [selectedItem, close]);
 
-  const visualCases = CASES.filter((c) => c.type === 'img');
-  const starCases = CASES.filter((c) => c.id.startsWith('star'));
-  const filmCases = CASES.filter(
-    (c) => c.type === 'video' && !c.id.startsWith('star')
-  );
+  /* Back/forward + pasted deep links. */
+  useEffect(() => {
+    const sync = () => setSlug(readSlugFromHash());
+    window.addEventListener('hashchange', sync);
+    return () => window.removeEventListener('hashchange', sync);
+  }, []);
+
+  /* A deep-linked slug may not be in the loaded list yet — ask directly. */
+  useEffect(() => {
+    if (!slug) return;
+    if (items.some((x) => x.item.id === slug)) return;
+    let alive = true;
+    (async () => {
+      const p = await getProjectBySlug(slug);
+      if (!alive) return;
+      setDeepProject(p);
+    })();
+    return () => {
+      alive = false;
+    };
+  }, [slug, items]);
+
+  const visualCases = items.filter((x) => x.project.group === 'visual').map((x) => x.item);
+  const starCases = items.filter((x) => x.project.group === 'star').map((x) => x.item);
+  const filmCases = items.filter((x) => x.project.group === 'film').map((x) => x.item);
+  const tvcEntry = items.find((x) => x.project.group === 'tvc');
 
   const renderCard = (item: CaseItem) => (
     <button
       key={item.id}
-      onClick={() => setSelected(item)}
+      onClick={() => open(item)}
       className="case-card group mb-3 md:mb-4 break-inside-avoid w-full text-left cursor-pointer"
       aria-label={item.title[language as 'zh' | 'ko']}
     >
@@ -420,39 +575,38 @@ const CasesSection: React.FC = () => {
         </div>
 
         {/* TVC — pinned featured brand film */}
-        <div className="eyebrow mb-4 mt-16">{ui.projects.groupTvc}</div>
-        <div className="tvc-feature">
-          <TvcMedia paused={!!selected} onOpen={setSelected} />
-          <div className="eyebrow text-[10px] text-faint mt-7">
-            {ui.projects.tvcRole}
-          </div>
-          <h3 className="tvc-title">
-            mooekiss × {language === 'zh' ? '金允植' : '김윤식'}
-          </h3>
-          <p className="tvc-intro">{ui.projects.tvcIntro}</p>
-        </div>
+        {tvcEntry && (
+          <>
+            <div className="eyebrow mb-4 mt-16">{ui.projects.groupTvc}</div>
+            <div className="tvc-feature">
+              <TvcMedia item={tvcEntry.item} paused={!!selectedItem} onOpen={open} />
+              <div className="eyebrow text-[10px] text-faint mt-7">{ui.projects.tvcRole}</div>
+              <h3 className="tvc-title">
+                {tvcEntry.item.brand?.[language as 'zh' | 'ko'] ||
+                  tvcEntry.item.title[language as 'zh' | 'ko']}
+              </h3>
+              <p className="tvc-intro">
+                {t(tvcEntry.project.description) || ui.projects.tvcIntro}
+              </p>
+            </div>
+          </>
+        )}
 
         {/* Celebrity side films — same live-preview carousel */}
-        <div className="eyebrow mb-4 mt-16">{ui.projects.groupStar}</div>
-        <FilmCarousel
-          items={starCases}
-          lang={language as 'zh' | 'ko'}
-          paused={!!selected}
-          onOpen={setSelected}
-        />
+        {starCases.length > 0 && (
+          <>
+            <div className="eyebrow mb-4 mt-16">{ui.projects.groupStar}</div>
+            <FilmCarousel items={starCases} lang={lang} paused={!!selectedItem} onOpen={open} />
+          </>
+        )}
 
         {/* Films — Apple-style carousel with live previews */}
         <div className="eyebrow mb-4 mt-16">{ui.projects.groupFilm}</div>
-        <FilmCarousel
-          items={filmCases}
-          lang={language as 'zh' | 'ko'}
-          paused={!!selected}
-          onOpen={setSelected}
-        />
+        <FilmCarousel items={filmCases} lang={lang} paused={!!selectedItem} onOpen={open} />
       </div>
 
       {/* Lightbox */}
-      {selected && (
+      {selectedItem && (
         <div
           className="fixed inset-0 z-50 overflow-y-auto overscroll-contain bg-[#050505]/92 backdrop-blur-sm"
           onClick={close}
@@ -470,9 +624,10 @@ const CasesSection: React.FC = () => {
                 <Close size={16} />
               </button>
               <div className="overflow-hidden rounded-2xl border border-rule-soft bg-black">
-                {selected.videoSrc ? (
+                {selectedItem.videoSrc ? (
                   <video
-                    src={selected.videoSrc}
+                    src={selectedItem.videoSrc}
+                    poster={selectedItem.src}
                     className="w-full max-h-[76vh] object-contain bg-black"
                     controls
                     autoPlay
@@ -480,16 +635,25 @@ const CasesSection: React.FC = () => {
                   />
                 ) : (
                   <img
-                    src={selected.src}
-                    alt={selected.title.zh}
+                    src={selectedItem.src}
+                    alt={selectedItem.title.zh}
                     className="w-full max-h-[76vh] object-contain bg-black"
                   />
                 )}
               </div>
-              <div className="pt-4">
+
+              {/* Ordered media blocks from the CMS */}
+              <div className="pt-6">
+                <DetailBlocks project={selected?.project} lang={lang} />
+              </div>
+
+              <div className="pt-6">
                 <span className="text-paper text-sm sm:text-base">
-                  {selected.title[language as 'zh' | 'ko']}
+                  {selectedItem.title[language as 'zh' | 'ko']}
                 </span>
+                {selected?.project?.year && (
+                  <span className="ml-3 text-xs text-faint">{selected.project.year}</span>
+                )}
               </div>
             </div>
           </div>

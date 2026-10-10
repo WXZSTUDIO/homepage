@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLanguage } from '../LanguageContext';
+import { useResume, useSettings } from '../ContentContext';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {
@@ -21,6 +22,8 @@ gsap.registerPlugin(ScrollTrigger);
 
 const ContactSection: React.FC = () => {
   const { ui, language } = useLanguage();
+  const settings = useSettings();
+  const { contacts } = useResume();
   const sectionRef = useRef<HTMLElement>(null);
   const [copiedEmail, setCopiedEmail] = useState(false);
   const [copiedWeChat, setCopiedWeChat] = useState(false);
@@ -52,14 +55,24 @@ const ContactSection: React.FC = () => {
     return () => ctx.revert();
   }, [language]);
 
+  /* CMS channels win; the hardcoded values stay as the fallback. */
+  const email = settings.contact.email || 'ro3eandcat@gmail.com';
+  const wechatId = settings.contact.wechat || 'icf304';
+  const resumeUrl =
+    settings.contact.resumeFileUrl || 'https://naver.me/5fdFDeXr';
+  const xhsEntry = contacts.find((c) => c.platform === 'xiaohongshu');
+  const xhsUrl =
+    xhsEntry?.url ||
+    'https://www.xiaohongshu.com/user/profile/5fd363ac000000000101cffc';
+
   const handleCopyEmail = () => {
-    navigator.clipboard.writeText('ro3eandcat@gmail.com');
+    navigator.clipboard.writeText(email);
     setCopiedEmail(true);
     setTimeout(() => setCopiedEmail(false), 2000);
   };
 
   const handleCopyWeChat = () => {
-    navigator.clipboard.writeText('icf304');
+    navigator.clipboard.writeText(wechatId);
     setCopiedWeChat(true);
     setTimeout(() => setCopiedWeChat(false), 2000);
   };
@@ -125,10 +138,10 @@ const ContactSection: React.FC = () => {
                 </div>
                 <div className="flex items-center justify-between gap-4">
                   <a
-                    href="mailto:ro3eandcat@gmail.com"
+                    href={`mailto:${email}`}
                     className="text-lg sm:text-2xl text-paper link-rule break-all font-medium"
                   >
-                    ro3eandcat@gmail.com
+                    {email}
                   </a>
                   <button
                     onClick={handleCopyEmail}
@@ -147,7 +160,7 @@ const ContactSection: React.FC = () => {
                   {ui.contact.wechat}
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-base text-paper">icf304</span>
+                  <span className="text-base text-paper">{wechatId}</span>
                   <button
                     onClick={handleCopyWeChat}
                     className="text-faint hover:text-paper transition-colors cursor-pointer p-2 -m-2"
@@ -165,7 +178,7 @@ const ContactSection: React.FC = () => {
                   {ui.contact?.xiaohongshuLink || 'Xiaohongshu'}
                 </div>
                 <a
-                  href="https://www.xiaohongshu.com/user/profile/5fd363ac000000000101cffc"
+                  href={xhsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group inline-flex items-center gap-2 link-rule"
@@ -186,7 +199,7 @@ const ContactSection: React.FC = () => {
               {/* Portfolio download */}
               <div className="py-5">
                 <a
-                  href="https://naver.me/5fdFDeXr"
+                  href={resumeUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group inline-flex items-center gap-3 text-lg sm:text-xl text-paper hover:opacity-60 transition-opacity font-medium"
