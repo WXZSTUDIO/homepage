@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { getContent } from '../data/content';
 import { localProjects, localResume, localSettings } from '../data/local';
-import { isSanityConfigured, revalidateSec } from '../lib/sanity';
+import { isSanityConfigured, revalidateSec, subscribeContent, realtimeEnabled } from '../lib/sanity';
 import type { ContentBundle } from '../data/types';
 
 /* ------------------------------------------------------------------
@@ -74,6 +74,22 @@ export const useContent = () => {
       document.removeEventListener('visibilitychange', onVisible);
       window.removeEventListener('focus', load);
       if (timer) window.clearInterval(timer);
+    };
+  }, [load]);
+
+  /* 真正的实时更新：环境支持（只读 Token + 显式开启）时订阅 Sanity 的
+     变更事件，后台一发布就立刻重取；否则上面那套重取策略继续兜底。 */
+  useEffect(() => {
+    if (!realtimeEnabled) return;
+    let t: number | undefined;
+    const debounced = () => {
+      if (t) window.clearTimeout(t);
+      t = window.setTimeout(load, 600);
+    };
+    const unsubscribe = subscribeContent(debounced);
+    return () => {
+      if (t) window.clearTimeout(t);
+      unsubscribe();
     };
   }, [load]);
 

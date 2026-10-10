@@ -1,4 +1,5 @@
 import { defineType } from 'sanity';
+import { maxFileSize, LIMITS } from './validate';
 
 /* 个人资料 —— 单例文档 */
 export const resumeProfile = defineType({
@@ -13,6 +14,7 @@ export const resumeProfile = defineType({
       title: '头像',
       type: 'image',
       options: { hotspot: true, metadata: ['lqip', 'dimensions'] },
+      validation: maxFileSize(LIMITS.image, '头像'),
       fields: [{ name: 'alt', title: '图片替代文本（Alt）', type: 'string' }],
     },
     { name: 'bio', title: '个人简介', type: 'localeText' },
@@ -25,6 +27,7 @@ export const resumeProfile = defineType({
       type: 'file',
       description: '上传 PDF；也可在「网站设置 → 联系方式」里填外链地址。',
       options: { accept: 'application/pdf' },
+      validation: maxFileSize(LIMITS.pdf, '简历文件'),
     },
   ],
   preview: { select: { title: 'name', subtitle: 'email', media: 'avatar' } },
@@ -158,6 +161,7 @@ export const client = defineType({
       type: 'image',
       description: '建议上传已处理为白色、透明底的版本。',
       options: { metadata: ['dimensions'] },
+      validation: maxFileSize(LIMITS.image, 'Logo'),
       fields: [{ name: 'alt', title: '图片替代文本（Alt）', type: 'string' }],
     },
     { name: 'order', title: '展示顺序', type: 'number', initialValue: 999 },

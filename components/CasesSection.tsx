@@ -21,6 +21,8 @@ gsap.registerPlugin(ScrollTrigger);
 const CaseImage: React.FC<{ item: CaseItem }> = ({ item }) => (
   <img
     src={item.src}
+    srcSet={item.srcSet}
+    sizes="(max-width: 767px) 92vw, (max-width: 1279px) 46vw, 31vw"
     alt={item.title.zh}
     loading="lazy"
     draggable={false}
@@ -120,6 +122,8 @@ const TvcMedia: React.FC<{
       >
         <img
           src={item.src}
+          srcSet={item.srcSet}
+          sizes="(max-width: 767px) 92vw, 46vw"
           alt={item.title.zh}
           loading="lazy"
           draggable={false}
@@ -199,6 +203,8 @@ const FilmPreview: React.FC<{
         <div className="relative aspect-video overflow-hidden rounded-xl border border-rule-soft bg-black">
           <img
             src={item.src}
+            srcSet={item.srcSet}
+            sizes="(max-width: 767px) 82vw, 640px"
             alt={item.title[lang]}
             loading="lazy"
             draggable={false}
@@ -350,6 +356,8 @@ const DetailBlocks: React.FC<{ project?: Project; lang: 'zh' | 'ko' }> = ({ proj
             <img
               key={b._key}
               src={b.image.url}
+              srcSet={b.image.srcSet}
+              sizes="(max-width: 767px) 92vw, 900px"
               alt={b.image.alt || ''}
               className="w-full h-auto rounded-xl bg-black"
               loading="lazy"
@@ -363,6 +371,8 @@ const DetailBlocks: React.FC<{ project?: Project; lang: 'zh' | 'ko' }> = ({ proj
                 <img
                   key={`${b._key}-${i}`}
                   src={im.url}
+                  srcSet={im.srcSet}
+                  sizes="(max-width: 767px) 45vw, 440px"
                   alt={im.alt || ''}
                   className="w-full h-auto rounded-lg bg-black"
                   loading="lazy"
@@ -636,6 +646,8 @@ const CasesSection: React.FC = () => {
                 ) : (
                   <img
                     src={selectedItem.src}
+                    srcSet={selectedItem.srcSet}
+                    sizes="(max-width: 767px) 92vw, 768px"
                     alt={selectedItem.title.zh}
                     className="w-full max-h-[76vh] object-contain bg-black"
                   />

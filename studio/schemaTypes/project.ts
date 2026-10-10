@@ -1,4 +1,5 @@
 import { defineType } from 'sanity';
+import { maxFileSize, LIMITS } from './validate';
 
 /* slug 唯一性校验 —— slug 必须是全站唯一的地址。 */
 const isUniqueSlug = async (slug: string, context: any) => {
@@ -111,10 +112,12 @@ export const project = defineType({
           validation: (Rule: any) => Rule.required(),
         },
       ],
-      validation: (Rule: any) =>
+      validation: (Rule: any) => [
         Rule.custom((v: any, ctx: any) =>
           ctx.parent?.coverType === 'image' && !v ? '图片封面必须上传封面图片' : true
         ),
+        maxFileSize(LIMITS.image, '封面图片')(Rule),
+      ],
     },
     {
       name: 'coverVideoFile',
@@ -123,7 +126,8 @@ export const project = defineType({
       group: 'cover',
       hidden: ({ parent }: any) => parent?.coverType !== 'video',
       options: { accept: 'video/mp4,video/webm,video/ogg' },
-      description: '支持 mp4 / webm，建议先压缩后上传（≤ 100MB）。',
+      description: '支持 mp4 / webm，建议先压缩后上传。',
+      validation: maxFileSize(LIMITS.video, '视频'),
     },
     {
       name: 'coverVideoUrl',

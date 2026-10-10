@@ -20,10 +20,17 @@ export const coverSrc = (p: Project): string => {
   return p.coverImage?.url || p.coverVideo?.poster || '';
 };
 
+/** 视频封面优先用 poster 图做响应式候选，其次用封面图。 */
+export const coverSrcSet = (p: Project): string | undefined => {
+  if (p.coverType === 'video') return p.coverImage?.srcSet;
+  return p.coverImage?.srcSet;
+};
+
 export const projectToCaseItem = (p: Project, lang: Locale): CaseItem => ({
   id: p.slug || p.id,
   type: p.coverType === 'video' ? 'video' : 'img',
   src: coverSrc(p),
+  srcSet: coverSrcSet(p),
   videoSrc: p.coverType === 'video' ? p.coverVideo?.url : undefined,
   title: { zh: p.title.zh, ko: p.title.ko },
   tag: { zh: pick(p.tag, 'zh'), ko: pick(p.tag, 'ko') },

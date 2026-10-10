@@ -26,6 +26,50 @@ export const revalidateSec = Number(env.VITE_SANITY_REVALIDATE_SEC || 0) || 0;
 export const requestTimeoutMs = Number(env.VITE_SANITY_TIMEOUT_MS || 6000) || 6000;
 
 /* ------------------------------------------------------------------
+   Realtime.
+
+   Sanity 的 listen() 走 WebSocket，需要一个浏览器可见的只读 Viewer
+   Token，因此默认关闭：只有显式设置 VITE_SANITY_REALTIME=true 且配了
+   只读 Token 时才订阅。未开启时退化为「聚焦 / 可见性 / 轮询」重取，
+   行为同样正确，只是延迟略高。
+   ------------------------------------------------------------------ */
+export const realtimeEnabled =
+  env.VITE_SANITY_REALTIME === 'true' && Boolean(sanityConfig.token) && isSanityConfigured;
+
+const LISTENED_TYPES = [
+  'project',
+  'resumeProfile',
+  'experience',
+  'resumeEntry',
+  'metric',
+  'client',
+  'contactLink',
+  'siteSettings',
+];
+
+export const subscribeContent = (onChange: () => void): (() => void) => {
+  const client = getClient();
+  if (!client || !realtimeEnabled) return () => undefined;
+  try {
+    const sub = client
+      .listen(
+        `*[_type in ${JSON.stringify(LISTENED_TYPES)}]`,
+        {},
+        { includeResult: false, visibility: 'query' }
+      )
+      .subscribe({
+        next: () => onChange(),
+        error: (err: any) => {
+          if (import.meta.env.DEV) console.warn('[content] listener error:', err?.message || err);
+        },
+      });
+    return () => sub.unsubscribe();
+  } catch {
+    return () => undefined;
+  }
+};
+
+/* ------------------------------------------------------------------
    Draft preview.
 
    Only armed by an explicit `?preview=1` in the URL AND a configured
@@ -87,16 +131,32 @@ type SanityImage = {
   url?: string;
 };
 
+/* 响应式候选宽度 —— 每张图都生成多档，由浏览器按屏幕自行挑选 */
+const SRCSET_WIDTHS = [480, 768, 1024, 1440, 1920];
+
 export const imageFromSanity = (src?: SanityImage | null): ImageAsset | undefined => {
   if (!src) return undefined;
   const ref = src.asset?._ref || src.asset?._id;
   let url: string | undefined;
+  let srcSet: string | undefined;
 
   if (builder && ref) {
+    const img = () => builder!.image({ _type: 'image', asset: { _ref: ref } } as any);
     try {
-      url = builder.image({ _type: 'image', asset: { _ref: ref } } as any).auto('format').url();
+      url = img().auto('format').url();
     } catch {
       url = undefined;
+    }
+    const natural = Number(src.asset?.metadata?.dimensions?.width || 0);
+    try {
+      srcSet = SRCSET_WIDTHS.filter((w) => !natural || w <= natural)
+        .map((w) => `${img().width(w).auto('format').url()} ${w}w`)
+        .join(', ');
+      if (natural && !SRCSET_WIDTHS.some((w) => w >= natural)) {
+        srcSet += `, ${img().width(natural).auto('format').url()} ${natural}w`;
+      }
+    } catch {
+      srcSet = undefined;
     }
   }
   url = url || src.asset?.url || src.url;
@@ -108,6 +168,7 @@ export const imageFromSanity = (src?: SanityImage | null): ImageAsset | undefine
     lqip: src.asset?.metadata?.lqip,
     width: src.asset?.metadata?.dimensions?.width,
     height: src.asset?.metadata?.dimensions?.height,
+    srcSet: srcSet && srcSet.length > 0 ? srcSet : undefined,
   };
 };
 

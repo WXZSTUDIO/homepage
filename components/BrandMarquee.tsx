@@ -7,7 +7,7 @@ import { useResume } from '../ContentContext';
    Below the wall, a quiet line keeps Seoul time. */
 
 type BrandItem =
-  | { kind: 'img'; src: string; alt: string; h: string; white?: boolean }
+  | { kind: 'img'; src: string; srcSet?: string; alt: string; h: string; white?: boolean }
   | { kind: 'mark'; node: React.ReactNode };
 
 const MARK = 'text-strip hover:text-paper-70 transition-colors duration-300';
@@ -87,7 +87,12 @@ const SeoulClock: React.FC<{ label: string }> = ({ label }) => {
 /* CMS-driven marks (resume.clients) win; the local wall stays as the
    fallback so the strip is never empty. */
 const buildStrip = (
-  clients: { id: string; name: string; logo?: string; image?: { url: string } }[],
+  clients: {
+    id: string;
+    name: string;
+    logo?: string;
+    image?: { url: string; srcSet?: string };
+  }[],
   fallback: BrandItem[]
 ): BrandItem[] => {
   const fromCms = clients
@@ -95,6 +100,7 @@ const buildStrip = (
     .map<BrandItem>((c) => ({
       kind: 'img',
       src: c.image?.url || c.logo || '',
+      srcSet: c.image?.srcSet,
       alt: c.name,
       h: 'h-5 md:h-6',
       white: true,
@@ -130,6 +136,8 @@ const BrandMarquee: React.FC = () => {
               {brand.kind === 'img' ? (
                 <img
                   src={brand.src}
+                  srcSet={brand.srcSet}
+                  sizes="120px"
                   alt={brand.alt}
                   loading="lazy"
                   draggable={false}

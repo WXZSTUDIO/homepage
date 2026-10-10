@@ -13,6 +13,8 @@ export interface CaseItem {
   id: string;
   type: 'img' | 'video';
   src: string;
+  /** 响应式候选（由 Sanity 图片管线生成，本地数据为空） */
+  srcSet?: string;
   videoSrc?: string;
   title: { zh: string; ko: string };
   tag: { zh: string; ko: string };

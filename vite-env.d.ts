@@ -10,6 +10,8 @@ interface ImportMetaEnv {
   readonly VITE_SANITY_READ_TOKEN?: string;
   readonly VITE_SANITY_MERGE_LOCAL?: string;
   readonly VITE_SANITY_STUDIO_BASE_PATH?: string;
+  /** 设为 'true' 且配置了只读 Viewer Token 时，前台通过 WebSocket 实时接收内容变更 */
+  readonly VITE_SANITY_REALTIME?: string;
   readonly VITE_SITE_URL?: string;
   readonly VITE_STUDIO_URL?: string;
 }

@@ -17,6 +17,8 @@ export interface ImageAsset {
   height?: number;
   /** tiny blurred placeholder from the Sanity pipeline */
   lqip?: string;
+  /** responsive candidates built by the Sanity image pipeline (webp/avif + width) */
+  srcSet?: string;
 }
 
 export interface VideoAsset {

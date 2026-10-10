@@ -1,4 +1,5 @@
 import { defineType } from 'sanity';
+import { maxFileSize, LIMITS } from './validate';
 
 /* 网站全局设置 —— 单例文档 */
 export const siteSettings = defineType({
@@ -25,6 +26,7 @@ export const siteSettings = defineType({
       type: 'file',
       group: 'hero',
       options: { accept: 'video/mp4,video/webm' },
+      validation: maxFileSize(LIMITS.video, '首页视频'),
     },
     { name: 'heroVideoUrl', title: '首页背景视频地址（外链）', type: 'url', group: 'hero' },
 
@@ -37,6 +39,7 @@ export const siteSettings = defineType({
       type: 'image',
       group: 'seo',
       options: { metadata: ['dimensions'] },
+      validation: maxFileSize(LIMITS.image, '分享封面图'),
       fields: [{ name: 'alt', title: '图片替代文本（Alt）', type: 'string' }],
     },
     { name: 'footerCopyright', title: '页脚版权文案', type: 'localeString', group: 'seo' },
@@ -52,6 +55,7 @@ export const siteSettings = defineType({
       type: 'file',
       group: 'contact',
       options: { accept: 'application/pdf' },
+      validation: maxFileSize(LIMITS.pdf, '简历文件'),
     },
     {
       name: 'socials',
@@ -98,6 +102,7 @@ export const siteSettings = defineType({
           title: '音频文件',
           type: 'file',
           options: { accept: 'audio/mpeg,audio/mp4,audio/ogg,audio/wav' },
+          validation: maxFileSize(LIMITS.audio, '音频'),
         },
         { name: 'audioUrl', title: '音频地址（外链）', type: 'url' },
         { name: 'name', title: '音乐名称', type: 'string' },

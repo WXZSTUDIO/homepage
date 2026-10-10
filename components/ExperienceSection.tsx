@@ -157,6 +157,8 @@ const ExperienceSection: React.FC = () => {
           <div className="lg:col-span-4 exp-stagger-item tile p-7 md:p-8">
             <img
               src={avatar}
+              srcSet={profile.avatar?.srcSet}
+              sizes="(max-width: 1023px) 80vw, 260px"
               alt={displayName}
               loading="lazy"
               draggable={false}

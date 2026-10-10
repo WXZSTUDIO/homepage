@@ -150,12 +150,21 @@ npm run seed:sanity -- --with-media   # 连 public/ 下的图片视频一起上�
 
 ### 6.4 Update strategy (更新策略)
 
-GitHub Pages 是纯静态托管，无法持有实时监听（那需要写权限 Token，绝不能进浏览器）。因此采用**运行时拉取**：进入页面即取最新已发布内容；窗口重新聚焦时自动重取；可用 `VITE_SANITY_REVALIDATE_SEC` 设定轮询间隔。生产环境的升级路径是 Sanity Webhook → GitHub Actions 重建，无需改动任何组件。
+默认（无需任何 Token）：进入页面即取最新已发布内容，窗口重新聚焦时自动重取，可用 `VITE_SANITY_REVALIDATE_SEC` 设定轮询间隔。
+
+**实时更新（可选）**：设 `VITE_SANITY_REALTIME=true` 且配置了**只读 Viewer Token** 时，前台通过 WebSocket 订阅 Sanity 变更事件，后台点「发布」后已打开的页面会自动刷新（600ms 防抖）。之所以默认关闭：监听需要一个浏览器可见的 Token，而写权限 Token 绝不能进前端，所以只在用户主动提供 Viewer Token 时启用。生产环境的另一条升级路径是 Sanity Webhook → GitHub Actions 重建，无需改动任何组件。
 
 - 草稿：仅存于 Studio，前台永远读 `published` 视角。
 - 草稿预览：Studio 的「预览草稿」按钮会带 `?preview=1` 打开前台，需配置**只读 Viewer Token**；未配置时该模式自动关闭。
 - 未配置 / 超时 / 网络失败 / 某板块为空 → 自动回落本地数据，页面不空白、不报错、组件结构不变。
 - 开发环境左下角显示数据来源徽标（local / sanity / mixed）；生产环境不输出任何敏感错误信息。
+
+### 6.5 Studio safeguards (后台风控)
+
+- **上传限制**：图片 / 视频 / 音频 / PDF 分别限制 `accept` 类型，并用异步规则读取 asset 的 `originalFileSize` 校验体积（图片 15MB、视频 100MB、音频 20MB、PDF 20MB），超限在保存前拦下并提示。
+- **删除引用警告**：删除任何内容（含图片 / 视频资产）前先 GROQ 查 `references()`，命中引用时列出引用方并要求二次确认。
+- **单例保护**：个人资料、网站设置隐藏「新建 / 删除 / 取消发布」；`project` 的 slug 做全站唯一校验。
+- **图片管线**：所有 Sanity 图片经 CDN 管线输出 `auto('format')` + 480/768/1024/1440/1920 多档 `srcSet`，浏览器按屏幕自挑最小可用档。
 
 ---
 

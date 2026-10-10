@@ -1,4 +1,5 @@
 import { defineType } from 'sanity';
+import { maxFileSize, LIMITS } from './validate';
 
 /* 详情页媒体块 —— 单张图片 / 多图画廊 / 视频 / 图文块。
    数组本身可拖拽排序，模块类型切换时只显示对应字段。 */
@@ -13,6 +14,7 @@ const imageField = (name: string, title: string) => ({
   title,
   type: 'image',
   options: { hotspot: true, metadata: ['lqip', 'palette', 'dimensions'] },
+  validation: maxFileSize(LIMITS.image, '图片'),
   fields: [
     {
       name: 'alt',
@@ -80,6 +82,7 @@ export const mediaBlock = defineType({
       description: '支持 mp4 / webm，建议先压缩后再上传（≤ 100MB）。',
       hidden: isType('video'),
       options: { accept: 'video/mp4,video/webm,video/ogg' },
+      validation: maxFileSize(LIMITS.video, '视频'),
     },
     {
       name: 'videoUrl',

@@ -3,6 +3,7 @@ import { structureTool } from 'sanity/structure';
 import { visionTool } from '@sanity/vision';
 import { schemaTypes, SINGLETONS } from './schemaTypes';
 import { PreviewSiteAction } from './actions/PreviewSiteAction';
+import { withUsageWarning } from './actions/DeleteWithUsageWarning';
 import { SITE_URL } from './siteUrl';
 
 /* ------------------------------------------------------------------
@@ -125,6 +126,11 @@ export default defineConfig({
       if (isSingleton) {
         actions = actions.filter(
           (a) => a.action !== 'duplicate' && a.action !== 'delete' && a.action !== 'unpublish'
+        );
+      } else {
+        /* 删除前检查引用，避免误删正在使用的图片 / 视频 / 内容 */
+        actions = actions.map((a) =>
+          a.action === 'delete' ? withUsageWarning(a as any) : a
         );
       }
       return [PreviewSiteAction, ...actions];
