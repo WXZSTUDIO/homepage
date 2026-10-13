@@ -152,6 +152,8 @@ export interface SiteSettings {
     headline2: LocaleText;
     narrative?: LocaleText;
     video?: VideoAsset;
+    /** 视频加载/自动播放被拦截时显示的兜底帧 */
+    poster?: string;
   };
   seo: {
     title?: LocaleText;

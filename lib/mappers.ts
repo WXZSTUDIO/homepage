@@ -194,6 +194,7 @@ export const mapSettings = (raw: any): Partial<SiteSettings> => {
       headline2: locale(raw.heroHeadline2) || { zh: '', ko: '', en: '' },
       narrative: locale(raw.heroNarrative),
       video: heroVideoUrl ? { url: heroVideoUrl, loop: true, muted: true, autoplay: true } : undefined,
+      poster: imageFromSanity(raw.heroPoster)?.url,
     },
     seo: {
       title: locale(raw.seoTitle),

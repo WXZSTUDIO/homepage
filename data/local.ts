@@ -193,6 +193,7 @@ export const localSettings = (): SiteSettings => ({
       en: I18N_UI.en.hero.narrative1,
     },
     video: { url: 'hero-keyflip.mp4', loop: true, muted: true, autoplay: true },
+    poster: 'hero-poster.jpg',
   },
   seo: {
     title: {

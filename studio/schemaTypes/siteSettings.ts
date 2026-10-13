@@ -29,6 +29,16 @@ export const siteSettings = defineType({
       validation: maxFileSize(LIMITS.video, '首页视频'),
     },
     { name: 'heroVideoUrl', title: '首页背景视频地址（外链）', type: 'url', group: 'hero' },
+    {
+      name: 'heroPoster',
+      title: '首页视频兜底帧（Poster）',
+      type: 'image',
+      group: 'hero',
+      description: '部分手机浏览器会拦截自动播放，此时显示这张图。留空则使用站点自带的一帧。',
+      options: { hotspot: true, metadata: ['dimensions'] },
+      validation: maxFileSize(LIMITS.image, '兜底帧'),
+      fields: [{ name: 'alt', title: '图片替代文本（Alt）', type: 'string' }],
+    },
 
     /* SEO */
     { name: 'seoTitle', title: 'SEO 标题', type: 'localeString', group: 'seo' },

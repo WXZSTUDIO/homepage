@@ -142,6 +142,7 @@ export const settingsQuery = `*[_type == "siteSettings" && ${PUBLISHED}][0] {
   heroNarrative,
   "heroVideoFile": heroVideoFile{ ${FILE_URL } }.asset.url,
   heroVideoUrl,
+  heroPoster ${IMAGE},
   seoTitle,
   seoDescription,
   shareImage ${IMAGE},
