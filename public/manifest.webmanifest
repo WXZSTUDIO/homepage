@@ -1,0 +1,16 @@
+{
+  "name": "Canfeng — STUDIO (WXZ)",
+  "short_name": "Canfeng",
+  "description": "정찬봉 (郑灿峰) — 시각 디자이너 · 사진가",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#050505",
+  "theme_color": "#050505"
+}
